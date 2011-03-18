@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "rdoba"
   gem.homepage = "http://github.com/3aHyga/rdoba"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Ruby additionals}
+  gem.description = %Q{Ruby extransion library. It extends Kernel, Object and some other classes}
   gem.email = "3aHyga@gmail.com"
   gem.authors = ["Malo Skrylevo"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
