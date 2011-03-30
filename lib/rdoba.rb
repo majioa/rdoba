@@ -1,4 +1,5 @@
 #!/usr/bin/ruby -KU
+#<Encoding:UTF-8>
 
 require 'strscan'
 require 'timeout'
@@ -6,7 +7,7 @@ require 'timeout'
 class Object
     attr_reader :debug
 
-    eval "$debug_#{__FILE__.gsub(/[\/\.]/,'_')} = 0"
+    eval "$debug_#{__FILE__.gsub(/[^\w\d_]/,'_')} = 0"
     @debug = nil
     @@debug = nil
     eval "$debug_#{self.class} = 0"
