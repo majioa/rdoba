@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Malo Skrylevo"]
-  s.date = %q{2011-03-18}
+  s.date = %q{2011-03-30}
   s.description = %q{Ruby extransion library. It extends Kernel, Object and some other classes}
   s.email = %q{3aHyga@gmail.com}
   s.extra_rdoc_files = [
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/rdoba.rb",
+    "rdoba.gemspec",
     "test/helper.rb",
     "test/rdoba_test.rb.stub",
     "test/test_rdoba.rb"
