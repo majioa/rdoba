@@ -214,7 +214,7 @@ public
 		self.each do |value|
 		    rs += "\n" + ' ' * level * 2 + '- ' + value.to_yml(level + 1)
 		end
-		rs
+		rs.empty? and "[]" or rs
 	    when :Fixnum
 		self.to_s
 	    when :String
