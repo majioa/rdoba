@@ -208,7 +208,7 @@ public
 		    rs += "\n" + ' ' * level * 2 + key.to_yml(level + 1)
 		    rs += ': ' + value.to_yml(level + 1)
 		end
-		rs
+		rs.empty? and "{}" or rs
 	    when :Array
 		rs = ''
 		self.each do |value|
