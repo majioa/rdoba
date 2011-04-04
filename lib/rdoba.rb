@@ -718,7 +718,7 @@ class String
 
 	pos = 0
 	argfs = []
-	while fss.scan_until(/%([0-9 #+\-*]*)(?:\.([0-9]+)(\+)?)?([bcdefgiosux])/)
+	while fss.scan_until(/%([0-9 #+\-*]*)(?:\.([0-9]+)(\+)?)?([bcdefgiosuxr])/)
 	    argfs << [ fss[1], fss[2], fss[3], fss[4] ]
 	    # TODO add performing the special case in fss[1]
 	    nformat += fss.pre_match[pos..-1].to_res + case fss[4]
@@ -744,6 +744,8 @@ class String
 		'([+\-]?(?:0X)?[A-F0-9.+]+)'
 	    when 's'
 		'(.+)'
+	    when 'r'
+		'([IVXLCDMivxlcdm]+)'
 	    end
 
 	    pos = fss.pos
@@ -780,6 +782,8 @@ class String
 		    value.to_i(8)
 		when 's'
 		    value
+		when 'r'
+		    value.rom
 		end
 	    end
 
@@ -849,6 +853,23 @@ class String
 	end.compact) <=> (value.unpack('U*').map do |x| crop_diacritics(x)
 	end.compact)
       end
+    end
+
+    def rom
+      h = Numeric::Roman.reverse
+      keys = h.keys.sort do |x,y| x.size < y.size ? 1 : x.size > y.size ? -1 : x <=> y end
+      str = self.upcase
+      res = 0
+      while str and not str.empty?
+	raise "Invalid roman number" if (keys.each do |key|
+	    if str =~ /^#{key}(.*)/
+	      str = $1
+	      res += h[key]
+	      break nil
+	    end
+	  end)
+      end
+      res
     end
 end
 
@@ -1051,19 +1072,19 @@ public
 end
 
 class Numeric
-    Nums = { 1 => 'I', 4 => 'IV', 5 => 'V', 9 => 'IX', 10 => 'X', 40 => 'XL', 50 => 'L',
+    Roman = { 1 => 'I', 4 => 'IV', 5 => 'V', 9 => 'IX', 10 => 'X', 40 => 'XL', 50 => 'L',
 	    90 => 'XC', 100 => 'C', 400 => 'CD', 500 => 'D', 900 => 'CM', 1000 => 'M' }
-    Numi = Nums.keys.sort
+    Romani = Roman.keys.sort
 
     def to_rom
 	res = ''
 	num = self
-	i = Numi.size - 1
+	i = Romani.size - 1
 
 	while num > 0
-	    if num >= Numi[i]
-		res << Nums[Numi[i]]
-		num -= Numi[i]
+	    if num >= Romani[i]
+		res << Roman[Romani[i]]
+		num -= Romani[i]
 	    else
 		i -= 1
 	    end
