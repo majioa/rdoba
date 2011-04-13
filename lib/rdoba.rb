@@ -133,12 +133,12 @@ public
 
     alias :__method_missing__ :method_missing
     def method_missing(symbol, *args)
-	if symbol.id2name =~ /^dbc([0-9a-fA-F]+)$/
+	if symbol.to_s =~ /^dbc([0-9a-fA-F]+)$/
 	    dbc($1.to_i(16))
 	elsif not args.empty?
-	    if symbol.id2name =~ /^dbg([0-9a-fA-F]+)$/
+	    if symbol.to_s =~ /^dbg([0-9a-fA-F]+)$/
 		dbg($1.to_i(16), args.shift, args.shift)
-	    elsif symbol.id2name =~ /^dbp([0-9a-fA-F]+)$/
+	    elsif symbol.to_s =~ /^dbp([0-9a-fA-F]+)$/
 		dbp($1.to_i(16), args.join(','))
 	    else __method_missing__(symbol, *args); end
 	else __method_missing__(symbol, *args); end
