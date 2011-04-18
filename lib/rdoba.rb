@@ -3,6 +3,7 @@
 
 require 'strscan'
 require 'timeout'
+require 'rdoba/hashorder'
 
 class Object
     attr_reader :debug
