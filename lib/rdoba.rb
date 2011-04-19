@@ -219,7 +219,7 @@ public
 	    when :Fixnum
 		self.to_s
 	    when :String
-		if self =~ /[-:\s]/
+		if self =~ /^["'\-:!#={}\[\]~]/
 		    "\"#{self.gsub('"','\"')}\""
 		else
 		    self
