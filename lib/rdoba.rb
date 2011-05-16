@@ -13,5 +13,5 @@ require 'rdoba/deploy'
 require 'rdoba/roman'
 require 'rdoba/combinations'
 require 'rdoba/hashorder'
-
+require 'rdoba/fenc'
 

@@ -7,152 +7,152 @@ require 'rdoba/roman'
 require 'rdoba/numeric'
 
 module Kernel
-    alias :__sprintf__ :sprintf
-    def sprintf(format, *args)
-	nargs = []
-	nformat = ''
+  alias :__sprintf__ :sprintf
+  def sprintf(format, *args)
+    nargs = []
+    nformat = ''
 
-	fmt = format.split('%')
-	nformat = fmt.shift
+    fmt = format.split('%')
+    nformat = fmt.shift
 
-	while (not fmt.empty?)
-	    part = fmt.shift
-	    part = '%' + fmt.shift unless part
-	    if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXx])(.*)/ and $2 == 'c'
-		keys = $1 || ''
-		str = $3 || ''
-		if keys =~ /(-)?([0-9*]*)(?:\.([0-9*]+)(\+))?/
-		    value = args.shift
-		    indent = ' ' * ($2 == '*' ? args.shift : $2).to_i
-		    plain = value && value.to_p(($3 == '*' ? args.shift : $3 ? $3 : 1).to_i, $4) || ''
-		    nformat += ($1 ? plain + indent : indent + plain) + str
-		else
-		    nformat += '%' + keys + 'c' + str
-		    nargs.push args.shift
-		end
-	    else
-		nformat += '%' + part
-		l = $1 =~ /\*/ ? 2 : 1
-		while l > 0
-		    nargs.push args.shift
-		    l -= 1
-		end
-	    end
-	end
-	__sprintf__(nformat, *nargs).to_p
+    while (not fmt.empty?)
+      part = fmt.shift
+      part = '%' + fmt.shift unless part
+      if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXx])(.*)/ and $2 == 'c'
+        keys = $1 || ''
+        str = $3 || ''
+        if keys =~ /(-)?([0-9*]*)(?:\.([0-9*]+)(\+))?/
+          value = args.shift
+          indent = ' ' * ($2 == '*' ? args.shift : $2).to_i
+          plain = value && value.to_p(($3 == '*' ? args.shift : $3 ? $3 : 1).to_i, $4) || ''
+          nformat += ($1 ? plain + indent : indent + plain) + str
+        else
+          nformat += '%' + keys + 'c' + str
+          nargs.push args.shift
+        end
+      else
+        nformat += '%' + part
+        l = $1 =~ /\*/ ? 2 : 1
+        while l > 0
+          nargs.push args.shift
+          l -= 1
+        end
+      end
     end
+    __sprintf__(nformat, *nargs).to_p
+  end
 
 end
 
 class String
-    def scanf_re(format)
-	fss = StringScanner.new(format) # TODO remove scanner in favor of match
-	nformat = ''
+  def scanf_re(format)
+    fss = StringScanner.new(format) # TODO remove scanner in favor of match
+    nformat = ''
 
-	pos = 0
-	argfs = []
-	while fss.scan_until(/%([0-9 #+\-*]*)(?:\.([0-9]+)(\+)?)?([bcdefgiosuxr])/)
-	    argfs << [ fss[1], fss[2], fss[3], fss[4] ]
-	    # TODO add performing the special case in fss[1]
-	    nformat += fss.pre_match[pos..-1].to_res + case fss[4]
-	    when 'x'
-		'(?:0[xX])?([a-fA-F0-9]+)'
-	    when 'i'
-		'([+\-]?[0-9]+)'
-	    when 'u'
-		'([0-9]+)'
-	    when 'e'
-		'([+\-]?[0-9]+[eE][+\-]?[0-9]+)'
-	    when 'f'
-		'([+\-]?[0-9]+\.[0-9]*)'
-	    when 'g'
-		'([+\-]?[0-9]+(?:[eE][+\-]?[0-9]+|\.[0-9]*))'
-	    when 'c'
-		fss[2] ? "(.{1,#{fss[2]}})" : "(.)"
-	    when 'b'
-		'([01]+)b?'
-	    when 'o'
-		'0([0-9]+)'
-	    when 'd'
-		'([+\-]?(?:0X)?[A-F0-9.+]+)'
-	    when 's'
-		'(.+)'
-	    when 'r'
-		'([IVXLCDMivxlcdm]+)'
-	    end
+    pos = 0
+    argfs = []
+    while fss.scan_until(/%([0-9 #+\-*]*)(?:\.([0-9]+)(\+)?)?([bcdefgiosuxr])/)
+      argfs << [ fss[1], fss[2], fss[3], fss[4] ]
+      # TODO add performing the special case in fss[1]
+      nformat += fss.pre_match[pos..-1].to_res + case fss[4]
+      when 'x'
+        '(?:0[xX])?([a-fA-F0-9]+)'
+      when 'i'
+        '([+\-]?[0-9]+)'
+      when 'u'
+        '([0-9]+)'
+      when 'e'
+        '([+\-]?[0-9]+[eE][+\-]?[0-9]+)'
+      when 'f'
+        '([+\-]?[0-9]+\.[0-9]*)'
+      when 'g'
+        '([+\-]?[0-9]+(?:[eE][+\-]?[0-9]+|\.[0-9]*))'
+      when 'c'
+        fss[2] ? "(.{1,#{fss[2]}})" : "(.)"
+      when 'b'
+        '([01]+)b?'
+      when 'o'
+        '0([0-9]+)'
+      when 'd'
+        '([+\-]?(?:0X)?[A-F0-9.+]+)'
+      when 's'
+        '(.+)'
+      when 'r'
+        '([IVXLCDMivxlcdm]+)'
+      end
 
-	    pos = fss.pos
-	end
-
-	nformat += fss.rest
-
-	[ /#{nformat}/, argfs ]
+      pos = fss.pos
     end
 
-    (alias :__scanf__ :scanf) if self.instance_methods(false).include?(:scanf)
-    def scanf(format, &block)
-	(re, argfs) = scanf_re(format)
+    nformat += fss.rest
 
-	ss = StringScanner.new(self)
-	res = []
-	rline = []
-	while ss.scan_until(re)
-	    argfs.each_index do |i|
-		argf = argfs[i]
-		value = ss[i + 1]
-		rline << case argf[3]
-		when 'x'
-		    value.to_i(16)
-		when /[diu]/
-		    value.to_i
-		when /[efg]/
-		    value.to_f
-		when 'c'
-		    value.to_i(argf[2] ? BE : LE)
-		when 'b'
-		    value.to_i(2)
-		when 'o'
-		    value.to_i(8)
-		when 's'
-		    value
-		when 'r'
-		    value.rom
-		end
-	    end
+    [ /#{nformat}/, argfs ]
+  end
 
-	    if block_given?
-		pass = []
-		(1..block.arity).each do |i| pass << "rline[#{i}]" end
-		eval "yield(#{pass.join(', ')})"
-	    end
+  (alias :__scanf__ :scanf) if self.instance_methods(false).include?(:scanf)
+  def scanf(format, &block)
+    (re, argfs) = scanf_re(format)
 
-	    res << rline
-	end
+    ss = StringScanner.new(self)
+    res = []
+    rline = []
+    while ss.scan_until(re)
+      argfs.each_index do |i|
+        argf = argfs[i]
+        value = ss[i + 1]
+        rline << case argf[3]
+        when 'x'
+          value.to_i(16)
+        when /[diu]/
+          value.to_i
+        when /[efg]/
+          value.to_f
+        when 'c'
+          value.to_i(argf[2] ? BE : LE)
+        when 'b'
+          value.to_i(2)
+        when 'o'
+          value.to_i(8)
+        when 's'
+          value
+        when 'r'
+          value.rom
+        end
+      end
 
-	res
+      if block_given?
+        pass = []
+        (1..block.arity).each do |i| pass << "rline[#{i}]" end
+        eval "yield(#{pass.join(', ')})"
+      end
+
+      res << rline
     end
 
-    def consolize
-	ss = StringScanner.new(self)
-	res = ''
-	ostr = ''
-	pos = 0
+    res
+  end
 
-	while ss.scan_until(/\r/)
-	    ostr[0...ss.pre_match.size - pos] = ss.pre_match[pos..-1]
-	    pos = ss.pos
+  def consolize
+    ss = StringScanner.new(self)
+    res = ''
+    ostr = ''
+    pos = 0
 
-	    if ss.post_match[0] == "\n"[0]
-		res = ostr
-		pos += 1
-		ostr = ''
-	    end
+    while ss.scan_until(/\r/)
+      ostr[0...ss.pre_match.size - pos] = ss.pre_match[pos..-1]
+      pos = ss.pos
 
-	end
+      if ss.post_match[0] == "\n"[0]
+        res = ostr
+        pos += 1
+        ostr = ''
+      end
 
-	ostr[0...ss.rest.size] = ss.rest
-	res + ostr
     end
+
+    ostr[0...ss.rest.size] = ss.rest
+    res + ostr
+  end
 end
 
 
