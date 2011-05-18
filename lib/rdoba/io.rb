@@ -18,13 +18,15 @@ module Kernel
     while (not fmt.empty?)
       part = fmt.shift
       part = '%' + fmt.shift unless part
-      if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXx])(.*)/ and $2 == 'c'
+      if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and $2 == 'P'
         keys = $1 || ''
         str = $3 || ''
-        if keys =~ /(-)?([0-9*]*)(?:\.([0-9*]+)(\+))?/
+        if keys =~ /(-)?([0-9*]*)\.?([0-9\*]*)(\+?)/
           value = args.shift
           indent = ' ' * ($2 == '*' ? args.shift : $2).to_i
-          plain = value && value.to_p(($3 == '*' ? args.shift : $3 ? $3 : 1).to_i, $4) || ''
+          plain = value && value.to_p(
+	      :padding => ($3 == '*' ? args.shift : $3.empty? ? 1 : $3).to_i,
+	      :be => $4.empty? ? nil : true) || ''
           nformat += ($1 ? plain + indent : indent + plain) + str
         else
           nformat += '%' + keys + 'c' + str
@@ -108,7 +110,7 @@ class String
         when /[efg]/
           value.to_f
         when 'c'
-          value.to_i(argf[2] ? BE : LE)
+	  argf[2] ? value.to_i(:be) : value.to_i
         when 'b'
           value.to_i(2)
         when 'o'

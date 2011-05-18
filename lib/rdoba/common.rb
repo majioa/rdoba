@@ -14,6 +14,27 @@ class Object
   def to_sym
     to_s.to_sym
   end
+
+  def parse_opts(opts)
+    v = {}
+    opts.each do |opt|
+      case opt.class.to_s.to_sym
+      when :Hash
+	opt.each do |x,y| v[x] = y end
+      when :Array
+	opt.each do |x| v[x] = true end
+      when :Symbol
+	v[opt] = true
+      end
+    end
+    v
+  end
+
+  def apply_opts(opts)
+    parse_opts(opts).each do |x,y|
+      self.instance_variable_set("@#{x}".to_sym, y)
+    end
+  end
 end
 
 module Kernel

@@ -1,57 +1,9 @@
 #!/usr/bin/ruby -KU
 #<Encoding:UTF-8>
 
-require 'rdoba/chr'
-
 class String
-  FirstChar = 0
-  alias :__set__ :[]=
-  def []=(*args)
-    index = args[0]
-    str = args[args.size > 2 ? 2 : 1]
-    if index.class == Fixnum
-      if str.class == String
-        a = self.split(//u)
-        if str.size == 1
-          a[index] = str
-        else
-          a[index] = str.unpack('U*').map do |x| x.chr end
-          a.flatten!
-        end
-        return self.replace(a.join)
-      end
-    end
-    __set__(*args)
-  end
 
-  def get(*args)
-    index = args[0]
-    index.class == Fixnum ? self.unpack('U*')[index] : self[*args]
-  end
-
-  if RUBY_VERSION < '1.9'
-
-    def ord
-      a = nil
-      self.each_byte do |b|
-	c = b & 0xC0
-	case c
-	when 0xc0
-	  a = (b & 0x3F)
-	when 0x80
-	  return (a << 6) + (b & 0x3F)
-	else
-	  return b
-	end
-      end
-    end
-
-    def setbyte(*args)
-      __set__(*args)
-    end
-  end
-
-  def upcase_char(char)
+  def self.upcase(char)
       chr = char.class == String ? char.ord : char.to_i
       if chr >= 0x430 and chr < 0x450
         chr -= 0x20
@@ -68,18 +20,7 @@ class String
       chr.chr
   end
 
-  alias :__upcase__ :upcase
-  def upcase(option = nil)
-    if option == FirstChar
-      r = self.dup
-      r[0] = upcase_char(self.ord)
-      r
-    elsif self.match(/[Ѐ-ҁҊ-ԣꙀ-ꙧꚀꚗ]/u)
-      self.unpack('U*').map do |chr| upcase_char(chr) end.join
-    else; __upcase__ end
-  end
-
-  def downcase_char(char)
+  def self.downcase(char)
       chr = (char.class == String) ? char.ord : char.to_i
       if chr >= 0x410 and chr < 0x430
         chr += 0x20
@@ -96,14 +37,55 @@ class String
       chr.chr
   end
 
+  if RUBY_VERSION < '1.9'
+
+    alias :setbyte :[]=
+
+    def encoding
+      'UTF-8'
+    end
+
+    def force_encoding(*args)
+      self
+    end
+
+    def ord
+      a = nil
+      self.each_byte do |b|
+	c = b & 0xC0
+	case c
+	when 0xc0
+	  a = (b & 0x3F)
+	when 0x80
+	  return (a << 6) + (b & 0x3F)
+	else
+	  return b
+	end
+      end
+    end
+
+  end
+
+  FirstChar = 0
+  alias :__upcase__ :upcase
+  def upcase(option = nil)
+    if option == FirstChar
+      r = self.dup
+      r[0] = String.upcase(self.ord)
+      r
+    elsif self.match(/[Ѐ-ҁҊ-ԣꙀ-ꙧꚀꚗ]/u)
+      self.unpack('U*').map do |chr| String.upcase(chr) end.join
+    else; __upcase__ end
+  end
+
   alias :__downcase__ :downcase
   def downcase(option = nil)
     if option == FirstChar
       r = self.dup
-      r[0] = downcase_char(self.ord)
+      r[0] = String.downcase(self.ord)
       r
     elsif self.match(/[Ѐ-ҁҊ-ԣꙀ-ꙧꚀꚗ]/u)
-      self.unpack('U*').map do |chr| downcase_char(chr) end.join
+      self.unpack('U*').map do |chr| String.downcase(chr) end.join
     else; __downcase__ end
   end
 
@@ -136,7 +118,7 @@ class String
       def crop_diacritics(x)
         (x < 0x300 or
            x > 0x36f and x < 0x483 or
-           x > 0x487 and x < 0xa57c or
+           x > 0x487 and x < 0xa67c or
            x > 0xa67d) && x || nil
       end
 
@@ -146,6 +128,22 @@ class String
     else
       self <=> value
     end
+  end
+end
+
+class Fixnum
+  alias :__chr__ :chr
+  def chr
+    if self >= 256
+      num = self; s = "\0"; byte = 0x80; a = []
+      while num >= 0x40
+	s.setbyte(0, byte + (num & 0x3F))
+	a << s.dup; num >>= 6; byte = 0x40
+      end
+      s.setbyte(0, 0xC0 + (num & 0x3F))
+      a << s
+      a.reverse.join.force_encoding('UTF-8')
+    else; __chr__ end
   end
 end
 

@@ -2,11 +2,15 @@
 
 class String
   def fenc
-    return self unless Encoding.default_internal
-    if self.frozen?
-      self.dup.force_encoding(Encoding.default_internal || 'UTF-8').freeze
+    if RUBY_VERSION < '1.9'
+      self
     else
-      self.force_encoding(Encoding.default_internal || 'UTF-8')
+      return self unless Encoding.default_internal
+      if self.frozen?
+	self.dup.force_encoding(Encoding.default_internal || 'UTF-8').freeze
+      else
+	self.force_encoding(Encoding.default_internal || 'UTF-8')
+      end
     end
   end
 end

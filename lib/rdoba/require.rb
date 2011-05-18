@@ -1,6 +1,7 @@
 #!/usr/bin/ruby -KU
 #<Encoding:UTF-8>
 
+require 'rdoba/common'
 require 'rdoba/debug'
 
 module Kernel
@@ -44,7 +45,8 @@ private
 public
 
   alias :__require__ :require
-  def require(name, options = {})
+  def require(name, *opts)
+    v = parse_opts(opts)
     dbp11 "[require] <<< name = #{name}"
     begin
       res = __require__ name
@@ -53,7 +55,7 @@ public
       exit
     end
     dbp14 "[require]> Loaded? #{name}... #{res}"
-    res = sub_require(name) if res and options[:recursive]
+    res = sub_require(name) if res and v[:recursive]
     res
   end
 end

@@ -1,38 +1,36 @@
 #!/usr/bin/ruby -KU
 #<Encoding:UTF-8>
 
+require 'rdoba/common'
+require 'rdoba/strings'
+
 class String
-  BE = 0
-  LE = 1
-
-  alias :__to_i__ :to_i
-  def to_i(base = 10, be = true)
-    # TODO make a conversion of negative numbers
-    str = case base
-    when BE
-      self.reverse(ByteByByte)
-    when LE
-      self
+  alias :_rdoba_to_i :to_i
+  def to_i(base = 10, *opts)
+    v = parse_opts(opts)
+    if v[:be]
+      (str, sign, num) = (self.match /\s*(-?)([0-9a-fx]+)/u).to_a
+      if str
+	n = num.reverse._rdoba_to_i(base)
+	sign.empty? && n || -n
+      else
+	0
+      end
     else
-      return __to_i__(base)
+      _rdoba_to_i(base)
     end
-
-    mul = 1
-    res = 0
-    str.each_byte do |byte|
-      res += byte * mul
-      mul *= 256
-    end
-
-    res.to_i
   end
 end
 
+class Fixnum
+  alias :_rdoba_to_s :to_s
+  def to_s(base = 10, *opts)
+    v = parse_opts(opts)
 
-class Numeric
-  def to_s(base = 10, padding_count = 1, style_formatting = false)
+    return _rdoba_to_s(base) unless v[:padding] or v[:style_formatting]
+
     raise "Base of number can't be equal or less then zero" if base <= 0
-    raise "Padding count numberr can't be equal or less then zero" if padding_count <= 0
+    raise "Padding count numberr can't be equal or less then zero" if v[:padding] <= 0
     value = self
     minus = if value < 0
         value = -value
@@ -44,13 +42,17 @@ class Numeric
       rem += 0x40 - 0x39 if rem >= 10
       res += (0x30 + rem).chr
     end
-    res += "0" * (padding_count - res.size) if res.size < padding_count
-    res += 'x0' if style_formatting and base == 16
+    res += "0" * (v[:padding].to_i - res.size) if res.size < v[:padding].to_i
+    res += 'x0' if v[:style_formatting] and base == 16
     res += '-' if minus
     res.reverse
   end
+end
 
-  def to_p(padding_count = 1, big_endian = true)
+class Numeric
+  def to_p(*opts)
+    v = parse_opts(opts)
+
     value = self
     minus = if value < 0
         value = -value
@@ -81,9 +83,11 @@ class Numeric
         "\0"
       end
 
-    res += pad_char * (padding_count - res.size) if res.size < padding_count
+    res += pad_char * (v[:padding].to_i - res.size) if res.size < v[:padding].to_i
 
-    (big_endian ? res.reverse(String::ByteByByte) : res).to_p
+    plain = (v[:be] ? res.reverse(String::ByteByByte) : res).to_p
+    plain
   end
 end
+
 
