@@ -1,3 +1,3 @@
 module Rdoba
-  VERSION = "1.0.pre"
+  VERSION = "0.9"
 end

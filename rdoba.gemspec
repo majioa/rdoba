@@ -9,14 +9,18 @@ Gem::Specification.new do |s|
   s.authors     = [ 'Малъ Скрылёвъ (Malo Skrylevo)' ]
   s.email       = [ '3aHyga@gmail.com' ]
   s.homepage    = 'https://github.com/3aHyga/rdoba'
-  s.summary     = 'Ruby extension library'
-  s.description = 'Ruby extension library. It extends Kernel, Object, String, Hash, Array, and some other classes'
+  s.summary     = 'Ruby extension library (Ruby DOBAvka)'
+  s.description = 'Ruby extension library. It extends Kernel, Object, ' +
+		  'String, Hash, Array, and some other classes. Also allows ' +
+		  'to log application state with debug lines to an io'
+  s.license     = 'MIT'
 
   s.rubyforge_project = "rdoba"
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.require_paths = [ "lib" ]
+  s.extra_rdoc_files = [ 'README.md', 'LICENSE' ]
 
   s.required_rubygems_version = '>= 1.6.0'
 
