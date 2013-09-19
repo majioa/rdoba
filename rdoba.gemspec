@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = '>= 1.6.0'
 
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler', '~> 1.3.1'
   s.add_development_dependency 'cucumber'
 end
