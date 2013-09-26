@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [ 'README.md', 'LICENSE' ]
 
   s.required_rubygems_version = '>= 1.6.0'
+  s.required_ruby_version = '>= 1.9.0'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler', '~> 1.3.1'
