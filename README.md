@@ -1,4 +1,12 @@
 # Rdoba
+<!---
+![Web Component Logo](http://??.tinypic.com/??.png)
+-->
+[![Gem Version](https://badge.fury.io/rb/rdoba.png)](http://rubygems.org/gems/rdoba)
+[![Build Status](https://travis-ci.org/3aHyga/rdoba.png?branch=master)](https://travis-ci.org/3aHyga/rdoba)
+[![Coverage Status](https://coveralls.io/repos/3aHyga/rdoba/badge.png)](https://coveralls.io/r/3aHyga/rdoba)
+[![Code Climate](https://codeclimate.com/github/3aHyga/rdoba.png)](https://codeclimate.com/github/3aHyga/rdoba)
+[![Endorse Count](http://api.coderwall.com/3aHyga/endorsecount.png)](http://coderwall.com/3aHyga)
 
 Rdoba, сирѣчь руби-добавокъ, есть библиотека, расширитяющая основныя классы Ruby такія какъ: Объектъ(Object), Ядро(Kernel), Строка(String), Словарь(Hash), Наборъ(Array), Пущь(NilClass) и т.д. Включаетъ модули и такія функціи:
  * common       - нѣкоторыя простыя методы къ Объекту, Ядру, Пущю, Набору, Строкѣ и Словрю;
