@@ -1,13 +1,19 @@
 #!/usr/bin/env rake
 
 desc "Prepare bundler"
-task :prebundle do
+task :bundleup do
   sh 'gem install bundler --version "~> 1.3.1" --no-ri --no-rdoc'
 end
 
 desc "Prepare bundle environment"
-task :pre do
+task :up do
   sh 'bundle install'
+end
+
+desc "Test with cucumber"
+task :test do
+  sh 'cucumber features/log.feature'
+  sh 'cucumber features/bcd.feature'
 end
 
 desc "Generate gem"
@@ -34,5 +40,5 @@ namespace :gem do
 end
 
 task(:default).clear
-task :default => :pre
-task :all => [ :prebundle, :pre ]
+task :default => :test
+task :all => [ :bundlerup, :up ]

@@ -1,6 +1,8 @@
 require 'rdoba'
 require 'tempfile'
 require 'open3'
+require 'coveralls'
+Coveralls.wear!
 
 RdobaSimSimpleHead=<<HEAD
 #!/usr/bin/env ruby
