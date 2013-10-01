@@ -1,5 +1,5 @@
 #!/usr/bin/ruby -KU
-#<Encoding:UTF-8>
+#coding:utf-8
 
 class String
   def to_res

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby -KU
-#<Encoding:UTF-8>
+#coding:utf-8
 
 class Array
   alias :__dup__ :dup
