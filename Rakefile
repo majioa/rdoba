@@ -43,9 +43,9 @@ namespace :gem do
   task :publish => [ :req ] do
     require File.expand_path( '../lib/rdoba/_version_', __FILE__ )
     sh "git tag v#{Rdoba::VERSION}"
+    sh "gem push rdoba-#{Rdoba::VERSION}.gem"
     sh "git push"
     sh "git push --tag"
-    sh "gem push rdoba-#{Rdoba::VERSION}.gem"
   end
 
   task :make => [ :build, :install, :publish ]
