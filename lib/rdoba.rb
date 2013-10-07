@@ -16,6 +16,9 @@ module Kernel
         require "rdoba/#{key}"
         Rdoba.log( { :in => self }.merge( value || {} ) ) # TODO move log method into module
         # TODO and resolve some troubles with eval in main
+      when :slovo
+        require "rdoba/#{key}"
+        Rdoba.slovo value
       else
         Kernel.puts STDERR, "Unknown rdoba module named as '#{key.to_s}'"
         nil; end ||
