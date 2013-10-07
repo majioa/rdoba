@@ -10,9 +10,10 @@ module Rdoba
    def self.slovo options = {}
       Slovo::Methods.each do |m, v|
          v[ :applyto ].each do |c|
-            if c.methods.include? m
+            if c.methods.include?( m ) && !c.methods.include?( v[ :name ] )
                c.send :instance_eval, "alias :#{v[ :name ]} :#{m}" ; end
             if c.methods.include?( :instance_methods ) &&
-                  c.instance_methods.include?( m )
+                  c.instance_methods.include?( m ) &&
+                  !c.instance_methods.include?( v[ :name ] )
                c.send :class_eval, "alias :#{v[ :name ]} :#{m}" ; end
                end ; end ; end ; end
