@@ -1,7 +1,8 @@
 # Rdoba
-<!---
-![Web Component Logo](http://??.tinypic.com/??.png)
--->
+
+![Rdoba Logo](http://i44.tinypic.com/29fs129.png)
+
+[![Dependency Status](https://gemnasium.com/3aHyga/rdoba.png)](https://gemnasium.com/3aHyga/rdoba)
 [![Gem Version](https://badge.fury.io/rb/rdoba.png)](http://rubygems.org/gems/rdoba)
 [![Build Status](https://travis-ci.org/3aHyga/rdoba.png?branch=master)](https://travis-ci.org/3aHyga/rdoba)
 [![Coverage Status](https://coveralls.io/repos/3aHyga/rdoba/badge.png)](https://coveralls.io/r/3aHyga/rdoba)
