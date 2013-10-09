@@ -20,7 +20,7 @@ end
 
 desc "Test with cucumber"
 task :test do
-  sh 'cucumber features/log.feature features/bcd.feature'
+  sh 'if [ -d features ]; then tests=$(ls features/*.feature) ; cucumber $tests; fi'
 end
 
 desc "Distilled clean"
@@ -42,8 +42,8 @@ namespace :gem do
 
   task :publish => [ :req ] do
     require File.expand_path( '../lib/rdoba/_version_', __FILE__ )
-    sh "git tag v#{Rdoba::VERSION}"
     sh "gem push rdoba-#{Rdoba::VERSION}.gem"
+    sh "git tag v#{Rdoba::VERSION}"
     sh "git push"
     sh "git push --tag"
   end
@@ -56,3 +56,4 @@ task(:default).clear
 task :default => :test
 task :all => [ :bundleup, :up, :test, :'gem:make', :distclean ]
 task :build => [ :bundleup, :up, :test, :'gem:build', :'gem:install', :distclean ]
+
