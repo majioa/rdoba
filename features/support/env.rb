@@ -2,7 +2,15 @@ require 'rdoba'
 require 'tempfile'
 require 'open3'
 require 'coveralls'
+require "codeclimate-test-reporter"
+
+# specific external test/development libraries
+#
+#
 Coveralls.wear!
+CodeClimate::TestReporter.start
+##############################################
+
 
 RdobaSimSimpleHead=<<HEAD
 #!/usr/bin/env ruby

@@ -5,6 +5,7 @@
 [![Dependency Status](https://gemnasium.com/3aHyga/rdoba.png)](https://gemnasium.com/3aHyga/rdoba)
 [![Gem Version](https://badge.fury.io/rb/rdoba.png)](http://rubygems.org/gems/rdoba)
 [![Build Status](https://travis-ci.org/3aHyga/rdoba.png?branch=master)](https://travis-ci.org/3aHyga/rdoba)
+[![Solano Labs](https://api.tddium.com:443/majioa/rdoba/badges/41200.png?badge_token=ae032246866fa71a65ebf82a32e65992c6c8c1b7)](https://api.tddium.com:443/majioa/rdoba/suites/41200)
 [![Coverage Status](https://coveralls.io/repos/3aHyga/rdoba/badge.png)](https://coveralls.io/r/3aHyga/rdoba)
 [![Code Climate](https://codeclimate.com/github/3aHyga/rdoba.png)](https://codeclimate.com/github/3aHyga/rdoba)
 [![Endorse Count](http://api.coderwall.com/3aHyga/endorsecount.png)](http://coderwall.com/3aHyga)
