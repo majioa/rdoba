@@ -25,8 +25,9 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = '>= 1.6.0'
   s.required_ruby_version = '>= 1.9.0'
 
+  s.add_development_dependency 'simplecov'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'bundler', '~> 1.3'
+  s.add_development_dependency 'bundler', '~> 1.3.5'
   s.add_development_dependency 'cucumber', '~> 1.3'
   s.add_development_dependency 'coveralls'
   s.add_development_dependency 'rdiscount'

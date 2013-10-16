@@ -1,0 +1,9 @@
+:tddium:
+   :ruby_version: ruby-1.9.3-p448
+   :bundler_version: '~> 1.3.5'
+   :test_pattern:
+      - features/\*.feature
+   :coverage: true
+   :postgresql: false
+   :mysql: false
+   :sqlite: false
