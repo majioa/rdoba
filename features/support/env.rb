@@ -3,12 +3,14 @@ require 'tempfile'
 require 'open3'
 require 'coveralls'
 require "codeclimate-test-reporter"
+require 'simplecov'
 
 # specific external test/development libraries
 #
 #
 Coveralls.wear!
 CodeClimate::TestReporter.start
+SimpleCov.start
 ##############################################
 
 
