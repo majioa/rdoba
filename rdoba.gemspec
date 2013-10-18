@@ -20,12 +20,13 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = [ "lib" ]
-  s.extra_rdoc_files = [ 'README.md', 'LICENSE' ]
+  s.extra_rdoc_files = [ 'README.md', 'LICENSE', 'CHANGES.md' ]
 
   s.required_rubygems_version = '>= 1.6.0'
   s.required_ruby_version = '>= 1.9.0'
 
   s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'tddium'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler', '~> 1.3.5'
   s.add_development_dependency 'cucumber', '~> 1.3'
