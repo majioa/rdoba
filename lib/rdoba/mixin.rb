@@ -1,12 +1,18 @@
 #!/usr/bin/ruby -KU
 #encoding:utf-8
+         
+class String
+   # TODO obsolete
+   ByteByByte = 0
+   FirstChar = 1
+end
 
 module Rdoba
    module Mixin
       module CompareString
          def compare_to value, opts = {}
-            if opts == :ignore_diacritics ||
-               opts.class == Hash && opts.key?( :ignore_diacritics )
+            if ( opts == :ignore_diacritics ||
+               opts.class == Hash && opts.key?( :ignore_diacritics ) )
                # TODO verify composite range
                def crop_diacritics(x)
                   (x < 0x300 ||
@@ -15,31 +21,34 @@ module Rdoba
                    x > 0xa67d) && x || nil
                end
 
-               ( self.unpack('U*').map do |x|
-                  crop_diacritics(x) ; end.compact ) <=>
-               ( value.unpack('U*').map do |x|
-                  crop_diacritics(x) ; end.compact )
+               ( self.unpack( 'U*' ).map do |x|
+                  crop_diacritics( x ) ; end.compact ) <=>
+               ( value.unpack( 'U*' ).map do |x|
+                  crop_diacritics( x ) ; end.compact )
             else
                self <=> value ; end ; end ; end
 
       module ReverseString
-         ByteByByte = 0
+
+         Fixups = [ :reverse ]
 
          Aliases = { 
-            :__rdoba_mixin_reverse__ => :reverse
+            :__rdoba_mixin_reverse_orig__ => :reverse
          }
 
 
-         def reverse step = 1
-            case step
-            when ByteByByte
+         def __rdoba_mixin_reverse__ step = 1
+            if ( !step.is_a?( Numeric ) || step < 0 ) && step != :byte_by_byte
+               raise "Invalid step value #{step.inspect}" ; end
+
+            if step == :byte_by_byte || step == String::ByteByByte
                arr = []
                self.each_byte do | byte |
                   arr << byte.chr ; end
-               arr.reverse.join
-            when 1
-               __rdoba_mixin_reverse__
-            else
+               arr.reverse.join.force_encoding( self.encoding )
+            elsif step == 1
+               __rdoba_mixin_reverse_orig__
+            elsif step > 1
                res = ''
                offset = (self.size + 1) / step * step - step
                ( 0..offset ).step( step ) do | shift |
@@ -47,13 +56,11 @@ module Rdoba
                res ; end ; end ; end
 
       module CaseString
-         FirstChar = 0
-
          Fixups = [ :upcase, :downcase ]
 
          Aliases = { 
-            :__rdoba_mixin_upcase__ => :upcase,
-            :__rdoba_mixin_downcase__ => :downcase 
+            :__rdoba_mixin_upcase_orig__ => :upcase,
+            :__rdoba_mixin_downcase_orig__ => :downcase
          }
 
          ConvertTable = {
@@ -91,7 +98,7 @@ module Rdoba
                      :change => proc { | ord | ord.odd? && ( ord - 1 ) || ord },
                   } ],
                :default => proc do | ord |
-                     [ ord ].pack( 'U' ).__rdoba_mixin_upcase__ ; end },
+                     [ ord ].pack( 'U' ).__rdoba_mixin_upcase_orig__ ; end },
             :down => {
                :ranges => [ {
                      :ords => [ (0xC0..0xDF), (0x391..0x3AB),
@@ -126,7 +133,7 @@ module Rdoba
                      :change => proc { | ord | ord.even? && ( ord + 1 ) || ord },
                   } ],
                :default => proc do | ord |
-                     [ ord ].pack( 'U' ).__rdoba_mixin_downcase__ ; end } }
+                     [ ord ].pack( 'U' ).__rdoba_mixin_downcase_orig__ ; end } }
 
          def self.change_case_char dest, char
             ord = char.is_a?( String ) ? char.ord : char.to_i
@@ -171,28 +178,29 @@ module Rdoba
                   else
                      return b ; end ; end ; end ; end
 
-         def self.downcase str, options = {}
-            self.change_case :down, str, options
-         end
+         def __rdoba_mixin_downcase__ options = {}
+            self.__rdoba_mixin_changecase__ :down, options ; end
 
-         def self.upcase str, options = {}
-            self.change_case :up, str, options
-         end
+         def __rdoba_mixin_upcase__ options = {}
+            self.__rdoba_mixin_changecase__ :up, options ; end
 
-         def self.change_case reg, str, options = {}
+         def __rdoba_mixin_changecase__ reg, options = {}
             if ![ :up, :down ].include? reg
-               return str ; end
+               return self ; end
 
             re = Regexp.new '[\x80-\xFF]', nil, 'n'
-            if options.include? :first_char
-               r = str.dup
-               r[0] = eval "CaseString.change_case_char :#{reg}, str.ord"
+            if options == String::FirstChar || options.include?( :first_char )
+               r = self.dup
+               r[0] = CaseString.change_case_char reg, self.ord
                r
-            elsif str.force_encoding( 'ASCII-8BIT' ).match re
-               str.unpack('U*').map do | chr |
-                  eval "CaseString.change_case_char :#{reg}, chr"
+            elsif self.dup.force_encoding( 'ASCII-8BIT' ).match re
+               self.unpack('U*').map do | chr |
+                  CaseString.change_case_char reg, chr
                end.join
-            else eval "str.__rdoba_mixin_#{reg}case__" ; end ; end ; end
+            elsif reg == :up
+               self.__rdoba_mixin_upcase_orig__
+            else
+               self.__rdoba_mixin_downcase_orig__ ; end ; end ; end
 
       module To_hArray
          def to_h options = {}
@@ -240,20 +248,23 @@ module Rdoba
             Mixin::CaseString::Aliases.each do |k,v|
                ::String.send :alias_method, k, v ; end
             Mixin::CaseString::Fixups.each do |e|
-               ::String.class_eval "def #{e}(*args);Mixin::CaseString.#{e}(self,args);end"
+               ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
             end # trap NameError
             ::String.send :include, Mixin::CaseString
          when :reverse
             Mixin::ReverseString::Aliases.each do |k,v|
                ::String.send :alias_method, k, v ; end
-            String.send :include, Rdoba::Mixin::ReverseString
+            Mixin::ReverseString::Fixups.each do |e|
+               ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
+            end # trap NameError
+            String.send :include, Mixin::ReverseString
          when :compare
-            String.send :include, Rdoba::Mixin::CompareString
+            String.send :include, Mixin::CompareString
          when :to_h
-            Array.send :include, Rdoba::Mixin::To_hArray
+            Array.send :include, Mixin::To_hArray
          when :empty
-            Object.send :include, Rdoba::Mixin::EmptyObject
-            NilClass.send :include, Rdoba::Mixin::EmptyNilClass
+            Object.send :include, Mixin::EmptyObject
+            NilClass.send :include, Mixin::EmptyNilClass
          else
             Kernel.puts STDERR, "Invalid rdoba-mixin options key: #{value.to_s}"
             end ; end ; end ; end
