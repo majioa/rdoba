@@ -26,3 +26,9 @@ v0.1
  * re
  * strings
  * yaml
+
+v0.9
++ Added log module
+
+v0.9.1
+! Some fixes did
