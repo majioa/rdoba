@@ -1,0 +1,142 @@
+#!/usr/bin/env ruby
+
+require 'rdoba'
+
+rdoba :log => { :as => :log, :functions => [ :basic ], :in => Object }
+
+p 'Class=========='
+class A
+   rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :timestamp ]  }
+   log > "#{self} - When do I get executed!?"
+   class << self
+      log > "#{self} - And me!?" # now A's  singleton class
+      def a # declaring method in class's singleton class results in class method
+         log > "#{self} - declared in singleton class" # it's A
+      end
+   end
+
+   def self.b
+      log > "#{self} - declared in class method" # self is class A again -> class method
+      class << self
+         log > "#{self} - declared in Class A's singleton class" # now it's Class A's singleton class
+      end
+   end
+
+   def c
+      log > "#{self} - declared in instance method" # self is instance of A
+      class << self
+         log > "#{self} - declared in instance's singleton class" # now it's the A instance's singleton class
+      end
+   end
+end
+
+a = A.new
+A.a
+A.b
+a.c
+
+p 'Class------------B'
+
+class B
+   rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :pid ] }
+   log > "#{self} - When do I get executed!?"
+   class << self
+      log > "#{self} - And me!?" # now A's  singleton class
+      def a # declaring method in class's singleton class results in class method
+         log > "#{self} - declared in singleton class" # it's A
+      end
+   end
+
+   def self.b
+      log > "#{self} - declared in class method" # self is class A again -> class method
+      class << self
+         log > "#{self} - declared in Class B's singleton class" # now it's Class A's singleton class
+      end
+   end
+
+   def c
+      log > "#{self} - declared in instance method" # self is instance of A
+      class << self
+         log > "#{self} - declared in instance's singleton class" # now it's the A instance's singleton class
+      end
+   end
+end
+
+a = B.new
+B.a
+B.b
+a.c
+
+p 'Class-------------A'
+class A
+   log > "#{self} - When do I get executed!?"
+   class << self
+      log > "#{self} - And me!?" # now A's  singleton class
+      def a # declaring method in class's singleton class results in class method
+         log > "#{self} - declared in singleton class" # it's A
+      end
+   end
+
+   def self.b
+      log > "#{self} - declared in class method" # self is class A again -> class method
+      class << self
+         log > "#{self} - declared in Class A's singleton class" # now it's Class A's singleton class
+      end
+   end
+
+   def c
+#      logi
+      log > "#{self} - declared in instance method" # self is instance of A
+      class << self
+         log > "#{self} - declared in instance's singleton class" # now it's the A instance's singleton class
+      end
+   end
+end
+
+a = A.new
+A.a
+A.b
+a.c
+
+p 'Module=========='
+module M
+   rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :pid ] }
+   log > "aaa"
+
+   class << self
+      log > "#{self} - And me!?" # now A's  singleton class
+      def a # declaring method in class's singleton class results in class method
+         log > "#{self} - declared in singleton class" # it's A
+      end
+   end
+
+   def a
+      log > 'mod a'
+   end
+
+   def self.b
+      log > 'mod b'
+   end
+end
+
+class C
+   include M
+end
+C.new.a
+
+class D
+   extend M
+end
+D.a
+M.b
+
+p 'main=========='
+rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :timestamp ] }
+log > "11111"
+
+def l
+   log > "22222"
+end
+
+l
+

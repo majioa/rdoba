@@ -162,3 +162,23 @@ Then /see(?: a| the)? (nothing|warning|.* error exception)/ do |subject|
   else
     raise "Invalid answer: #{@res.inspect}" ; end ; end
 
+
+Given(/^selected full Rdoba Log test plan( with self keyword)?$/) do |slf|
+   @testplan = 'features/support/' +
+   if slf
+      'fulltest_as_self.rb.in'
+   else
+      'fulltest_as_log.rb.in' ; end
+   if !File.exist? @testplan
+      raise "Invalid file #{@testplan} for the specified full test plan" ; end
+      end
+
+When(/^we run the test plan$/) do
+   Open3.popen3( @testplan ) do |stdin, stdout, stderr, wait_thr|
+      @out = stdout.read
+      @err = stderr.read ; end ; end
+
+Then(/^we see no error on its output$/) do
+   if !@err.empty?
+      raise "Error found: #{@err}" ; end ; end
+

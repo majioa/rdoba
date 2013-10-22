@@ -204,3 +204,12 @@ Feature: Rdoba Log
       And look into stdout
       Then we see the variable output
 
+   Scenario: Rdoba Log class full test plans run
+      Given selected full Rdoba Log test plan
+      When we run the test plan
+      Then we see no error on its output
+
+      Given selected full Rdoba Log test plan with self keyword
+      When we run the test plan
+      Then we see no error on its output
+

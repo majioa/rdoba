@@ -60,7 +60,7 @@ def rdoba_sim sub, cmd, *args
     case cmd
     when :init
       $tmpdir ||= Dir.mktmpdir
-      @tmpfile ||= File.join( $tmpdir, 'tmp.rb' )
+      @tmpfile ||= File.join( $tmpdir, 'tmp.log' )
 
       opts = match_keywords args[ 1 ]
       opts = opts.size > 1 && opts || opts.size > 0 && opts[ 0 ] || nil
@@ -74,7 +74,7 @@ def rdoba_sim sub, cmd, *args
 
       param = case args[ 0 ]
       when 'io'
-        { :io => "File.new( @tmpfile, 'w+' )", :functions => :basic }
+        { :io => "File.new( File.join( '#{@tmpfile}' ), 'w+' )", :functions => :basic }
       when 'as'
         { :as => ":log", :functions => :basic }
       when 'in'
