@@ -242,7 +242,7 @@ module Rdoba
             true ; end ; end ; end
 
    def self.mixin options
-      ( options || [] ).each do |value|
+      options[ :value ].each do |value|
          case value
          when :case
             Mixin::CaseString::Aliases.each do |k,v|
