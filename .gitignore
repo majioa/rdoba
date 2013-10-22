@@ -19,5 +19,7 @@ tmp
 *.swp
 *~
 .rvmrc
+.ruby-version
+.ruby-gemset
 .coveralls.yml
 .tddium*
