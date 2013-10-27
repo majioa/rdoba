@@ -23,6 +23,11 @@ task :test do
   sh 'if [ -d features ]; then tests=$(ls features/*.feature) ; cucumber $tests; fi'
 end
 
+desc "Codeclimate"
+tesk :codeclimate do
+   sh 'CODECLIMATE_REPO_TOKEN=b163215f7a0d8f226c35ed665887fce7c8b90b0bfb18576af450b4a5fba8bb71 bundle exec rake test'
+end
+
 desc "Distilled clean"
 task :distclean do
    sh 'git clean -fd'
