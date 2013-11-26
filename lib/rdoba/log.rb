@@ -8,16 +8,18 @@ module Rdoba
       funcname = ( options[ :as ] ||= :log ).to_s.to_sym
       target = options[ :in ] || options[ :self ]
 
-      if funcname == :self
-         if target.class == Class || target.class == Module
-            Rdoba::Log.log_setup_class_self target ; end
-         if target.class == Object
-            Rdoba::Log.log_setup_main_self target ; end
+      if target.class == Object
+         Rdoba::Log.log_main_setup
       else
-         if target.class == Class || target.class == Module
-            Rdoba::Log.log_setup_class target, funcname ; end
+         Rdoba::Log.log_class_setup target ; end
+
+      if funcname == :self
+         Rdoba::Log.log_class_link_self target
+      else
          if target.class == Object
-            Rdoba::Log.log_setup_main target, funcname ; end ; end ; end
+            Rdoba::Log.log_main_link funcname
+         else
+            Rdoba::Log.log_class_link target, funcname ; end ; end ; end
 
 =begin
   def self.log options = {}
@@ -230,6 +232,35 @@ module Rdoba
          # TODO puts costomize
          io_m = io.method :puts ; end
 
+      def self.log_main_setup
+         ::Kernel.eval "class ::RdobaLog;end"
+         ::Kernel.eval "def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end"
+         ::Kernel.eval "class << self; def self.__rdoba_log__;
+                      $__rdoba_log__||=::RdobaLog.new;end;end"
+         ::RdobaLog.class_eval &Initfunc ; end
+
+      def self.log_main_link funcname
+         ::Kernel.eval "def #{funcname};__rdoba_log__;end"
+         ::Kernel.eval "def self.#{funcname};__rdoba_log__;end"
+         ::Kernel.eval "class << self; def self.#{funcname};
+                      __rdoba_log__;end;end" ; end
+
+      def self.log_class_setup obj
+         obj.class_eval "class RdobaLog;end"
+         obj.class_eval "def __rdoba_log__;@__rdoba_log__||=RdobaLog.new;end"
+         obj.class_eval "class << self; def self.__rdoba_log__;
+                         @__rdoba_log__||=RdobaLog.new;end;end"
+         obj.class_eval "def self.__rdoba_log__;
+                         @__rdoba_log__||=#{obj}::RdobaLog.new;end"
+         obj::RdobaLog.class_eval &Initfunc ; end
+
+      def self.log_class_link obj, funcname
+         obj.class_eval "def #{funcname};__rdoba_log__;end"
+         obj.class_eval "def self.#{funcname};__rdoba_log__;end"
+         obj.class_eval "class << self; def self.#{funcname};
+                         __rdoba_log__;end;end" ; end
+
+=begin
       def self.log_setup_class obj, funcname
          obj.class_eval "class RdobaLog;end"
          obj.class_eval "def #{funcname};@#{funcname}||=RdobaLog.new;end"
@@ -238,14 +269,8 @@ module Rdoba
          obj.class_eval "def self.#{funcname};
                @#{funcname}||=#{obj}::RdobaLog.new;end"
          obj::RdobaLog.class_eval &Initfunc ; end
-
-      def self.log_setup_main obj, funcname
-         Object.class_eval "class ::RdobaLog;end"
-         obj.define_singleton_method( funcname ) do
-            eval "$#{funcname}||=::RdobaLog.new" ; end
-         ::RdobaLog.class_eval &Initfunc ; end
-
-      def self.log_setup_class_self obj
+=end
+      def self.log_class_link_self obj
          self.log_setup_class_self_apply obj
          self.log_setup_class_self_apply obj.class
          obj.class_eval do
