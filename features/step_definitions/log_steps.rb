@@ -1,5 +1,8 @@
-When /appl(?:y|ied) Rdoba (Log|Debug) module(?: with set([\w\s,:]+ keywords?| a file name) for :(io|as|in|functions|prefix) option| with an (invalid) :io option value)?(?: inside a (class))?/ do |kind, subs, opt, invalid, cls|
-  rdoba_sim kind.downcase.to_sym, :init, opt, subs, cls
+When /appl(y|ied) Rdoba (Log|Debug) module(?: with set([\w\s,:]+ keywords?| a file name) for :(io|as|in|functions|prefix|in, and :as) options?| with an (invalid) :io option value)?(?: inside a (class))?(?: poiting to (self|log))?/ do |var, kind, subs, opt, invalid, cls, point|
+  if var == 'ied'
+    rdoba_sim kind.downcase.to_sym, :init, subs, cls
+  end
+  rdoba_sim kind.downcase.to_sym, :apply, opt, subs, point
 end
 
 When /issue a call to the function/ do
@@ -10,13 +13,19 @@ When /issue a creation of the class/ do
   rdoba_sim :log, :create
 end
 
+When /declare the (Cls) class/ do| cls |
+  rdoba_sim :log, :declare, cls
+end
+
 When /(issue|define) an output of an? (variable|number|string|array)(?: inside an? (initializer|singleton function))?(?: using (?:the|an?) (keyword|invalid keyword|class))?/ do |issue, subject, inside, cond|
 
   case inside
   when 'initializer'
     rdoba_sim :log, :def, :init
   when 'singleton function'
-    rdoba_sim :log, :def, :single ; end
+    rdoba_sim :log, :def, :single
+  else
+    rdoba_sim :log, :def ; end
 
   func = :func
   case subject
@@ -27,36 +36,41 @@ When /(issue|define) an output of an? (variable|number|string|array)(?: inside a
   when 'string'
     rdoba_sim :log, func, cond, :>, "string"
   when 'array'
-    rdoba_sim :log, func, cond, :>, [ 'array value1', 'array value2' ] ; end ; end
+    rdoba_sim :log, func, cond, :>, [ 'array value1', 'array value2' ] ; end
 
-When /issue an? :(extended|info|warn|enter|leave|compat) output of a variable/ do |key|
+  if issue == 'issue'
+    rdoba_sim :log, :close ; end ; end
+
+When /issue an? :(extended|info|warn|enter|leave|compat) output of a variable?/ do |key|
   case key
   when 'extended'
-    rdoba_sim :log, :func, :self, :>>, { variable: 'value' }
+    rdoba_sim :log, :func, :log, :>>, { variable: 'value' }
   when 'info'
-    rdoba_sim :log, :func, :self, :*, { variable: 'value' }
+    rdoba_sim :log, :func, :log, :*, { variable: 'value' }
   when 'warn'
-    rdoba_sim :log, :func, :self, :%, { variable: 'value' }
+    rdoba_sim :log, :func, :log, :%, { variable: 'value' }
   when 'enter'
-    rdoba_sim :log, :func, :self, :+, { variable: 'value' }
+    rdoba_sim :log, :func, :log, :+, { variable: 'value' }
   when 'leave'
-    rdoba_sim :log, :func, :self, :-, true # TODO check return
+    rdoba_sim :log, :func, :log, :-, true # TODO check return
   when 'compat'
-    rdoba_sim :log, :func, :dbp11, "'variable: \"value\"'" ; end ; end
+    rdoba_sim :log, :func, :dbp11, "'variable: \"value\"'" ; end
+
+  rdoba_sim :log, :close ; end
 
 When /issue an output of the thrown (exception|standard error)(.*)/ do |type, note|
   case type
   when 'exception'
     if note =~ /out/
-      rdoba_sim :log, :func, :self, :e, :'Exception.new', :$stdout
+      rdoba_sim :log, :func, :log, :e, :'Exception.new', :$stdout
     else
-      rdoba_sim :log, :func, :self, :e, :'Exception.new' ; end
+      rdoba_sim :log, :func, :log, :e, :'Exception.new' ; end
   when 'standard error'
     if note =~ /notification/
-      rdoba_sim :log, :func, :self, :e, :'StandardError.new',
+      rdoba_sim :log, :func, :log, :e, :'StandardError.new',
           [ 'standard error extended info' ]
     else
-      rdoba_sim :log, :func, :self, :e, :'StandardError.new' ; end ; end ; end
+      rdoba_sim :log, :func, :log, :e, :'StandardError.new' ; end ; end ; end
 
 When /look into(?: the)? (stdout|stderr|file|IO)/ do |ioname|
   @res = case ioname
@@ -69,14 +83,14 @@ When /look into(?: the)? (stdout|stderr|file|IO)/ do |ioname|
   when 'stderr'
     rdoba_sim :log, :exec, :stderr; end ; end
 
-When /(remove|add) :(basic|extended|info|warn|enter|leave|compat) keyword.* :(functions) option/ do |act, key, opt|
+When /(remove|add) :(basic|extended|info|warn|enter|leave|compat) keyword.* :(functions) option(?: to the (self) object)?/ do |act, key, opt, obj|
   if act == 'remove'
-    rdoba_sim :log, :func, :self, :>=, [ key.to_sym ]
+    rdoba_sim :log, :func, obj, :>=, [ key.to_sym ]
   else
-    rdoba_sim :log, :func, :self, :<=, [ key.to_sym ] ; end ; end
+    rdoba_sim :log, :func, obj, :<=, [ key.to_sym ] ; end ; end
 
 When /clear the :(functions) option/ do |opt|
-  rdoba_sim :log, :func, :self, :>=, [ :* ]
+  rdoba_sim :log, :func, :log, :>=, [ :* ]
 end
 
 Then /see the (variable|string|number|array|'true' value) output(?: with the :(basic|extended|info|warn|enter|leave) notice)?(?: preficed with the :(.*))?/ do |subject, notice, prefices|
@@ -156,7 +170,7 @@ Then /see(?: a| the)? (nothing|warning|.* error exception)/ do |subject|
       raise "Invalid answer: #{@res.inspect}, must notify" +
           " that the interpreter has not found the specified method" ; end
   when /name error/
-    if @res !~ /undefined local variable or method .* \(NameError\)/
+    if @res !~ /.* \(NameError\)/
       raise "Invalid answer: #{@res.inspect}, must notify" +
           " that the the specified name isn't declared" ; end
   else

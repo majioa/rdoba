@@ -19,13 +19,10 @@ RdobaSimSimpleHead=<<HEAD
 require 'rdoba'
 HEAD
 
-RdobaSimInHead=<<HEAD
-#!/usr/bin/env ruby
-
-require 'rdoba'
+RdobaCodeClassDeclaration=<<HEAD
 class Cls
   def initialize
-    self > {:variable=>"value"}
+    log > {:variable=>"value"}
   end
 end
 HEAD
@@ -62,24 +59,28 @@ def rdoba_sim sub, cmd, *args
       $tmpdir ||= Dir.mktmpdir
       @tmpfile ||= File.join( $tmpdir, 'tmp.log' )
 
-      opts = match_keywords args[ 1 ]
-      opts = opts.size > 1 && opts || opts.size > 0 && opts[ 0 ] || nil
-
-      if args[ 2 ] == 'class'
+      if args[ 1 ] == 'class'
         @deep = 1
         @inithead = RdobaSimClsHead
       else
         @deep = 0
         @inithead = RdobaSimSimpleHead ; end
+      @echo = ''
+      @init = ''
+      puts @inithead
 
+    when :apply
+      opts = match_keywords args[ 1 ]
+#      opts = opts.size > 2 && opts || opts.size > 0 && opts[ 1 ] || nil
       param = case args[ 0 ]
       when 'io'
         { :io => "File.new( File.join( '#{@tmpfile}' ), 'w+' )", :functions => :basic }
       when 'as'
-        { :as => ":log", :functions => :basic }
+        { :as => ":self", :functions => :basic }
       when 'in'
-        @inithead = RdobaSimInHead
         { :in => "Cls", :functions => :basic }
+      when /in.*as/
+        { :in => "Cls", :as => args[ 2 ].to_sym, :functions => :basic }
       when 'prefix'
 #        basic|extended|enter|leave|compat
         { args[ 0 ].to_sym => opts, :functions => :basic }
@@ -92,21 +93,20 @@ def rdoba_sim sub, cmd, *args
       param = "{" + ( param ).to_a.map do |v|
         "#{v[ 0 ].inspect} => #{v[ 1 ].is_a?( String ) &&
             v[ 1 ] || v[ 1 ].inspect}" end.join(',') + "}"
-      @init = "   " * @deep + "rdoba :#{sub} => #{param}\n"
-      puts @init
-      @echo = ''
+
+      @echo << "   " * @deep + "rdoba :#{sub} => #{param}\n"
 
     when :func
       call = case args[ 0 ]
       when 'keyword'
-        'log'
+        'self'
       when 'invalid keyword'
         'errlog'
       when /^db/
         @echo << "self.dbgl = 0xff\n"
         args[ 0 ]
       else
-        'self'
+        ( args[ 0 ] || :log ).to_sym
       end
 
       sep = ( args[ 1 ] == :e ) && '.' || ' '
@@ -121,9 +121,14 @@ def rdoba_sim sub, cmd, *args
       str = "#{call}#{sep}#{args[ 1 ]}#{param.join(',')}"
       echo = format str
       @echo << echo
+
+   when :close
       while @deep > 0
         @deep -= 1
         @echo << ( format "end" ) ; end
+
+    when :declare
+      @echo << ( format RdobaCodeClassDeclaration )
 
     when :create
       @echo << ( format "Cls.new" )
@@ -138,11 +143,13 @@ def rdoba_sim sub, cmd, *args
         @deep = 0 ; end
       echo = case args[ 0 ]
       when :init
+        @deep += 1
         format 'def initialize'
       when :single
+        @deep += 1
         format 'def self.singleton'
-      end
-      @deep += 1
+      else;
+        '' ; end
       @echo << echo
 
     when :exec
