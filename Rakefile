@@ -24,7 +24,7 @@ task :test do
 end
 
 desc "Codeclimate"
-tesk :codeclimate do
+task :codeclimate do
    sh 'CODECLIMATE_REPO_TOKEN=b163215f7a0d8f226c35ed665887fce7c8b90b0bfb18576af450b4a5fba8bb71 bundle exec rake test'
 end
 
