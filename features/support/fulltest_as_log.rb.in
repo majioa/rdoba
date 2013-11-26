@@ -2,11 +2,11 @@
 
 require 'rdoba'
 
-rdoba :log => { :as => :log, :functions => [ :basic ], :in => Object }
+rdoba :log => { :functions => [ :basic ], :in => Object }
 
 p 'Class=========='
 class A
-   rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :timestamp ]  }
+   rdoba :log => { :functions => [ :basic ], :prefix => [ :timestamp ]  }
    log > "#{self} - When do I get executed!?"
    class << self
       log > "#{self} - And me!?" # now A's  singleton class
@@ -38,7 +38,7 @@ a.c
 p 'Class------------B'
 
 class B
-   rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :pid ] }
+   rdoba :log => { :functions => [ :basic ], :prefix => [ :pid ] }
    log > "#{self} - When do I get executed!?"
    class << self
       log > "#{self} - And me!?" # now A's  singleton class
@@ -100,7 +100,7 @@ a.c
 
 p 'Module=========='
 module M
-   rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :pid ] }
+   rdoba :log => { :functions => [ :basic ], :prefix => [ :pid ] }
    log > "aaa"
 
    class << self
@@ -131,7 +131,7 @@ D.a
 M.b
 
 p 'main=========='
-rdoba :log => { :as => :log, :functions => [ :basic ], :prefix => [ :timestamp ] }
+rdoba :log => { :functions => [ :basic ], :prefix => [ :timestamp ] }
 log > "11111"
 
 def l

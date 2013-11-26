@@ -5,7 +5,7 @@ module Rdoba
    def self.log options = {}
       Rdoba::Log.class_variable_set :@@options, options
 
-      funcname = ( options[ :as ] ||= :self ).to_s.to_sym
+      funcname = ( options[ :as ] ||= :log ).to_s.to_sym
       target = options[ :in ] || options[ :self ]
 
       if funcname == :self
@@ -25,9 +25,9 @@ module Rdoba
     #   :as - name of method to apply the log functions, default: self
     #   :in - name of class or namespace to implement to the log, default: Kernel
     #   :functions = [
-    #     :basic
-    #     :warn
     #     :info
+    #     :warn
+    #     :basic
     #     :enter
     #     :leave
     #     :extended
