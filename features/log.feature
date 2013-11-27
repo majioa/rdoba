@@ -61,14 +61,14 @@ Feature: Rdoba Log
    Scenario: Rdoba Log change embedding target with the :in keyword
       Given applied Rdoba Log module inside a class
       And issue an output of a variable inside an initializer using the keyword
-      And apply Rdoba Log module with set a keywords for :in, and :as options poiting to self
+      And apply Rdoba Log module with set a keywords for :in option, and :as option pointing to self
       And issue a creation of the class
       Then look into stdout
       And we see the variable output
 
 #      When apply Rdoba Log module with set a keyword for :as option inside a class
 #      And issue an output of a variable inside an initializer
-#      And apply Rdoba Log module with set a keywords for :in, and :as options poiting to log
+#      And apply Rdoba Log module with set a keywords for :in option, and :as option pointing to log
 #      And issue a creation of the class
 #      Then look into stdout
 #      And we see the variable output
@@ -156,8 +156,7 @@ Feature: Rdoba Log
       When we look into stderr
       Then see the no method error exception
 
-      When we apply Rdoba Log module with set a keyword for :as option
-      And add :compat keyword out of :functions option to the self object
+      When we apply Rdoba Log module with set :compat keyword for :functions option, and :as option pointing to self
       And issue a :compat output of a variable
       And look into stdout
       Then we see the variable output

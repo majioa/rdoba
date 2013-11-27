@@ -2,7 +2,17 @@
 
 require 'rdoba'
 
-rdoba :log => { :functions => [ :basic ], :in => Object }
+p 'main=========='
+rdoba :log => { :functions => [ :basic ], :prefix => [ :timestamp ] }
+log > "11111"
+
+def l
+   log > "22222"
+end
+
+l
+
+#rdoba :log => { :functions => [ :basic ], :in => Object }
 
 p 'Class=========='
 class A
@@ -130,13 +140,4 @@ end
 D.a
 M.b
 
-p 'main=========='
-rdoba :log => { :functions => [ :basic ], :prefix => [ :timestamp ] }
-log > "11111"
-
-def l
-   log > "22222"
-end
-
-l
 

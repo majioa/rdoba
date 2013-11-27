@@ -1,8 +1,8 @@
-When /appl(y|ied) Rdoba (Log|Debug) module(?: with set([\w\s,:]+ keywords?| a file name) for :(io|as|in|functions|prefix|in, and :as) options?| with an (invalid) :io option value)?(?: inside a (class))?(?: poiting to (self|log))?/ do |var, kind, subs, opt, invalid, cls, point|
+When /appl(y|ied) Rdoba (Log|Debug) module(?: with set([\w\s,:]+ keywords?| a file name) for :(io|as|in|functions|prefix) options?| with an (invalid) :io option value)?(?: inside a (class))?(?:, and :as option pointing to (self|log))?/ do |var, kind, subs, opt, invalid, cls, as |
   if var == 'ied'
     rdoba_sim kind.downcase.to_sym, :init, subs, cls
   end
-  rdoba_sim kind.downcase.to_sym, :apply, opt, subs, point
+  rdoba_sim kind.downcase.to_sym, :apply, opt, subs, as
 end
 
 When /issue a call to the function/ do

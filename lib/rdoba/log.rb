@@ -9,15 +9,25 @@ module Rdoba
       target = options[ :in ] || options[ :self ]
 
       if target.class == Object
-         Rdoba::Log.log_main_setup
+         Rdoba::Log.log_instance_setup( TOPLEVEL_BINDING.eval 'self' )
       else
          Rdoba::Log.log_class_setup target ; end
 
       if funcname == :self
-         Rdoba::Log.log_class_link_self target
+         Rdoba::Log.define_methods target, [ :+, :-, :>, :>>, :*, :%, :>=, :<= ]
+
+         if ( options[ :functions ] == :compat ) ||
+              options[ :functions ].is_a?( Array ) &&
+              options[ :functions ].include?( :compat )
+            list = [ :dbgl= ]
+            (1..0xF).each do |x|
+               (1..0xF).each do |y|
+                  idx = sprintf "%x%x", x, y
+                  list << "dbp#{idx}".to_sym << "dbg#{idx}".to_sym ; end; end
+            Rdoba::Log.define_methods target, list ; end
       else
          if target.class == Object
-            Rdoba::Log.log_main_link funcname
+            Rdoba::Log.log_instance_link target, funcname
          else
             Rdoba::Log.log_class_link target, funcname ; end ; end ; end
 
@@ -159,31 +169,32 @@ module Rdoba
                      instance_variable_set( var, value ); end; end
                eval code; end; end; end
 
-   module Functions
-      include Rdoba::Log::DebugCompat
+      module Functions
+         include Rdoba::Log::DebugCompat
 
-      def <= functions = []
-        self.class <= functions; end
+         def <= functions = []
+            self.class <= functions; end
 
-      def >= functions = []
-        self.class >= functions; end
+         def >= functions = []
+            self.class >= functions; end
 
-      def e *args
-        io = case args.last
-             when IO
+         def e *args
+            io =
+            case args.last
+            when IO
                args.pop
-             else
+            else
                $stderr ; end
-        e = $! || args.shift
-        dump = ( [ $@ || args.shift ] + args ).flatten.compact
-        io.send :puts, "#{e.class}:%> #{e}\n\t#{dump.join("\n\t")}"; end
+            e = $! || args.shift
+            dump = ( [ $@ || args.shift ] + args ).flatten.compact
+            io.send :puts, "#{e.class}:%> #{e}\n\t#{dump.join("\n\t")}"; end
 
-      def get_stack_function_data_at_level( level )
-        raise Exception
-      rescue Exception
-        #TODO check match a method containing '`'
-        $@[ level ] =~ /([^\/]+):(\d+):in `(.*?)'$/
-        [ $1, $3, $2 ]; end; end
+         def get_stack_function_data_at_level( level )
+            raise Exception
+         rescue Exception
+            #TODO check match a method containing '`'
+            $@[ level ] =~ /([^\/]+):(\d+):in `(.*?)'$/
+            [ $1, $3, $2 ]; end; end
 
       module ClassFunctions
          def <= functions
@@ -204,14 +215,14 @@ module Rdoba
       def self.log_init_prefix obj, is_self = false
          options = Rdoba::Log.class_variable_get :@@options
          #TODO remove if true
-         pfx = ';if true;(' +
-         if is_self
-            if obj.to_s == 'main'
-               'Rdoba::Log::log $rdoba_log_io_method'
-            else
-               'ans=self.class.ancestors rescue [ self ];io=ans.each do|an|io=::Object.class_variable_get(:@@rdoba_log_io_method)[an];if io;break io;end;end;Rdoba::Log::log io' ; end
-         else
-            'Rdoba::Log::log @@rdoba_log_io_method' ; end + ',"'
+         pfx = ';if true;(' + 'Rdoba::Log::log @@rdoba_log_io_method' + ',"'
+#         if is_self
+#            if obj.to_s == 'main'
+#               'Rdoba::Log::log $rdoba_log_io_method'
+#            else
+#               'ans=self.class.ancestors rescue [ self ];io=ans.each do|an|io=::Object.class_variable_get(:@@rdoba_log_io_method)[an];if io;break io;end;end;Rdoba::Log::log io' ; end
+#         else
+#            'Rdoba::Log::log @@rdoba_log_io_method' ; end + ',"'
          if prefix = ( options[ :prefix ].is_a?( Array ) && options[ :prefix ] ||
                [ options[ :prefix ] ] )
             if prefix.include?( :timestamp )
@@ -231,20 +242,20 @@ module Rdoba
          io = options[ :io ] || $stdout
          # TODO puts costomize
          io_m = io.method :puts ; end
-
+=begin
       def self.log_main_setup
-         ::Kernel.eval "class ::RdobaLog;end"
-         ::Kernel.eval "def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end"
-         ::Kernel.eval "class << self; def self.__rdoba_log__;
-                      $__rdoba_log__||=::RdobaLog.new;end;end"
+         ::Object.class_eval "class ::RdobaLog;end"
+         ::Object.class_eval "def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end"
+         ::Object.class_eval "class << self; def self.__rdoba_log__;
+                              $__rdoba_log__||=::RdobaLog.new;end;end"
          ::RdobaLog.class_eval &Initfunc ; end
 
       def self.log_main_link funcname
-         ::Kernel.eval "def #{funcname};__rdoba_log__;end"
-         ::Kernel.eval "def self.#{funcname};__rdoba_log__;end"
-         ::Kernel.eval "class << self; def self.#{funcname};
-                      __rdoba_log__;end;end" ; end
-
+         ::Object.class_eval "def #{funcname};__rdoba_log__;end"
+         ::Object.class_eval "def self.#{funcname};__rdoba_log__;end"
+         ::Object.class_eval "class << self; def self.#{funcname};
+                              __rdoba_log__;end;end" ; end
+=end
       def self.log_class_setup obj
          obj.class_eval "class RdobaLog;end"
          obj.class_eval "def __rdoba_log__;@__rdoba_log__||=RdobaLog.new;end"
@@ -253,6 +264,21 @@ module Rdoba
          obj.class_eval "def self.__rdoba_log__;
                          @__rdoba_log__||=#{obj}::RdobaLog.new;end"
          obj::RdobaLog.class_eval &Initfunc ; end
+
+      def self.log_instance_setup obj
+         obj.instance_eval "class ::RdobaLog;end"
+         obj.instance_eval "def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end"
+         obj.instance_eval "class << self; def self.__rdoba_log__;
+                            $__rdoba_log__||=::RdobaLog.new;end;end"
+         obj.instance_eval "def self.__rdoba_log__;
+                            $__rdoba_log__||=::RdobaLog.new;end"
+         ::RdobaLog.class_eval &Initfunc ; end
+
+      def self.log_instance_link obj, funcname
+         obj.instance_eval "def #{funcname};__rdoba_log__;end"
+         obj.instance_eval "def self.#{funcname};__rdoba_log__;end"
+         obj.instance_eval "class << self; def self.#{funcname};
+                         __rdoba_log__;end;end" ; end
 
       def self.log_class_link obj, funcname
          obj.class_eval "def #{funcname};__rdoba_log__;end"
@@ -269,8 +295,22 @@ module Rdoba
          obj.class_eval "def self.#{funcname};
                @#{funcname}||=#{obj}::RdobaLog.new;end"
          obj::RdobaLog.class_eval &Initfunc ; end
-=end
+
       def self.log_class_link_self obj
+         self.define_methods obj, [ :+, :-, :>, :>>, :*, :%, :>=, :<= ]
+      end
+=end
+
+      def self.define_methods obj, list
+         list.each do| f |
+            evas = "def #{f} *args;__rdoba_log__.#{f} *args;end"
+            if obj.class != Object
+               obj.class_eval evas ; end
+            obj.instance_eval evas
+         end
+      end
+=begin
+      def self.log_class_link_self1 obj
          self.log_setup_class_self_apply obj
          self.log_setup_class_self_apply obj.class
          obj.class_eval do
@@ -307,40 +347,40 @@ module Rdoba
          obj.extend Rdoba::Log::ClassFunctions
          obj.include Rdoba::Log::Functions
          obj <= Rdoba::Log.class_variable_get( :@@options )[ :functions ] ; end
-
+=end
       def self.log_functions_set obj, functions
-         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
-            if obj.to_s == 'main'
-               $rdoba_log_functions = functions
-            else
-               funcs =
-               ( ::Object.class_variable_get :@@rdoba_log_functions ) rescue {}
-               funcs[ obj ] = functions
-               ::Object.class_variable_set :@@rdoba_log_functions, funcs ; end
-         else
-            obj.class_variable_set :@@rdoba_log_functions, functions ; end; end
+#         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
+#            if obj.to_s == 'main'
+#               $rdoba_log_functions = functions
+#            else
+#               funcs =
+#               ( ::Object.class_variable_get :@@rdoba_log_functions ) rescue {}
+#               funcs[ obj ] = functions
+#               ::Object.class_variable_set :@@rdoba_log_functions, funcs ; end
+#         else
+            obj.class_variable_set :@@rdoba_log_functions, functions ; end
 
       def self.log_functions_get obj
-         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
-            if obj.to_s == 'main'
-               $rdoba_log_functions || raise
-            else
-               funcs = ( ::Object.class_variable_get :@@rdoba_log_functions ) rescue {}
-               funcs[ obj ] || raise ; end
-         else
-            obj.class_variable_get :@@rdoba_log_functions ; end
+#         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
+#            if obj.to_s == 'main'
+#               $rdoba_log_functions || raise
+#            else
+#               funcs = ( ::Object.class_variable_get :@@rdoba_log_functions ) rescue {}
+#               funcs[ obj ] || raise ; end
+#         else
+            obj.class_variable_get :@@rdoba_log_functions
       rescue
          [] ; end
 
       def self.log_prefix_get obj
-         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
-            if obj.to_s == 'main'
-               $rdoba_log_prefix || raise
-            else
-               pfxs = ::Object.class_variable_get :@@rdoba_log_prefix
-               pfxs[ obj ] ; end
-         else
-            obj.class_variable_get :@@rdoba_log_prefix ; end
+#         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
+#            if obj.to_s == 'main'
+#               $rdoba_log_prefix || raise
+#            else
+#               pfxs = ::Object.class_variable_get :@@rdoba_log_prefix
+#               pfxs[ obj ] ; end
+#         else
+            obj.class_variable_get :@@rdoba_log_prefix
       rescue
          ';if true;(File.join "' ; end
 
@@ -355,18 +395,19 @@ module Rdoba
          self.log_functions_set obj, functions
 
          pfx = self.log_prefix_get obj
-         code = Rdoba::Log::make_code functions, pfx, self
-         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
-            if obj.to_s == 'main'
-               obj.instance_eval code
-            else
-               obj.instance_eval code
-               obj.class_eval code;
-               end
-         else
-            obj.class_eval code; end ; end
+         code = Rdoba::Log::make_code functions, pfx
+#         if Rdoba::Log.class_variable_get( :@@options )[ :as ] == :self
+#            if obj.to_s == 'main'
+#               obj.instance_eval code
+#            else
+#               obj.instance_eval code
+#               obj.class_eval code;
+#               end
+#         else
+            obj.class_eval code;
+         end
 
-    def self.make_code functions, pfx, obj
+    def self.make_code functions, pfx
       code = ''
       psfx = ' ",params);end;end;'
       if functions.include?( :enter )

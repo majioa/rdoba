@@ -2,6 +2,17 @@
 
 require 'rdoba'
 
+p 'main=========='
+rdoba :log => { :as => :self, :functions => [ :basic ],
+                :prefix => [ :timestamp ] }
+self > "11111"
+
+def l
+   self > "22222"
+end
+
+l
+
 rdoba :log => { :as => :self, :functions => [ :basic ], :in => Object }
 
 p 'Class=========='
@@ -86,7 +97,6 @@ class A
    end
 
    def c
-#      selfi
       self > "#{self} - declared in instance method" # self is instance of A
       class << self
          self > "#{self} - declared in instance's singleton class" # now it's the A instance's singleton class
@@ -131,14 +141,4 @@ end
 D.a
 M.b
 
-p 'main=========='
-rdoba :log => { :as => :self, :functions => [ :basic ],
-                :prefix => [ :timestamp ] }
-self > "11111"
-
-def l
-   self > "22222"
-end
-
-l
 

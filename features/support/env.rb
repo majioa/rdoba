@@ -79,8 +79,8 @@ def rdoba_sim sub, cmd, *args
         { :as => ":self", :functions => :basic }
       when 'in'
         { :in => "Cls", :functions => :basic }
-      when /in.*as/
-        { :in => "Cls", :as => args[ 2 ].to_sym, :functions => :basic }
+#      when /in.*as/
+#        { :in => "Cls", :as => args[ 2 ].to_sym, :functions => :basic }
       when 'prefix'
 #        basic|extended|enter|leave|compat
         { args[ 0 ].to_sym => opts, :functions => :basic }
@@ -89,6 +89,9 @@ def rdoba_sim sub, cmd, *args
       else
         { :functions => :basic }
       end
+
+      if args[ 2 ]
+         param.merge!( :as => args[ 2 ].to_sym ) ; end
 
       param = "{" + ( param ).to_a.map do |v|
         "#{v[ 0 ].inspect} => #{v[ 1 ].is_a?( String ) &&
