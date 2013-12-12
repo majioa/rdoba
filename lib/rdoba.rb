@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 module Kernel
-   Modules = [ :bcd, :mixin, :log, :debug, :slovo ]
+   Modules = [ :bcd, :mixin, :log, :debug ]
 
    def rdoba *options
       options.each do |option|
