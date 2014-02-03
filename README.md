@@ -7,6 +7,8 @@
 [![Build Status](https://travis-ci.org/3aHyga/rdoba.png?branch=master)](https://travis-ci.org/3aHyga/rdoba)
 [![Coverage Status](https://coveralls.io/repos/3aHyga/rdoba/badge.png)](https://coveralls.io/r/3aHyga/rdoba)
 [![Code Climate](https://codeclimate.com/github/3aHyga/rdoba.png)](https://codeclimate.com/github/3aHyga/rdoba)
+[![MIT License](http://b.repl.ca/v1/License-MIT-blue.png)](LICENSE)
+[![Download](http://b.repl.ca/v1/downloads-42.9K-green.png)](https://github.com/3aHyga/rdoba/archive/master.zip)
 [![Solano Labs](https://api.tddium.com:443/majioa/rdoba/badges/41200.png?badge_token=ae032246866fa71a65ebf82a32e65992c6c8c1b7)](https://api.tddium.com:443/majioa/rdoba/suites/41200)
 
 Rdoba, сирѣчь руби-добавокъ, есть библиотека, расширяющая основныя классы Ruby такія какъ: Объектъ(Object), Ядро(Kernel), Строка(String), Словарь(Hash), Наборъ(Array), Пущь(NilClass) и т.д. Включаетъ модули и такія функціи:
@@ -412,8 +414,8 @@ Rdoba, сирѣчь руби-добавокъ, есть библиотека, р
 Авторскія и исключительныя права (а) 2011 Малъ Скрылевъ
 Зри LICENSE за подробностями.
 
-# Хотите поделиться денюжкою?
+# Хотите поддержать или поделиться денюжкою?
 [![Endorse Count](http://api.coderwall.com/3aHyga/endorsecount.png)](http://coderwall.com/3aHyga)
-<script data-gittip-username="majioa" src="//gttp.co/v1.js"></script>
-
+[![Gittip donate button](http://img.shields.io/gittip/bevry.png)](http://gittip.com/majioa "Donate weekly to this project using Gittip")
+[![Flattr donate button](https://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=3aHyga&url=https%3A%2F%2Fgithub.com%2Fmajioa%2Frdoba "Donate monthly to this project using Flattr")
 
