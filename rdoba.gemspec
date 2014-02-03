@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.email       = [ '3aHyga@gmail.com' ]
   s.homepage    = 'https://github.com/3aHyga/rdoba'
   s.summary     = 'Ruby extension library (Ruby DOBAvka)'
-  s.description = 'Ruby extension library. It extends Kernel, Object, ' +
-		  'String, Hash, Array, and some other classes. Also allows ' +
+  s.description = 'Ruby extension library. It extends Kernel, Object, '       \
+		  'String, Hash, Array, and some other classes. Also allows ' \
 		  'to log application state with debug lines to an io'
   s.license     = 'MIT'
 
@@ -25,11 +25,11 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = '>= 1.6.0'
   s.required_ruby_version = '>= 1.9.0'
 
-  s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'tddium'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'bundler', '~> 1.3.5'
+  s.add_development_dependency 'simplecov', '~> 0'
+  s.add_development_dependency 'tddium', '~> 0'
+  s.add_development_dependency 'rake', '~> 0'
+  s.add_development_dependency 'bundler', '~> 1.5'
   s.add_development_dependency 'cucumber', '~> 1.3'
-  s.add_development_dependency 'coveralls'
-  s.add_development_dependency 'rdiscount'
+  s.add_development_dependency 'coveralls', '~> 0'
+  s.add_development_dependency 'rdiscount', '~> 2.1'
 end

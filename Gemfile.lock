@@ -6,9 +6,8 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.3.5)
     builder (3.2.2)
-    codeclimate-test-reporter (0.1.1)
+    codeclimate-test-reporter (0.3.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coveralls (0.7.0)
       multi_json (~> 1.3)
@@ -16,57 +15,58 @@ GEM
       simplecov (>= 0.7)
       term-ansicolor
       thor
-    cucumber (1.3.8)
+    cucumber (1.3.10)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
-      gherkin (~> 2.12.1)
+      gherkin (~> 2.12)
       multi_json (>= 1.7.5, < 2.0)
       multi_test (>= 0.0.2)
-    diff-lcs (1.2.4)
-    gherkin (2.12.1)
+    diff-lcs (1.2.5)
+    docile (1.1.2)
+    gherkin (2.12.2)
       multi_json (~> 1.3)
     highline (1.6.20)
-    httpclient (2.3.4.1)
-    json (1.8.0)
-    launchy (2.3.0)
-      addressable (~> 2.3)
-    mime-types (1.25)
-    msgpack (0.5.6)
-    multi_json (1.8.0)
-    multi_test (0.0.2)
-    rake (10.1.0)
-    rdiscount (2.1.6)
+    httparty (0.12.0)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.1)
+    mime-types (2.1)
+    multi_json (1.8.4)
+    multi_test (0.0.3)
+    multi_xml (0.5.5)
+    rake (0.9.6)
+    rdiscount (2.1.7)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    simplecov (0.7.1)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.7.1)
-    simplecov-html (0.7.1)
-    tddium (1.16.0)
+    simplecov (0.8.2)
+      docile (~> 1.1.0)
+      multi_json
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
+    tddium (0.14.1)
+      bundler
       highline
       json
-      launchy
-      msgpack (= 0.5.6)
-      tddium_client (~> 0.4.2)
+      tddium_client (~> 0.1.1)
       thor
-    tddium_client (0.4.3)
-      httpclient (>= 2.2.5)
+    tddium_client (0.1.5)
+      httparty (>= 0.8.1)
       json
     term-ansicolor (1.2.2)
       tins (~> 0.8)
     thor (0.18.1)
-    tins (0.11.0)
+    tins (0.13.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.3.5)
+  bundler (~> 1.5)
   codeclimate-test-reporter
-  coveralls
+  coveralls (~> 0)
   cucumber (~> 1.3)
-  rake
-  rdiscount
+  rake (~> 0)
+  rdiscount (~> 2.1)
   rdoba!
-  simplecov
-  tddium
+  simplecov (~> 0)
+  tddium (~> 0)
