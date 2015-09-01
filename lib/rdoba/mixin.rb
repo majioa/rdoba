@@ -233,6 +233,20 @@ module Rdoba
 
             h ; end ; end
 
+      module Split_byArray
+         def split_by &block
+            idxs = []
+            rejected = self.reject.with_index do |v, i|
+               yield( v ) && ( idxs << i ) ; end
+               [ self.values_at(*idxs), rejected ] ; end ; end
+
+      module TryObject
+         def try method, *args, default: nil
+            if self.respond_to?( method )
+               self.send( method, *args )
+            else
+               default ; end ; end ; end
+
       module EmptyObject
          def empty?
             false ; end ; end
@@ -262,6 +276,10 @@ module Rdoba
             String.send :include, Mixin::CompareString
          when :to_h
             Array.send :include, Mixin::To_hArray
+         when :split_by
+            Array.send :include, Mixin::Split_byArray
+         when :try
+            Object.send :include, Mixin::TryObject
          when :empty
             Object.send :include, Mixin::EmptyObject
             NilClass.send :include, Mixin::EmptyNilClass

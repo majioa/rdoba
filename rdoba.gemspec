@@ -32,4 +32,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'cucumber', '~> 1.3'
   s.add_development_dependency 'coveralls', '~> 0'
   s.add_development_dependency 'rdiscount', '~> 2.1'
+  s.add_development_dependency 'rspec-expectations', '~> 3.3'
 end

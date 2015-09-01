@@ -4,6 +4,7 @@ require 'open3'
 require 'coveralls'
 require "codeclimate-test-reporter"
 require 'simplecov'
+require 'rspec/expectations'
 
 # specific external test/development libraries
 #

@@ -1,2 +1,18 @@
+language: ruby
+rvm:
+ - 1.8.7
+ - 1.9
+ - 2.0
+ - 2.1
+ - 2.2
+ - ruby-head
+ - rbx
+ - rbx-2
+os:
+ - linux
+ - osx
+env:
+   global:
+    - BUNDLE_JOBS=4
 notifications:
   flowdock: 0a77151ce94708b17cc767c93c794a61
