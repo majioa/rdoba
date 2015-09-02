@@ -1,10 +1,14 @@
 # encoding: utf-8
 
 module Rdoba
+   @@enabled = !( ENV[ "RDOBA_LOG" ].to_s !~ /^(true|1|)$/ )
+
+   def self.enabled?
+      @@enabled ; end
 
    def self.log options = {}
       # options: {
-      #   :as - name of method to apply the log functions, default: self
+      #   :as - name of method to apply the log functions, default: log (could be :self)
       #   :in - name of class or namespace to implement to the log, default: Kernel
       #   :functions = [
       #     :info
@@ -54,9 +58,9 @@ module Rdoba
             Rdoba::Log.define_methods target, list ; end
       else
          if target.class == Object
-            Rdoba::Log.log_instance_link target, funcname
+            Rdoba::Log.log_link_for :instance, target, funcname
          else
-            Rdoba::Log.log_class_link target, funcname ; end ; end ; end
+            Rdoba::Log.log_link_for :class, target, funcname ; end ; end ; end
 
   module Log
     class Error < StandardError
@@ -143,8 +147,7 @@ module Rdoba
 
       def self.log_init_prefix obj, is_self = false
          options = Rdoba::Log.class_variable_get :@@options
-         #TODO remove if true
-         pfx = ';if true;(' + 'Rdoba::Log::log @@rdoba_log_io_method' + ',"'
+         pfx = ';if Rdoba.enabled?;(Rdoba::Log::log @@rdoba_log_io_method,"'
          if prefix = ( options[ :prefix ].is_a?( Array ) && options[ :prefix ] ||
                [ options[ :prefix ] ] )
             if prefix.include?( :timestamp )
@@ -183,17 +186,11 @@ module Rdoba
                             $__rdoba_log__||=::RdobaLog.new;end"
          ::RdobaLog.class_eval &Initfunc ; end
 
-      def self.log_instance_link obj, funcname
-         obj.instance_eval "def #{funcname};__rdoba_log__;end"
-         obj.instance_eval "def self.#{funcname};__rdoba_log__;end"
-         obj.instance_eval "class << self; def self.#{funcname};
-                         __rdoba_log__;end;end" ; end
-
-      def self.log_class_link obj, funcname
-         obj.class_eval "def #{funcname};__rdoba_log__;end"
-         obj.class_eval "def self.#{funcname};__rdoba_log__;end"
-         obj.class_eval "class << self; def self.#{funcname};
-                         __rdoba_log__;end;end" ; end
+      def self.log_link_for target, obj, funcname
+         obj.send( "#{target}_eval", "def #{funcname};__rdoba_log__;end" )
+         obj.send( "#{target}_eval", "def self.#{funcname};__rdoba_log__;end" )
+         obj.send( "#{target}_eval", "class << self; def self.#{funcname};
+            __rdoba_log__;end;end" ) ; end
 
       def self.define_methods obj, list
          list.each do| f |
