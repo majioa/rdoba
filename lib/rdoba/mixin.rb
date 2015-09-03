@@ -240,21 +240,20 @@ module Rdoba
                yield( v ) && ( idxs << i ) ; end
                [ self.values_at(*idxs), rejected ] ; end ; end
 
-      module TryObject
-         def try method, *args, default: nil
-            if self.respond_to?( method )
-               self.send( method, *args )
-            else
-               default ; end ; end ; end
-
       module EmptyObject
          def empty?
             false ; end ; end
 
       module EmptyNilClass
          def empty?
-            true ; end ; end ; end
+            true ; end ; end ; end ; end
 
+if RUBY_VERSION >= "2.0.0"
+   require_relative 'mixin/try'
+else
+   require_relative 'mixin/try_1_9_0' ; end
+
+module Rdoba
    def self.mixin options
       options[ :value ].each do |value|
          case value
