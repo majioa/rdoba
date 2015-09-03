@@ -1,41 +1,162 @@
 # encoding: utf-8
 
+# Author:: Malo Skrylevo <majioa@yandex.ru>
+# License:: MIT
+#
+# TODO add enum of options hash to convert values to symbols
+# TODO make common format, and format for each of methods >, >>, +, -, %, *
+# TODO add syntax redefinition ability for the methods >, >>, +, -, %, *
+# TODO add multiple output (to more than only the IO)
+
 module Rdoba
-   @@enabled = !( ENV[ "RDOBA_LOG" ].to_s !~ /^(true|1|)$/ )
 
-   def self.enabled?
-      @@enabled ; end
-
+   ##
+   # Adds a Log instance to the specified object as a variable or directly into
+   # the object itself.
+   #
+   # The argument accepted are only +options+ as a Hash of keys and values.
+   #
+   # The options keys are accepted the following: +as+, +in+, +functions+,
+   # +prefix+, and  +io+.
+   #
+   # Option +functions+ defines the function list that can be used in it.
+   # Undeclared in the list functions just do nothing. It should be provided
+   # as an Array of function descriptions of String or Symbol class. The
+   # function list is the following: +info+, +warn+, +basic+, +extended+,
+   # +leave+, +enter+, +compat+. If omitted it is defaulting to +enter+, and
+   # +leave+ functions.
+   #
+   # The function +info+ provides just info along the code, of course it just
+   # can be shewn by +puts+, but it also can be disabled by settings. The call
+   # method is :*. Example:
+   #
+   #     class A
+   #        rdoba :log => { :functions => [ :info ] }
+   #        def a
+   #           log * "Some Info"
+   #        end
+   #     end
+   #
+   # The function +warn+ provide justs warn message along the code, of course
+   # it just can be shewn by +puts+, or +p+, but it also can be disabled by
+   # settings. The call method is :%. Example:
+   #
+   #     class A
+   #        rdoba :log => { :functions => [ :warn ] }
+   #        def a
+   #           log % "Some Info"
+   #        end
+   #     end
+   #
+   # The function +basic+ provides just basic debug message, it also can be
+   # disabled by settings. The call method is :>. Example:
+   #
+   #     class A
+   #        rdoba :log => { :functions => [ :basic ] }
+   #        def a
+   #           v = 123434
+   #           log > { :v => v }
+   #        end
+   #     end
+   #
+   # The function +extended+ provides extended debug message, class inspect
+   # dumps can be used for messages of this function, it also can be
+   # disabled by settings. The call method is :>>. Example:
+   #
+   #     class A
+   #        rdoba :log => { :functions => [ :extended ] }
+   #        def a
+   #           v = ObjectSpace.new
+   #           vv = Object.new
+   #           log >> { :v => v, :vv => vv }
+   #        end
+   #     end
+   #
+   # The function +enter+ provides just debug message on function entry, it
+   # also can be disabled by settings. The call method is :+. Example:
+   #
+   #     class A
+   #        rdoba :log => { :functions => [ :enter ] }
+   #        def a *args
+   #           log + { :args => args }
+   #        end
+   #     end
+   #
+   # The function +leave+ provides just debug message on function leave, it
+   # also can be disabled by settings. It accepts the just a argument, also
+   # returns the provided argument, so it can be used in chain. The call
+   # method is :-. Example:
+   #
+   #     class A
+   #        rdoba :log => { :functions => [ :leave ] }
+   #        def a
+   #           log - 1
+   #        end
+   #     end
+   #
+   #     A.new.a # >> 1
+   #
+   # The function +compat+ provides old style log strings dbgXX just for
+   # compatibility, and will be removed.
+   #
+   # Option +prefix+ defines the prefix that will be shewn before the message
+   # text. The following prefix features are available: +timestamp+, +pid+,
+   # +function_name+, +function_line+. The full format is the following:
+   #
+   #     [<timestamp>]{pid}(<function name>:<function_line>)<log type> <text>
+   #
+   # The log types are of the functions previously described, and can be:
+   # >, >>, ***, %%%, +++, ---.
+   #
+   # Option +io+ defines the IO to output the debug message to. It must
+   # contain all IO methods required. It is defaulting to $stdout. Also
+   # StringIO object is allowed.
+   #
+   #     class A
+   #        rdoba :log => { :io => $stderr }
+   #        def a
+   #           log - 1
+   #        end
+   #     end
+   #
+   # Option +as+ defines the name of a method to apply the log functions to.
+   # It is defaulting to :log, but when you've specified :self the log functions
+   # is being embedded into the caller class instance directly.
+   # It should be provided as a Symbol or String. Example:
+   #
+   #     class A
+   #        rdoba :log => { :as => :self, :functions => [ :basic ] }
+   #        def a
+   #           self > "Debug"
+   #        end
+   #     end
+   #
+   # Option +in+ defines the name of a target class or a namespace to log
+   # implement to. For toplevel it is defaulting to Kernel namespace, for
+   # in-class is defaulting to the self class. It should be provided as a
+   # constant of the class/module. Example:
+   #
+   #     class A
+   #        def a
+   #           self > "Debug"
+   #        end
+   #     end
+   #
+   #     rdoba :log => { :in => A, :functions => [ :basic ] }
+   #
+   # To compeletly disable the debug messages for the specific class
+   # you can use either the RDOBA_LOG environment variable:
+   #
+   #     $ RDOBA_LOG=0
+   #
+   # or redeclare the function list for the specific class to empty.
+   #
+   #     rdoba :log => { :in => MyClass, :functions => [] }
+   #
    def self.log options = {}
-      # options: {
-      #   :as - name of method to apply the log functions, default: log (could be :self)
-      #   :in - name of class or namespace to implement to the log, default: Kernel
-      #   :functions = [
-      #     :info
-      #     :warn
-      #     :basic
-      #     :enter
-      #     :leave
-      #     :extended
-      #     :compat - enable old style log strings dbgXX
-      #   ]
-      #   :prefix = [
-      #     :timestamp
-      #     :pid
-      #     :function_name
-      #     :function_line
-      #   ]
-      #   :io - An IO object to send log output to, default is $stdout
-      # }
-      # if empty the default value (enter, leave) is applied
-      # format of log message is the following:
-      # [<timestamp>]{pid}(<function name>)<log type> <debug text>"
-      # TODO add enum of options hash to convert values to symbols
-      # TODO make common format, and format for each of methods >, >>, +, -, %, *
-      # TODO add syntax redefinition ability for the methods >, >>, +, -, %, *
-      # TODO add multiple output (to more than only the IO)
       Rdoba::Log.class_variable_set :@@options, options
 
+      functions = [ options[ :functions ] ].flatten
       funcname = ( options[ :as ] ||= :log ).to_s.to_sym
       target = options[ :in ] || options[ :self ]
 
@@ -45,33 +166,31 @@ module Rdoba
          Rdoba::Log.log_class_setup target ; end
 
       if funcname == :self
-         Rdoba::Log.define_methods target, [ :+, :-, :>, :>>, :*, :%, :>=, :<= ]
+         Rdoba::Log.define_methods( target,
+            [ :+, :-, :>, :>>, :*, :%, :>=, :<= ] )
 
-         if ( options[ :functions ] == :compat ) ||
-              options[ :functions ].is_a?( Array ) &&
-              options[ :functions ].include?( :compat )
-            list = [ :dbgl= ]
-            (1..0xF).each do |x|
-               (1..0xF).each do |y|
-                  idx = sprintf "%x%x", x, y
-                  list << "dbp#{idx}".to_sym << "dbg#{idx}".to_sym ; end; end
-            Rdoba::Log.define_methods target, list ; end
+         Rdoba::Log.try_define_compat( functions, target )
       else
          if target.class == Object
             Rdoba::Log.log_link_for :instance, target, funcname
          else
             Rdoba::Log.log_link_for :class, target, funcname ; end ; end ; end
 
-  module Log
-    class Error < StandardError
-      def initialize options = {}
-        case options
-        when :compat
-          "Debug compatibility mode can't be enabled for " +
-          "the specified object"
-        when :main
-          "An :as option can't be default or set to 'self' value for " +
-          "a main application. Please set up it correctly"; end; end; end
+   module Log
+      @@enabled = !( ENV[ "RDOBA_LOG" ].to_s !~ /^(true|1|)$/ )
+
+      def self.enabled?
+         @@enabled ; end
+
+      class Error < StandardError
+         def initialize options = {}
+            case options
+            when :compat
+               "Debug compatibility mode can't be enabled for " +
+               "the specified object"
+            when :main
+               "An :as option can't be default or set to 'self' value for " +
+               "a main application. Please set up it correctly" ; end ; end ; end
 
       module DebugCompat # TODO compat
          def dbgl
@@ -147,7 +266,7 @@ module Rdoba
 
       def self.log_init_prefix obj, is_self = false
          options = Rdoba::Log.class_variable_get :@@options
-         pfx = ';if Rdoba.enabled?;(Rdoba::Log::log @@rdoba_log_io_method,"'
+         pfx = ';if Rdoba::Log.enabled?;(Rdoba::Log::log @@rdoba_log_io_method,"'
          if prefix = ( options[ :prefix ].is_a?( Array ) && options[ :prefix ] ||
                [ options[ :prefix ] ] )
             if prefix.include?( :timestamp )
@@ -196,10 +315,17 @@ module Rdoba
          list.each do| f |
             evas = "def #{f} *args;__rdoba_log__.#{f} *args;end"
             if obj.class != Object
-               obj.class_eval evas ; end
-            obj.instance_eval evas
-         end
-      end
+               obj.class_eval( evas ) ; end
+            obj.instance_eval( evas ) ; end ; end
+
+      def self.try_define_compat functions, target
+         if functions.include?( :compat )
+            list = [ :dbgl= ]
+            (1..0xF).each do |x|
+               (1..0xF).each do |y|
+                  idx = sprintf( "%x%x", x, y )
+                  list << "dbp#{idx}".to_sym << "dbg#{idx}".to_sym ; end; end
+            Rdoba::Log.define_methods( target, list ) ; end ; end
 
       def self.log_functions_set obj, functions
          obj.class_variable_set :@@rdoba_log_functions, functions ; end

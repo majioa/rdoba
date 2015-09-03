@@ -1,7 +1,12 @@
 require "bundler/gem_tasks"
 require 'cucumber/rake/task'
+require 'rdoc/task'
 
 Cucumber::Rake::Task.new
+
+RDoc::Task.new do |rdoc|
+   rdoc.main = "README.md"
+   rdoc.rdoc_files.include( "README.md", "lib/**/*.rb" ) ; end
 
 desc "Prepare bundler"
 task :bundleup do
@@ -54,5 +59,6 @@ task(:default).clear
 task :default => :cucumber
 task :codeclimate => :cucumber
 task :all => [ :bundleup, :up, :cucumber, :'gem:make', :distclean ]
-task :build => [ :bundleup, :up, :cucumber, :'gem:build', :'gem:install', :distclean ]
+task :build => [ :bundleup, :up, :cucumber, :rdoc,
+   :'gem:build', :'gem:install', :distclean ]
 
