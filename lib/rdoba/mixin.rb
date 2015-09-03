@@ -275,7 +275,11 @@ module Rdoba
          when :compare
             String.send :include, Mixin::CompareString
          when :to_h
-            Array.send :include, Mixin::To_hArray
+            if [].respond_to?( :to_h )
+               m = Mixin::To_hArray.instance_method( :to_h )
+               Array.send( :define_method, :to_h, m )
+            else
+               Array.send( :include, Mixin::To_hArray ) ; end
          when :split_by
             Array.send :include, Mixin::Split_byArray
          when :try

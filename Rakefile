@@ -1,4 +1,7 @@
-#!/usr/bin/env rake
+require "bundler/gem_tasks"
+require 'cucumber/rake/task'
+
+Cucumber::Rake::Task.new
 
 desc "Prepare bundler"
 task :bundleup do
@@ -16,16 +19,6 @@ end
 desc "Prepare bundle environment"
 task :up do
   sh 'bundle install'
-end
-
-desc "Test with cucumber"
-task :test do
-  sh 'if [ -d features ]; then tests=$(ls features/*.feature) ; cucumber $tests; fi'
-end
-
-desc "Codeclimate"
-task :codeclimate do
-   sh 'CODECLIMATE_REPO_TOKEN=b163215f7a0d8f226c35ed665887fce7c8b90b0bfb18576af450b4a5fba8bb71 bundle exec rake test'
 end
 
 desc "Distilled clean"
@@ -58,7 +51,8 @@ namespace :gem do
 end
 
 task(:default).clear
-task :default => :test
-task :all => [ :bundleup, :up, :test, :'gem:make', :distclean ]
-task :build => [ :bundleup, :up, :test, :'gem:build', :'gem:install', :distclean ]
+task :default => :cucumber
+task :codeclimate => :cucumber
+task :all => [ :bundleup, :up, :cucumber, :'gem:make', :distclean ]
+task :build => [ :bundleup, :up, :cucumber, :'gem:build', :'gem:install', :distclean ]
 
