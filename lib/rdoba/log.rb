@@ -101,9 +101,14 @@ module Rdoba
    #
    # Option +prefix+ defines the prefix that will be shewn before the message
    # text. The following prefix features are available: +timestamp+, +pid+,
-   # +function_name+, +function_line+. The full format is the following:
+   # +function_name+, +function_line+, +function+. The full format is the
+   # following:
    #
-   #     [<timestamp>]{pid}(<function name>:<function_line>)<log type> <text>
+   #     [<timestamp>]{pid}(<function module>:<function name>.<function line>)
+   #     <log type> <text>
+   #
+   # Here is the function module, function name, function line represents
+   # +function+ at whole.
    #
    # The log types are of the functions previously described, and can be:
    # >, >>, ***, %%%, +++, ---.
@@ -273,9 +278,11 @@ module Rdoba
                pfx << '[#{Time.now.strftime( "%H:%M:%S.%N" )}]'; end
             if prefix.include?( :pid )
                pfx << '{#{Process.pid}}'; end
-            if prefix.include?( :function_name )
+            if prefix.include?( :function )
+               pfx << '(#{m,f,l=get_stack_function_data_at_level(2);m}:#{f}.#{l})'
+            elsif prefix.include?( :function_name )
                if prefix.include?( :function_line )
-                  pfx << '(#{m,f,l=get_stack_function_data_at_level(2);f+":"+l})'
+                  pfx << '(#{_,f,l=get_stack_function_data_at_level(2);f}.#{l})'
                else
                   pfx << '(#{get_stack_function_data_at_level(2)[1]})'
                   end ; end ; end

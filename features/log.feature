@@ -182,6 +182,11 @@ Feature: Rdoba Log
       And look into stdout
       Then we see the variable output preficed with the :timestamp, :pid, :function_name, and :function_line
 
+      When we apply Rdoba Log module with set :timestamp, :pid, and :function keyword for :prefix option
+      And issue an output of a variable
+      And look into stdout
+      Then we see the variable output preficed with the :timestamp, :pid, and :function
+
       When we apply Rdoba Log module with set :timestamp, :pid, and :function_line keyword for :prefix option
       And issue an output of a variable
       And look into stdout
