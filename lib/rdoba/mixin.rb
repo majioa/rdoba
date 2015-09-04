@@ -253,6 +253,8 @@ if RUBY_VERSION >= "2.0.0"
 else
    require_relative 'mixin/try_1_9_0' ; end
 
+require_relative 'mixin/wait_if'
+
 module Rdoba
    def self.mixin options
       options[ :value ].each do |value|
@@ -279,6 +281,8 @@ module Rdoba
                Array.send( :define_method, :to_h, m )
             else
                Array.send( :include, Mixin::To_hArray ) ; end
+         when :wait_if
+            Object.send :include, Mixin::Wait_ifKernel
          when :split_by
             Array.send :include, Mixin::Split_byArray
          when :try

@@ -37,21 +37,6 @@ class Object
   end
 end
 
-module Kernel
-  def wait_if(timeout = 30)
-    require 'timeout'
-
-    begin
-      Timeout::timeout(timeout) do
-        while yield(); end
-      end
-      true
-    rescue Timeout::Error
-      false
-    end
-  end
-end
-
 class NilClass
   def =~(value)
     value == nil
