@@ -1,13 +1,10 @@
 language: ruby
 rvm:
- - 1.8.7
  - 1.9
  - 2.0
  - 2.1
- - 2.2
+ - 2.2.3
  - ruby-head
- - rbx
- - rbx-2
 os:
  - linux
  - osx
@@ -17,3 +14,6 @@ env:
     - CODECLIMATE_REPO_TOKEN=b163215f7a0d8f226c35ed665887fce7c8b90b0bfb18576af450b4a5fba8bb71
 notifications:
   flowdock: 0a77151ce94708b17cc767c93c794a61
+before_install:
+ - 'rvm use 2.2 --install --binary --fuzzy --create'
+ - 'gem install bundler --version "~> 1.5"'
