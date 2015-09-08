@@ -13,8 +13,8 @@ module Rdoba::Mixin::Wait_ifKernel
    # 
    def wait_if timeout = 6
       begin
-         Timeout::timeout( timeout ) do
-            until yield() do
+         Timeout.timeout( timeout ) do
+            while yield() do
                sleep( 0.1 ) ; end ; end
          true
       rescue Timeout::Error
