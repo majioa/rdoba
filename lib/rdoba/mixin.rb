@@ -281,6 +281,14 @@ module Rdoba
                Array.send( :define_method, :to_h, m )
             else
                Array.send( :include, Mixin::To_hArray ) ; end
+         when :time
+            require_relative 'mixin/time'
+            if File.respond_to?( :mtime )
+               [ :mtime, :atime, :ctime ].each do |name|
+                  m = Mixin::Time.instance_method( name )
+                  ::File.send( :define_singleton_method, name, m ) ; end
+            else
+               ::File.send( :extend, Mixin::Time ) ; end
          when :wait_if
             Object.send :include, Mixin::Wait_ifKernel
          when :split_by

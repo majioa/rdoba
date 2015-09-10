@@ -16,8 +16,12 @@
       rdoba :mixin => [ :split_by ]
    when 'жди_ьже'
       rdoba :mixin => [ :wait_if ]
+   when 'время'
+      rdoba :mixin => [ :time ]
    when 'пробь'
-      rdoba :mixin => [ :try ] ; end ; end
+      rdoba :mixin => [ :try ]
+   else
+      raise ; end ; end
 
 Допустим(/^у нас есть набор чисел$/) do
    @набор = [ 1, 2, 3, 4, 5, 6, 7, 8 ] ; end
@@ -191,6 +195,23 @@ end
 
 То(/^той вернёт исте$/) do
    expect( @плодъ ).to be_truthy ; end
+
+
+Если(/^спробуем вызвать метод :mtime кута временного$/) do
+   @кут = tmpfile
+   @время = File.mtime( @кут ) ; end
+
+Если(/^спробуем вызвать метод :atime кута временного$/) do
+   @кут = tmpfile
+   @время = File.atime( @кут ) ; end
+
+Если(/^спробуем вызвать метод :ctime кута временного$/) do
+   @кут = tmpfile
+   @время = File.ctime( @кут ) ; end
+
+То(/^той вернёт верно время/) do
+   время = @время.strftime( "%Y-%m-%d %H:%M:%S.%N %z" )
+   expect( время ).to be_eql( `stat -c %y #{@кут}`.strip ) ; end
 
 =begin
 #!/usr/bin/ruby -KU

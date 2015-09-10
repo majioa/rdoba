@@ -4,5 +4,6 @@ source "http://rubygems.org"
 gemspec
 
 group :development do
+   gem 'ffi-stat', github: 'majioa/ffi-stat'
    gem "codeclimate-test-reporter", :group => :test, :require => nil ; end
 
