@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
    s.add_development_dependency 'rdiscount', '~> 2.1'
    s.add_development_dependency 'rdoc', '~> 4.2'
    s.add_development_dependency 'rspec-expectations', '~> 3.3'
+   s.add_development_dependency 'ffi-stat', '~> 0.4'
 
    s.required_rubygems_version = '>= 1.6.0'
    s.required_ruby_version = '>= 1.9.0' ; end

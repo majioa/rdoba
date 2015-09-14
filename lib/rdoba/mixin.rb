@@ -9,6 +9,8 @@ end
 
 module Rdoba
    module Mixin
+      class InvalidOption < StandardError ; end
+
       module CompareString
          def compare_to value, opts = {}
             if ( opts == :ignore_diacritics ||
@@ -299,7 +301,8 @@ module Rdoba
             Object.send :include, Mixin::EmptyObject
             NilClass.send :include, Mixin::EmptyNilClass
          else
-            Kernel.puts STDERR, "Invalid rdoba-mixin options key: #{value.to_s}"
+            raise( Mixin::InvalidOption, "Invalid rdoba-mixin options key: " +
+                  "#{value.to_s}" )
             end ; end ; end ; end
 
 

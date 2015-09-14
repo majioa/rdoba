@@ -1,5 +1,5 @@
 #coding: utf-8
-Допустим( /ꙇє примѣнена подпримѣсь \.?([^\s]+) бисера рдоба/i ) do |подпримѣсь|
+Допустим( /ꙇє примѣнена подпримѣсь \.([^\s]+) бисера рдоба/i ) do |подпримѣсь|
    require 'rdoba'
    case подпримѣсь
    when 'пуздро'
@@ -212,6 +212,13 @@ end
 То(/^той вернёт верно время/) do
    время = @время.strftime( "%Y-%m-%d %H:%M:%S.%N %z" )
    expect( время ).to be_eql( `stat -c %y #{@кут}`.strip ) ; end
+
+Если(/^ꙇє примѣнена подпримѣсь невѣрна бисера рдоба$/) do
+   @проц = Proc.new { rdoba :mixin => [ :false ] } ; end
+
+То(/^исключение невѣрнѣ опции вызвано будетъ$/) do
+   expect{ @проц.call }.to raise_error( Rdoba::Mixin::InvalidOption ) ; end
+
 
 =begin
 #!/usr/bin/ruby -KU
