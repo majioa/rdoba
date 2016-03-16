@@ -4,10 +4,10 @@ rvm:
  - 2.0
  - 2.1
  - 2.2.3
+ - 2.3
  - ruby-head
 os:
  - linux
- - osx
 env:
    global:
     - BUNDLE_JOBS=4
@@ -15,5 +15,4 @@ env:
 notifications:
   flowdock: 0a77151ce94708b17cc767c93c794a61
 before_install:
- - 'rvm use 2.2 --install --binary --fuzzy --create'
  - 'gem install bundler --version "~> 1.5"'
