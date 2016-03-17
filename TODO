@@ -1,1 +1,5 @@
 gem: log4r
+gem: https://github.com/heroku/rails_stdout_logging
+gen: https://github.com/lulalala/multi_logger
+
+doc: http://guides.rubyonrails.org/v3.2.17/debugging_rails_applications.html
