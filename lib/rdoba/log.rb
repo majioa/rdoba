@@ -12,7 +12,7 @@ module Rdoba
 
    ##
    # Adds a Log instance to the specified object as a variable or directly into
-   # the object itself.
+   # the object itself. It returns the rdoba logger object.
    #
    # The argument accepted are only +options+ as a Hash of keys and values.
    #
@@ -175,6 +175,7 @@ module Rdoba
             [ :+, :-, :>, :>>, :*, :%, :>=, :<= ] )
 
          Rdoba::Log.try_define_compat( functions, target )
+         target.__rdoba_log__
       else
          if target.class == Object
             Rdoba::Log.log_link_for :instance, target, funcname

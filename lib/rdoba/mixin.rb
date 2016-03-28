@@ -236,6 +236,19 @@ module Rdoba
             h ; end ; end
 
       module Split_byArray
+         #
+         # +split_by+ method splits the +self+ array by a condition,
+         # which is evaliated in a passed block, in two versions that are
+         # the return value. Usage:
+         #
+         # require 'rdoba'
+         #
+         # rdoba mixin: :split_by
+         #
+         # (first, second) = [0,1,2,3].split_by { |value| value % 2 == 0 }
+         # first # => [0,2]
+         # second # => [1,3]
+         #
          def split_by &block
             idxs = []
             rejected = self.reject.with_index do |v, i|
@@ -259,7 +272,7 @@ require_relative 'mixin/wait_if'
 
 module Rdoba
    def self.mixin options
-      options[ :value ].each do |value|
+      [ options[ :value ] ].flatten.each do |value|
          case value
          when :case
             Mixin::CaseString::Aliases.each do |k,v|
