@@ -426,3 +426,7 @@ Rdoba, сирѣчь руби-добавокъ, есть библиотека, р
 [![Gittip donate button](http://img.shields.io/gittip/bevry.png)](http://gittip.com/majioa "Donate weekly to this project using Gittip")
 [![Flattr donate button](https://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=majioa&url=https%3A%2F%2Fgithub.com%2Fmajioa%2Frdoba "Donate monthly to this project using Flattr")
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/majioa/rdoba/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
