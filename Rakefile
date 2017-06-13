@@ -29,7 +29,7 @@ end
 desc "Distilled clean"
 task :distclean do
    sh 'git clean -fd'
-   sh 'cat .gitignore | while read mask; do rm -rf $(find -iname "$mask"); done'
+   # sh 'cat .gitignore | while read mask; do rm -rf $(find -iname "$mask"); done'
 end
 
 desc "Generate gem"
