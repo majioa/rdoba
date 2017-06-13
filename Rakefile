@@ -55,8 +55,8 @@ Cucumber::Rake::Task.new
 #  task :default => :make
 #end
 #
-#task(:default).clear
-#task :default => :cucumber
+task(:default).clear
+task :default => :cucumber
 #task :codeclimate => :cucumber
 #task :all => [ :bundleup, :up, :cucumber, :'gem:make', :distclean ]
 #task :build => [ :bundleup, :up, :cucumber, :rdoc,
