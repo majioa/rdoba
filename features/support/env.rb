@@ -47,8 +47,8 @@ def store
 
 def match_keywords keystr
   keys = ( keystr || '' ).split( /[,:\s]/ ).map do |k|
-  [ :basic, :extended, :enter, :leave, :compat, :timestamp, :pid,
-      :function_name, :function_line, :function ].include?( k.to_sym ) && k.to_sym || nil
+  %i[basic extended enter leave compat timestamp pid
+      function_name function_line function].include?( k.to_sym ) && k.to_sym || nil
     end.compact ; end
 
 def rdoba_sim sub, cmd, *args
