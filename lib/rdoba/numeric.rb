@@ -22,7 +22,7 @@ class String
   end
 end
 
-class Fixnum
+class Integer
   alias :_rdoba_to_s :to_s
   def to_s(base = 10, *opts)
     v = parse_opts(opts)
