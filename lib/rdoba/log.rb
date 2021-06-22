@@ -198,7 +198,7 @@ module Rdoba
                "An :as option can't be default or set to 'self' value for " +
                "a main application. Please set up it correctly" ; end ; end ; end
 
-      module DebugCompat # TODO compat
+      module DebugCompat # TODO: compat
          def dbgl
             @dbgl; end
 
@@ -250,7 +250,7 @@ module Rdoba
          def get_stack_function_data_at_level( level )
             raise Exception
          rescue Exception
-            #TODO check match a method containing '`'
+            #TODO: check match a method containing '`'
             $@[ level ] =~ /([^\/]+):(\d+):in `(.*?)'$/
             [ $1, $3, $2 ]; end; end
 
@@ -292,7 +292,7 @@ module Rdoba
       def self.log_init_io_m options = {}
          options = Rdoba::Log.class_variable_get :@@options
          io = options[ :io ] || $stdout
-         # TODO puts costomize
+         # TODO: puts costomize
          io_m = io.method :puts ; end
 
       def self.log_class_setup obj
@@ -351,7 +351,7 @@ module Rdoba
       def self.update_functions functions, obj, method
          if functions.is_a?( Array ) && functions.include?( :* )
             functions = [ :basic, :enter, :leave, :warn, :info, :extended,
-                          :compat ] ; end # TODO compat
+                          :compat ] ; end # TODO: compat
          cf = self.log_functions_get obj
          functions = cf.send( method, functions.is_a?( Array ) && functions ||
                      functions.is_a?( NilClass) && [] ||
