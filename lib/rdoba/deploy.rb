@@ -35,9 +35,9 @@ class Hash
         next $stderr.puts "Warning: undefined variable " +
 	    "#{$1.inspect} found. Ignoring..." unless vars.key?($1)
 	var = vars[$1].dup
-	if var.class == Hash
+	if var.instance_of?(Hash)
 	  res |= var.deploy(vars)
-	elsif var.class == String
+	elsif var.instance_of?(String)
 	  res[var] = nil
 	else
           raise "Undeployable hash #{$1} value class #{var.class}"

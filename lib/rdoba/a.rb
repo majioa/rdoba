@@ -8,11 +8,11 @@ class Array
     dbp11 "[geta] <<< array = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
-    if index.class == Array
+    if index.instance_of?(Array)
       return self if index == [] or index == ['']
       index = index.clone
       value = self[index.shift]
-      (value.class == Hash or value.class == Array) ? value.geta(index, options) : value
+      (value.instance_of?(Hash) or value.instance_of?(Array)) ? value.geta(index, options) : value
     else
       geta_value(index, options)
     end
@@ -50,11 +50,11 @@ public
     dbp11 "[geta] <<< hash = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
-    if index.class == Array
+    if index.instance_of?(Array)
       return self if index == [] or index == ['']
       index = index.clone
       value = geta_value(index.shift, options)
-      (value.class == Hash or value.class == Array) ? value.geta(index, options) : value
+      (value.instance_of?(Hash) or value.instance_of?(Array)) ? value.geta(index, options) : value
     else
       geta_value(index, options)
     end
@@ -93,7 +93,7 @@ public
         obj[par_idx] = o
       end
       obj = o
-      o = (obj.class == Hash) ? obj.geta_value(idx, options) : obj[idx]
+      o = (obj.instance_of?(Hash)) ? obj.geta_value(idx, options) : obj[idx]
       dbp14 "[seta]>> cur idx: #{idx.inspect}, parent obj: #{obj.inspect}, obj: #{o.inspect}"
       unless o
         if idx == index.last
