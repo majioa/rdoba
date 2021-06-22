@@ -20,7 +20,7 @@ private
         require $1
       end
       true
-    rescue
+    rescue StandardError
       false
     end
   end
@@ -36,7 +36,7 @@ private
           r2 = require_dir(dir, name)
           dbp14 "[sub_require]> Require Dir #{(r1 || r2) && 'passed' || 'failed'} ... #{name}"
         end
-      rescue
+      rescue StandardError
       end
     end unless $".include?(name)
     true
@@ -50,7 +50,7 @@ public
     dbp11 "[require] <<< name = #{name}"
     begin
       res = __require__ name
-    rescue => bang
+    rescue StandardError => bang
       puts "Lib internal error: #{$!.class} -> #{$!}\n\t#{$@.join("\n\t")}"
       exit
     end

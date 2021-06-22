@@ -52,10 +52,10 @@ class Hash
 	case value.class.to_sym
 	when :String
 	  if value =~ /^%([^%].*)/
-	    begin; vars[$1].deploy(vars); rescue; nil end
+	    begin; vars[$1].deploy(vars); rescue StandardError; nil end
 	  elsif value =~ /(.*)%([A-Za-z0-9_А-я]+)(.*)/
 	    a = [ $1.to_s, $2.to_s, $3.to_s ]
-	    a[1] = begin; vars[a[1]].deploy(vars).to_s; rescue; vars[a[1]] end
+	    a[1] = begin; vars[a[1]].deploy(vars).to_s; rescue StandardError; vars[a[1]] end
 	    a.join
 	  else
 	    value

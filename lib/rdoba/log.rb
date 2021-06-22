@@ -210,7 +210,7 @@ module Rdoba
             if level > 0
                clevel = @dbgl || begin
                   eval "$dbgl_#{self.class}"
-               rescue
+               rescue StandardError
                   nil; end
                clevel || ( clevel.to_i & level ) == level
             else
@@ -340,12 +340,12 @@ module Rdoba
 
       def self.log_functions_get obj
          obj.class_variable_get :@@rdoba_log_functions
-      rescue
+      rescue StandardError
          [] ; end
 
       def self.log_prefix_get obj
          obj.class_variable_get :@@rdoba_log_prefix
-      rescue
+      rescue StandardError
          ';if true;(File.join "' ; end
 
       def self.update_functions functions, obj, method

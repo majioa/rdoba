@@ -13,7 +13,7 @@ class Array
 	else
 	  begin
 	    value.dup
-	  rescue
+	  rescue StandardError
 	    new = value
 	  end
 	end
@@ -43,7 +43,7 @@ class Hash
 	else
 	  begin
 	    value.dup
-	  rescue
+	  rescue StandardError
 	    new = value
 	  end
 	end
