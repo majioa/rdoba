@@ -251,7 +251,7 @@ module Rdoba
             raise Exception
          rescue Exception
             #TODO check match a method containing '`'
-            $@[ level ] =~ /([^\/]+):(\d+):in `(.*?)'$/
+            $@[ level ] =~ %r{([^/]+):(\d+):in `(.*?)'$}
             [ $1, $3, $2 ]; end; end
 
       module ClassFunctions
