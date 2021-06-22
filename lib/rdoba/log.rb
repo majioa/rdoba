@@ -198,7 +198,8 @@ module Rdoba
                "An :as option can't be default or set to 'self' value for " +
                "a main application. Please set up it correctly" ; end ; end ; end
 
-      module DebugCompat # TODO compat
+# TODO compat
+      module DebugCompat
          def dbgl
             @dbgl; end
 
