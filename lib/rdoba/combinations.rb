@@ -1,12 +1,11 @@
 #!/usr/bin/ruby
 
 class Array
-
-private
+  private
 
   def __comby(i, size)
-    s = "0#{sprintf("%.*b", size, i)}0"
-    v = { :res => [], :c0 => 0, :c1 => 0, :j => 0}
+    s = "0#{sprintf('%.*b', size, i)}0"
+    v = { res: [], c0: 0, c1: 0, j: 0 }
 
     def up1(v)
       sub_j = v[:j] + v[:c1] + 1
@@ -17,7 +16,9 @@ private
 
     def up0(v)
       sub_j = v[:j] + v[:c0] - 1
-      self[v[:j]...sub_j].each do |x| v[:res] << [x] end
+      self[v[:j]...sub_j].each do |x|
+        v[:res] << [x]
+      end
       v[:j] = sub_j
     end
 
@@ -35,12 +36,12 @@ private
     v[:res]
   end
 
-public
+  public
 
   def each_comby(*args)
     return self if self.empty? or not block_given?
     if args.include?(:backward)
-      yield [ self.dup ]
+      yield [self.dup]
       ((1 << (self.size - 1)) - 2).downto(0) do |i|
         c = __comby(i, self.size - 1)
         yield c
@@ -50,10 +51,9 @@ public
         c = __comby(i, self.size - 1)
         yield c
       end
-      yield [ self.dup ]
+      yield [self.dup]
     end
 
     return self
   end
 end
-

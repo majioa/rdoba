@@ -5,16 +5,16 @@ require 'rdoba/common'
 require 'rdoba/strings'
 
 class String
-  alias :_rdoba_to_i :to_i
+  alias _rdoba_to_i to_i
   def to_i(base = 10, *opts)
     v = parse_opts(opts)
     if v[:be]
-      (str, sign, num) = (self.match /\s*(-?)([0-9a-fx]+)/u).to_a
+      str, sign, num = (self.match /\s*(-?)([0-9a-fx]+)/u).to_a
       if str
-	n = num.reverse._rdoba_to_i(base)
-	sign.empty? && n || -n
+        n = num.reverse._rdoba_to_i(base)
+        sign.empty? && n || -n
       else
-	0
+        0
       end
     else
       _rdoba_to_i(base)
@@ -23,7 +23,7 @@ class String
 end
 
 class Fixnum
-  alias :_rdoba_to_s :to_s
+  alias _rdoba_to_s to_s
   def to_s(base = 10, *opts)
     v = parse_opts(opts)
 
@@ -32,7 +32,8 @@ class Fixnum
     raise "Base of number can't be equal or less then zero" if base <= 0
     raise "Padding count numberr can't be equal or less then zero" if v[:padding] <= 0
     value = self
-    minus = if value < 0
+    minus =
+      if value < 0
         value = -value
         true
       end
@@ -42,7 +43,7 @@ class Fixnum
       rem += 0x40 - 0x39 if rem >= 10
       res += (0x30 + rem).chr
     end
-    res += "0" * (v[:padding].to_i - res.size) if res.size < v[:padding].to_i
+    res += '0' * (v[:padding].to_i - res.size) if res.size < v[:padding].to_i
     res += 'x0' if v[:style_formatting] and base == 16
     res += '-' if minus
     res.reverse
@@ -54,7 +55,8 @@ class Numeric
     v = parse_opts(opts)
 
     value = self
-    minus = if value < 0
+    minus =
+      if value < 0
         value = -value
         true
       end
@@ -64,12 +66,14 @@ class Numeric
       res += rem.chr
     end
 
-    pad_char = if minus
+    pad_char =
+      if minus
         negres += ''
         over = 1
         res.each_byte do |byte|
           negbyte = 255 - byte + over
-          negres += if negbyte > 255
+          negres +=
+            if negbyte > 255
               over = 1
               0
             else
@@ -89,5 +93,3 @@ class Numeric
     plain
   end
 end
-
-

@@ -19,4 +19,3 @@ class String
     /#{to_res}/ui
   end
 end
-

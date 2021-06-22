@@ -17,16 +17,14 @@ class Array
       geta_value(index, options)
     end
   end
-
 end
 
-
 class Hash
-
-protected
+  protected
 
   def geta_value(cid, options = {})
-    res = ((not cid) || cid.empty?) && self || self[cid] ||
+    res =
+      ((not cid) || cid.empty?) && self || self[cid] ||
         (options[:сокр] && (self[options[:сокр][cid]] || self[options[:сокр].reverse[cid]]))
 
     if not res and options[:try_regexp]
@@ -34,8 +32,7 @@ protected
         break res = self[key] if key.rmatch(cid)
         if options[:сокр]
           options[:сокр].each_pair do |val1, val2|
-            break res = self[key] if key.rmatch(cid.gsub(/#{val1}/, val2)) or
-                key.rmatch(cid.gsub(/#{val2}/, val1))
+            break res = self[key] if key.rmatch(cid.gsub(/#{val1}/, val2)) or key.rmatch(cid.gsub(/#{val2}/, val1))
           end
         end
       end
@@ -44,7 +41,7 @@ protected
     res
   end
 
-public
+  public
 
   def geta(index, options = {}) #TODO => [] + class Index
     dbp11 "[geta] <<< hash = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
@@ -67,17 +64,18 @@ public
     return self[index] = value if index.class != Array # TODO spec index
 
     back = 0
-    index = index.reverse.map do |x|
-      if x.empty?
-        back += 1
-        nil
-      elsif back > 0
-        back -= 1
-        nil
-      else
-        x
-      end
-    end.compact.reverse
+    index =
+      index.reverse.map do |x|
+        if x.empty?
+          back += 1
+          nil
+        elsif back > 0
+          back -= 1
+          nil
+        else
+          x
+        end
+      end.compact.reverse
     dbp12 "[seta]> result index: #{index.inspect}"
 
     obj = nil
@@ -105,10 +103,8 @@ public
       end
     end
 
-    raise "Invalid path" unless o # TODO special exception
+    raise 'Invalid path' unless o # TODO special exception
 
     o[set_idx] = value
   end
-
 end
-

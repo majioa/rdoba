@@ -20,20 +20,22 @@ class Object
     opts.each do |opt|
       case opt.class.to_s.to_sym
       when :Hash
-	opt.each do |x,y| v[x] = y end
+        opt.each do |x, y|
+          v[x] = y
+        end
       when :Array
-	opt.each do |x| v[x] = true end
+        opt.each do |x|
+          v[x] = true
+        end
       when :Symbol
-	v[opt] = true
+        v[opt] = true
       end
     end
     v
   end
 
   def apply_opts(opts)
-    parse_opts(opts).each do |x,y|
-      self.instance_variable_set("@#{x}".to_sym, y)
-    end
+    parse_opts(opts).each do |x, y| self.instance_variable_set("@#{x}".to_sym, y)end
   end
 end
 
@@ -47,7 +49,7 @@ class NilClass
   end
 
   def <<(value)
-    [ value ]
+    [value]
   end
 
   def empty?
@@ -57,7 +59,7 @@ class NilClass
   def to_i
     0
   end
-  alias :ord :to_i
+  alias ord to_i
 
   def size
     0
@@ -68,23 +70,22 @@ class NilClass
   end
 end
 
-
 class Array
   def purge
-    self.compact.delete_if {|x| x.empty? }
+    self.compact.delete_if { |x| x.empty? }
   end
 
   def >>(value = nil)
     value ? delete(value) : shift
   end
 
-  alias :__get__ :[]
+  alias __get__ []
   def [](index, *args)
     return __get__(index.to_i, *args) if index.class == String and index =~ /^\d+$/
     __get__(index, *args)
   end
 
-  alias :__set__ :[]=
+  alias __set__ []=
   def []=(index, value, *args)
     return __set__(index.to_i, value, *args) if index.class == String and index =~ /^\d+$/
     __set__(index, value, *args)
@@ -99,13 +100,11 @@ class String
     (0...len).each do |idx|
       break bc = idx if self[idx] == str[0]
     end
-    ((bc + 1)...len).each do |idx|
-      break ec = idx if self[idx] != str[idx - bc]
-    end if bc
+    ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != str[idx - bc]end if bc
     (not bc) ? self.clone : (not ec) ? self[0, bc] : self[0, bc] + self[ec, len - ec]
   end
 
-  alias :__match__ :=~
+  alias __match__ =~
   def =~(value)
     if value.class == String
       self == value
@@ -121,10 +120,10 @@ class String
   end
 
   def hexdump
-    res= ''
+    res = ''
     i = 0
     self.each_byte do |byte|
-      res << sprintf("%.2X ", byte)
+      res << sprintf('%.2X ', byte)
       i += 1
       res << "\n" if i % 16 == 0
     end
@@ -159,17 +158,15 @@ class Hash
     h = {}
     self.each_pair do |key, value|
       if h.key? value
-	if h[value].class == Array
-	  h[value] << key
-	else
-	  h[value] = [ h[value], key ]
-	end
+        if h[value].class == Array
+          h[value] << key
+        else
+          h[value] = [h[value], key]
+        end
       else
-	h[value] = key
+        h[value] = key
       end
     end
     h
   end
 end
-
-
