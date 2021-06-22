@@ -32,11 +32,10 @@ protected
     if not res and options[:try_regexp]
       self.keys.each do |key|
         break res = self[key] if key.rmatch(cid)
-        if options[:сокр]
-          options[:сокр].each_pair do |val1, val2|
-            break res = self[key] if key.rmatch(cid.gsub(/#{val1}/, val2)) or
-                key.rmatch(cid.gsub(/#{val2}/, val1))
-          end
+        next unless options[:сокр]
+        options[:сокр].each_pair do |val1, val2|
+          break res = self[key] if key.rmatch(cid.gsub(/#{val1}/, val2)) or
+              key.rmatch(cid.gsub(/#{val2}/, val1))
         end
       end
     end

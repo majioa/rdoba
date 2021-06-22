@@ -14,18 +14,17 @@ private
 
   def each_special(spec)
     (@order | self.keys).each do |key|
-      if self.has_key? key
-	case spec
-	when Hash::Each::General
-	  yield key, self[key]
-	when Hash::Each::Pair
-	  yield key, self[key]
-	when Hash::Each::Key
-	  yield key
-	when Hash::Each::Value
-	  yield self[key]
-	end
-      end
+      next unless self.has_key? key
+     	case spec
+     	when Hash::Each::General
+     	  yield key, self[key]
+     	when Hash::Each::Pair
+     	  yield key, self[key]
+     	when Hash::Each::Key
+     	  yield key
+     	when Hash::Each::Value
+     	  yield self[key]
+     	end
     end
   end
 

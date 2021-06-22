@@ -8,13 +8,13 @@ module Kernel
          ( option.is_a?( Hash ) &&
                option || { option.to_s.to_sym => {} }
          ).each_pair do |key, value|
-            if Modules.include? key
-               require "rdoba/#{key}"
-               if Rdoba.methods.include? key
-                  if !value.is_a? Hash
-                     value = { :value => value } ; end
-                  value.replace( { :self => self }.merge value )
-                  Rdoba.send key, value ; end ; end ; end; end ; end ; end
+            next unless Modules.include? key
+            require "rdoba/#{key}"
+            if Rdoba.methods.include? key
+               if !value.is_a? Hash
+                  value = { :value => value } ; end
+               value.replace( { :self => self }.merge value )
+ ; end; end ; end ; end
 
 require 'rbconfig'
 
