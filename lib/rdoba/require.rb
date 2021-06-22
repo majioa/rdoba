@@ -11,11 +11,13 @@ private
     begin
       rdir = File.join(dir, name)
       return false unless File.directory?(rdir)
+
       rdir = File.join(dir, name)
       $: << rdir unless $:.include?(rdir)
       dbp14 "[require_dir]> Found dir #{rdir}"
       Dir.foreach(rdir) do |file|
         next unless file =~ /(.*)\.(rb|so)$/
+
         dbp14 "[require_dir]> Loading ... #{$1}"
         require $1
       end
@@ -31,6 +33,7 @@ private
       begin
         Dir.foreach(dir) do |file|
           next unless file =~ /^#{name}\.(rb|so)$/
+
           dbp14 "[sub_require]> Require Dir #{dir}/#{name} for #{file}"
           r1 = require_dir(dir, name + '.modules')
           r2 = require_dir(dir, name)

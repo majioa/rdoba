@@ -15,6 +15,7 @@ module BCD
       def pow value, mul
         if value >= 10
           raise ConvertError; end
+
         value * mul
       end
       res += pow( c.ord & 0xF,  mul )
@@ -27,6 +28,7 @@ module BCD
   def self.parse value
     if value < 0
       raise ParseError; end
+
     res = BCDString.new
     if res.respond_to? :force_encoding
       res.force_encoding( 'ASCII-8BIT' ); end

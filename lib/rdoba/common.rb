@@ -68,7 +68,6 @@ class NilClass
   end
 end
 
-
 class Array
   def purge
     self.compact.delete_if {|x| x.empty? }
@@ -81,12 +80,14 @@ class Array
   alias :__get__ :[]
   def [](index, *args)
     return __get__(index.to_i, *args) if index.class == String and index =~ /^\d+$/
+
     __get__(index, *args)
   end
 
   alias :__set__ :[]=
   def []=(index, value, *args)
     return __set__(index.to_i, value, *args) if index.class == String and index =~ /^\d+$/
+
     __set__(index, value, *args)
   end
 end

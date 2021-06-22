@@ -22,6 +22,7 @@ module Rdoba
    def self.gemroot name = nil, path = ''
       if !gem( name )
          raise "Invalid gem named as #{name.inspect}" ; end
+
       g = Gem::Specification.find_by_name( name )
       File.join g.full_gem_path, path
    end
