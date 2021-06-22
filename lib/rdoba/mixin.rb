@@ -219,14 +219,12 @@ module Rdoba
                         h[ v [ 0 ] ] << v[ 1 ] ; end
                   else
                      h[ v[ 0 ] ] = v.size > 2 && v[ 1..-1] || v[ 1 ] ; end
-               else
-                  if h.key? v
-                     if !h[ v ].is_a? Array
+               elsif h.key? v
+                  if !h[ v ].is_a? Array
                         h[ v ] = [ h[ v ] ] ; end
 
                      h[ v ] << v
                   else
-                     h[ v ] = nil ; end ; end ; end
 
             if options[ :save_unique ]
                h.each_pair do |k,v|
