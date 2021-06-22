@@ -1,6 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
-
 STDERR.puts "Warning: the module 'string' has kept only for backward " \
             "compatibility\nPlease use 'rdoba :mixin' form instead"
 
