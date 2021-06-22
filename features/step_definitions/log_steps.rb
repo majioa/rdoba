@@ -98,7 +98,7 @@ Then /see the (variable|string|number|array|'true' value) output(?: with the :(b
   when 'variable'
     sym = notice && { 'basic' => '>', 'extended' => '>>', 'info' => '***',
         'warn' => '%%%', 'enter' => '<<<', 'leave' => '>>>' }[ notice ] || '>'
-    symr = sym.to_s.gsub ( '*' ) do |x| "\\#{x}" end
+    symr = sym.to_s.gsub( '*' ) do |x| "\\#{x}" end
     prefices = match_keywords prefices
     if prefices.empty?
       if @res !~ /variable: "value"/
