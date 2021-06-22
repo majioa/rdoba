@@ -214,7 +214,7 @@ end
    expect( время ).to be_eql( `stat -c %y #{@кут}`.strip ) ; end
 
 Если(/^ꙇє примѣнена подпримѣсь невѣрна бисера рдоба$/) do
-   @проц = Proc.new { rdoba :mixin => [ :false ] } ; end
+   @проц = proc { rdoba :mixin => [ :false ] } ; end
 
 То(/^исключение невѣрнѣ опции вызвано будетъ$/) do
    expect{ @проц.call }.to raise_error( Rdoba::Mixin::InvalidOption ) ; end
