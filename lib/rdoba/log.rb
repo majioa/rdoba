@@ -252,7 +252,7 @@ module Rdoba
          rescue Exception
             #TODO check match a method containing '`'
             $@[ level ] =~ /([^\/]+):(\d+):in `(.*?)'$/
-            [ $1, $3, $2 ]; end; end
+            [ Regexp.last_match(1), Regexp.last_match(3), Regexp.last_match(2) ]; end; end
 
       module ClassFunctions
          def <= functions

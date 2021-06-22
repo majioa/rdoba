@@ -18,23 +18,23 @@ module Kernel
     while (not fmt.empty?)
       part = fmt.shift
       part = '%' + fmt.shift unless part
-      if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and $2 == 'P'
-        keys = $1 || ''
-        str = $3 || ''
+      if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and Regexp.last_match(2) == 'P'
+        keys = Regexp.last_match(1) || ''
+        str = Regexp.last_match(3) || ''
         if keys =~ /(-)?([0-9*]*)\.?([0-9\*]*)(\+?)/
           value = args.shift
-          indent = ' ' * ($2 == '*' ? args.shift : $2).to_i
+          indent = ' ' * (Regexp.last_match(2) == '*' ? args.shift : Regexp.last_match(2)).to_i
           plain = value && value.to_p(
-	      :padding => ($3 == '*' ? args.shift : $3.empty? ? 1 : $3).to_i,
-	      :be => $4.empty? ? nil : true) || ''
-          nformat += ($1 ? plain + indent : indent + plain) + str
+	      :padding => (Regexp.last_match(3) == '*' ? args.shift : Regexp.last_match(3).empty? ? 1 : Regexp.last_match(3)).to_i,
+	      :be => Regexp.last_match(4).empty? ? nil : true) || ''
+          nformat += (Regexp.last_match(1) ? plain + indent : indent + plain) + str
         else
           nformat += '%' + keys + 'c' + str
           nargs.push args.shift
         end
       else
         nformat += '%' + part
-        l = $1 =~ /\*/ ? 2 : 1
+        l = Regexp.last_match(1) =~ /\*/ ? 2 : 1
         while l > 0
           nargs.push args.shift
           l -= 1
