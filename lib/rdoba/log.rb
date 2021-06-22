@@ -255,11 +255,11 @@ module Rdoba
             [ $1, $3, $2 ]; end; end
 
       module ClassFunctions
-         def <= functions
-            Rdoba::Log::update_functions functions, self, :+ ; end
+         def <= other
+            Rdoba::Log::update_functions other, self, :+ ; end
 
-         def >= functions
-            Rdoba::Log::update_functions functions, self, :- ; end; end
+         def >= other
+            Rdoba::Log::update_functions other, self, :- ; end; end
 
       Initfunc = proc do
          self.class_variable_set :@@rdoba_log_prefix,
