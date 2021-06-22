@@ -70,7 +70,7 @@ module Rdoba
                 :ranges => [ {
                      :ords => [ (0xE0..0xFF), (0x3B1..0x3CB),
                                 (0x430..0x44F) ],
-                     :change => proc { | chr, value | chr -= 0x20 },
+                     :change => proc { | chr, _value | chr -= 0x20 },
                   }, {
                      :ords => [ (0x3AC..0x3AC) ],
                      :change => proc { | ord | ord -= 0x26 },
@@ -105,7 +105,7 @@ module Rdoba
                :ranges => [ {
                      :ords => [ (0xC0..0xDF), (0x391..0x3AB),
                                 (0x410..0x42F) ],
-                     :change => proc { |chr, value| chr += 0x20 },
+                     :change => proc { |chr, _value| chr += 0x20 },
                   }, {
                      :ords => [ (0x386..0x386) ],
                      :change => proc { | ord | ord += 0x26 },
@@ -165,7 +165,7 @@ module Rdoba
                'UTF-8'
             end
 
-            def force_encoding(*args)
+            def force_encoding(*_args)
                self
             end
 
@@ -229,7 +229,7 @@ module Rdoba
                      h[ v ] = nil ; end ; end ; end
 
             if options[ :save_unique ]
-               h.each_pair do |k,v|
+               h.each_pair do |_k,v|
                   if v.is_a? Array
                      v.uniq! ; end ; end ; end
 
@@ -249,7 +249,7 @@ module Rdoba
          # first # => [0,2]
          # second # => [1,3]
          #
-         def split_by &block
+         def split_by
             idxs = []
             rejected = self.reject.with_index do |v, i|
                yield( v ) && ( idxs << i ) ; end
