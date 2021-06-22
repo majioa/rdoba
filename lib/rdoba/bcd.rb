@@ -2,10 +2,10 @@
 #
 
 module BCD
-  class ParseError < Exception
+  class ParseError < RuntimeError
     def initialize msg = "Invalid positive integer value"; end; end
 
-  class ConvertError < Exception
+  class ConvertError < RuntimeError
     def initialize msg = "Invalid number has given"; end; end
 
   def to_i
