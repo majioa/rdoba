@@ -144,10 +144,10 @@ module Rdoba
                c = range[ :ords ].each do |r|
                   if r.include?( ord )
                      break false ; end ; end
-               if !c
+               unless c
                   break range[ :change ].call ord ; end ; end
 
-            if !nord.is_a? Numeric
+            unless nord.is_a? Numeric
                return table[ :default ].call ord ; end
 
             [ nord ].pack( 'U' ) ; end
@@ -187,7 +187,7 @@ module Rdoba
             self.__rdoba_mixin_changecase__ :up, options ; end
 
          def __rdoba_mixin_changecase__ reg, options = {}
-            if ![ :up, :down ].include? reg
+            unless [ :up, :down ].include? reg
                return self ; end
 
             re = Regexp.new '[\x80-\xFF]', nil, 'n'
@@ -210,7 +210,7 @@ module Rdoba
             self.each do |v|
                if v.is_a? Array
                   if h.key? v[ 0 ]
-                     if !h[ v[ 0 ] ].is_a? Array
+                     unless h[ v[ 0 ] ].is_a? Array
                         h[ v[ 0 ] ] = [ h[ v[ 0 ] ] ] ; end
 
                      if v.size > 2
@@ -221,7 +221,7 @@ module Rdoba
                      h[ v[ 0 ] ] = v.size > 2 && v[ 1..-1] || v[ 1 ] ; end
                else
                   if h.key? v
-                     if !h[ v ].is_a? Array
+                     unless h[ v ].is_a? Array
                         h[ v ] = [ h[ v ] ] ; end
 
                      h[ v ] << v
