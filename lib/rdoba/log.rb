@@ -262,9 +262,9 @@ module Rdoba
             Rdoba::Log::update_functions functions, self, :- ; end; end
 
       Initfunc = proc do
-         self.class_variable_set :@@rdoba_log_prefix,
+         class_variable_set :@@rdoba_log_prefix,
                                  Rdoba::Log.log_init_prefix( self )
-         self.class_variable_set :@@rdoba_log_io_method,
+         class_variable_set :@@rdoba_log_io_method,
                                  Rdoba::Log.log_init_io_m
          extend Rdoba::Log::ClassFunctions
          include Rdoba::Log::Functions
@@ -352,13 +352,13 @@ module Rdoba
          if functions.is_a?( Array ) && functions.include?( :* )
             functions = [ :basic, :enter, :leave, :warn, :info, :extended,
                           :compat ] ; end # TODO compat
-         cf = self.log_functions_get obj
+         cf = log_functions_get obj
          functions = cf.send( method, functions.is_a?( Array ) && functions ||
                      functions.is_a?( NilClass) && [] ||
                      [ functions.to_s.to_sym ] )
-         self.log_functions_set obj, functions
+         log_functions_set obj, functions
 
-         pfx = self.log_prefix_get obj
+         pfx = log_prefix_get obj
          code = Rdoba::Log::make_code functions, pfx
          obj.class_eval code ; end
 

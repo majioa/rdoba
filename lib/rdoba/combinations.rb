@@ -38,22 +38,22 @@ private
 public
 
   def each_comby(*args)
-    return self if self.empty? or not block_given?
+    return self if empty? or not block_given?
     if args.include?(:backward)
-      yield [ self.dup ]
-      ((1 << (self.size - 1)) - 2).downto(0) do |i|
-        c = __comby(i, self.size - 1)
+      yield [ dup ]
+      ((1 << (size - 1)) - 2).downto(0) do |i|
+        c = __comby(i, size - 1)
         yield c
       end
     else
-      0.upto((1 << (self.size - 1)) - 2) do |i|
-        c = __comby(i, self.size - 1)
+      0.upto((1 << (size - 1)) - 2) do |i|
+        c = __comby(i, size - 1)
         yield c
       end
-      yield [ self.dup ]
+      yield [ dup ]
     end
 
-    return self
+    self
   end
 end
 

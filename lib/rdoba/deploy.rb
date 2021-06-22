@@ -6,14 +6,14 @@ require 'rdoba/common'
 class Hash
 
   def deploy!(vars = {})
-    self.replace deploy(vars)
+    replace deploy(vars)
     # TODO add variable copy
   end
 
   def deploy(vars = {})
     res = {}
 
-    self.keys.sort do |x,y|
+    keys.sort do |x,y|
       if x =~ /=$/
 	y =~ /=$/ ? x <=> y : -1
       else

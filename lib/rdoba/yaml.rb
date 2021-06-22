@@ -10,7 +10,7 @@ class Object
     res += case self.class.to_sym
       when :Hash
         rs = ''
-        self.keys.sort do |x,y|
+        keys.sort do |x,y|
           (ix, iy) = o[:order] ? [ o[:order].index(x), o[:order].index(y) ] : [ nil, nil ]
           (ix and iy) ? ix <=> iy : (ix ? -1 : (iy ? 1 : x <=> y))
         end.each do |key|
@@ -21,18 +21,18 @@ class Object
         rs.empty? and "{}" or rs
       when :Array
         rs = ''
-        self.each do |value|
+        each do |value|
           rs += "\n" + ' ' * level * 2 + '- ' + value.to_yml( { :level => level + 1, :order => o[:order] } )
         end
         rs.empty? and "[]" or rs
       when :Fixnum
-        self.to_s
+        to_s
       when :String
         if self =~ /^["'\-:!#={}\[\]~]/ or self =~ /\s+$/ or self =~ /:\s/
-	  if self.count("'") < self.count('"')
-	    "'#{self.gsub("'","\\'")}'"
+	  if count("'") < count('"')
+	    "'#{gsub("'","\\'")}'"
 	  else
-	    "\"#{self.gsub('"','\"')}\""
+	    "\"#{gsub('"','\"')}\""
 	  end
         else
           self

@@ -19,7 +19,7 @@ class Array
 	end
       end
 
-      self.each do |value| res << sub_dup(value) end
+      each do |value| res << sub_dup(value) end
 
       res
     elsif opts.empty?
@@ -49,7 +49,7 @@ class Hash
 	end
       end
 
-      self.each do |key, value| res[ sub_dup(key) ] = sub_dup(value) end
+      each do |key, value| res[ sub_dup(key) ] = sub_dup(value) end
 
       res
     elsif opts.empty?

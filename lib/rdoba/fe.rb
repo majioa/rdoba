@@ -6,10 +6,10 @@ class String
       self
     else
       return self unless Encoding.default_internal
-      if self.frozen?
-	self.dup.force_encoding(Encoding.default_internal || 'UTF-8').freeze
+      if frozen?
+	dup.force_encoding(Encoding.default_internal || 'UTF-8').freeze
       else
-	self.force_encoding(Encoding.default_internal || 'UTF-8')
+	force_encoding(Encoding.default_internal || 'UTF-8')
       end
     end
   end
