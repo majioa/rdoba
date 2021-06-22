@@ -159,7 +159,7 @@ module Rdoba
             CaseString.change_case_char :down, char ; end
 
          if RUBY_VERSION < '1.9'
-            alias :setbyte :[]=
+            alias setbyte []=
 
             def encoding
                'UTF-8'

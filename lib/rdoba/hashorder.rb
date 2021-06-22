@@ -41,10 +41,10 @@ public
     @order = nil; self
   end
 
-  alias :__each__ :each
-  alias :__each_pair__ :each_pair
-  alias :__each_key__ :each_key
-  alias :__each_value__ :each_value
+  alias __each__ each
+  alias __each_pair__ each_pair
+  alias __each_key__ each_key
+  alias __each_value__ each_value
 
   def each(&block)
     @order ? each_special(Hash::Each::General, &block) : __each__(&block)

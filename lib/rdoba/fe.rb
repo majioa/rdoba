@@ -13,6 +13,6 @@ class String
       end
     end
   end
-  alias :fenc :fe
+  alias fenc fe
 end
 

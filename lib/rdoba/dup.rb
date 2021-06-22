@@ -2,7 +2,7 @@
 #coding:utf-8
 
 class Array
-  alias :__dup__ :dup
+  alias __dup__ dup
   def dup(opts = {})
     if (opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
       res = []
@@ -32,7 +32,7 @@ class Array
 end
 
 class Hash
-  alias :__dup__ :dup
+  alias __dup__ dup
   def dup(opts = {})
     if (opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
       res = {}

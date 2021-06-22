@@ -44,7 +44,7 @@ private
 
 public
 
-  alias :__require__ :require
+  alias __require__ require
   def require(name, *opts)
     v = parse_opts(opts)
     dbp11 "[require] <<< name = #{name}"

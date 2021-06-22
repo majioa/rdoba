@@ -57,7 +57,7 @@ class NilClass
   def to_i
     0
   end
-  alias :ord :to_i
+  alias ord to_i
 
   def size
     0
@@ -78,13 +78,13 @@ class Array
     value ? delete(value) : shift
   end
 
-  alias :__get__ :[]
+  alias __get__ []
   def [](index, *args)
     return __get__(index.to_i, *args) if index.class == String and index =~ /^\d+$/
     __get__(index, *args)
   end
 
-  alias :__set__ :[]=
+  alias __set__ []=
   def []=(index, value, *args)
     return __set__(index.to_i, value, *args) if index.class == String and index =~ /^\d+$/
     __set__(index, value, *args)
@@ -105,7 +105,7 @@ class String
     (not bc) ? self.clone : (not ec) ? self[0, bc] : self[0, bc] + self[ec, len - ec]
   end
 
-  alias :__match__ :=~
+  alias __match__ =~
   def =~(value)
     if value.class == String
       self == value

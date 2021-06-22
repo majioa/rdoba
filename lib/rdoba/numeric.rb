@@ -5,7 +5,7 @@ require 'rdoba/common'
 require 'rdoba/strings'
 
 class String
-  alias :_rdoba_to_i :to_i
+  alias _rdoba_to_i to_i
   def to_i(base = 10, *opts)
     v = parse_opts(opts)
     if v[:be]
@@ -23,7 +23,7 @@ class String
 end
 
 class Fixnum
-  alias :_rdoba_to_s :to_s
+  alias _rdoba_to_s to_s
   def to_s(base = 10, *opts)
     v = parse_opts(opts)
 

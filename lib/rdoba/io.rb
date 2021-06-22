@@ -7,7 +7,7 @@ require 'rdoba/roman'
 require 'rdoba/numeric'
 
 module Kernel
-  alias :__sprintf__ :sprintf
+  alias __sprintf__ sprintf
   def sprintf(format, *args)
     nargs = []
     nformat = ''
@@ -91,7 +91,7 @@ class String
     [ /#{nformat}/, argfs ]
   end
 
-  (alias :__scanf__ :scanf) if self.instance_methods(false).include?(:scanf)
+  (alias __scanf__ scanf) if self.instance_methods(false).include?(:scanf)
   def scanf(format, &block)
     (re, argfs) = scanf_re(format)
 
