@@ -256,10 +256,10 @@ module Rdoba
 
       module ClassFunctions
          def <= functions
-            Rdoba::Log::update_functions functions, self, :+ ; end
+            Rdoba::Log.update_functions functions, self, :+ ; end
 
          def >= functions
-            Rdoba::Log::update_functions functions, self, :- ; end; end
+            Rdoba::Log.update_functions functions, self, :- ; end; end
 
       Initfunc = proc do
          self.class_variable_set :@@rdoba_log_prefix,
@@ -359,7 +359,7 @@ module Rdoba
          self.log_functions_set obj, functions
 
          pfx = self.log_prefix_get obj
-         code = Rdoba::Log::make_code functions, pfx
+         code = Rdoba::Log.make_code functions, pfx
          obj.class_eval code ; end
 
     def self.make_code functions, pfx
