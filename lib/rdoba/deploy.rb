@@ -14,10 +14,10 @@ class Hash
     res = {}
 
     self.keys.sort do |x,y|
-      if x =~ /=$/
-	y =~ /=$/ ? x <=> y : -1
+      if /=$/.match?(x)
+	/=$/.match?(y) ? x <=> y : -1
       else
-	y !~ /=$/ ? x <=> y : 1
+	!/=$/.match?(y) ? x <=> y : 1
       end
     end.each do |key|
 
