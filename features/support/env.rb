@@ -14,25 +14,25 @@ CodeClimate::TestReporter.start
 SimpleCov.start
 ##############################################
 
-RdobaSimSimpleHead=<<HEAD
-#!/usr/bin/env ruby
-
-require 'rdoba'
+RdobaSimSimpleHead=<<~HEAD
+  #!/usr/bin/env ruby
+  
+  require 'rdoba'
 HEAD
 
-RdobaCodeClassDeclaration=<<HEAD
-class Cls
-  def initialize
-    log > {:variable=>"value"}
+RdobaCodeClassDeclaration=<<~HEAD
+  class Cls
+    def initialize
+      log > {:variable=>"value"}
+    end
   end
-end
 HEAD
 
-RdobaSimClsHead=<<HEAD
-#!/usr/bin/env ruby
-
-require 'rdoba'
-class Cls
+RdobaSimClsHead=<<~HEAD
+  #!/usr/bin/env ruby
+  
+  require 'rdoba'
+  class Cls
 HEAD
 
 def format str
