@@ -331,7 +331,7 @@ module Rdoba
             list = [ :dbgl= ]
             (1..0xF).each do |x|
                (1..0xF).each do |y|
-                  idx = sprintf( "%x%x", x, y )
+                  idx = format( "%x%x", x, y )
                   list << "dbp#{idx}".to_sym << "dbg#{idx}".to_sym ; end; end
             Rdoba::Log.define_methods( target, list ) ; end ; end
 
@@ -393,7 +393,7 @@ module Rdoba
         code << "$dbgl_#{self.class}=0;"
         (1..0xF).each do |x|
           (1..0xF).each do |y|
-            idx = sprintf "%x%x", x, y
+            idx = format "%x%x", x, y
             code << "def dbp#{idx}(text); dbp(0x#{idx},text); end;"
             code << "def dbg#{idx}(text); dbg(0x#{idx},text); end;"; end; end; end
       code; end
