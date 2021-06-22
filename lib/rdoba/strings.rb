@@ -1,5 +1,6 @@
 #!/usr/bin/ruby -KU
 #coding:utf-8
+# frozen_string_literal: true
 
 STDERR.puts "Warning: the module 'string' has kept only for backward " \
             "compatibility\nPlease use 'rdoba :mixin' form instead"

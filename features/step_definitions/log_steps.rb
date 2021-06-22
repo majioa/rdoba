@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /appl(y|ied) Rdoba (Log|Debug) module(?: with set([\w\s,:]+ keywords?| a file name) for :(io|as|in|functions|prefix) options?| with an (invalid) :io option value)?(?: inside a (class))?(?:, and :as option pointing to (self|log))?/ do |var, kind, subs, opt, invalid, cls, as |
   if var == 'ied'
     rdoba_sim kind.downcase.to_sym, :init, subs, cls

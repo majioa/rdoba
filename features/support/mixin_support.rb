@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MixinSupport
    def random_string count
       Random.new.bytes( ( count + 1 ) / 2 ).split( '' ).map do |b|

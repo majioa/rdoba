@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'timeout'
 
 module Rdoba::Mixin::Wait_ifKernel

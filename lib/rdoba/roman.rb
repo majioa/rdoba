@@ -1,4 +1,5 @@
 #!/usr/bin/ruby -KU
+# frozen_string_literal: true
 
 class Numeric
    Roman = { 1 => 'I',

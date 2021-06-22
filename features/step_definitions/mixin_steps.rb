@@ -1,4 +1,6 @@
 #coding: utf-8
+# frozen_string_literal: true
+
 Допустим( /ꙇє примѣнена подпримѣсь \.([^\s]+) бисера рдоба/i ) do |подпримѣсь|
    require 'rdoba'
    case подпримѣсь
