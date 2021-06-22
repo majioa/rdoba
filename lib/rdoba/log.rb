@@ -302,7 +302,7 @@ module Rdoba
                          @__rdoba_log__||=RdobaLog.new;end;end"
          obj.class_eval "def self.__rdoba_log__;
                          @__rdoba_log__||=#{obj}::RdobaLog.new;end"
-         obj::RdobaLog.class_eval &Initfunc ; end
+         obj::RdobaLog.class_eval(&Initfunc) ; end
 
       def self.log_instance_setup obj
          obj.instance_eval "class ::RdobaLog;end"
@@ -311,7 +311,7 @@ module Rdoba
                             $__rdoba_log__||=::RdobaLog.new;end;end"
          obj.instance_eval "def self.__rdoba_log__;
                             $__rdoba_log__||=::RdobaLog.new;end"
-         ::RdobaLog.class_eval &Initfunc ; end
+         ::RdobaLog.class_eval(&Initfunc) ; end
 
       def self.log_link_for target, obj, funcname
          obj.send( "#{target}_eval", "def #{funcname};__rdoba_log__;end" )
