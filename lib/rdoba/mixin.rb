@@ -1,5 +1,5 @@
 #!/usr/bin/ruby -KU
-#encoding:utf-8
+# encoding:utf-8
          
 class String
    # TODO obsolete
