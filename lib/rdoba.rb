@@ -13,7 +13,7 @@ module Kernel
                if Rdoba.methods.include? key
                   if !value.is_a? Hash
                      value = { :value => value } ; end
-                  value.replace( { :self => self }.merge value )
+                  value.replace( { :self => self }.merge(value) )
                   Rdoba.send key, value ; end ; end ; end; end ; end ; end
 
 require 'rbconfig'

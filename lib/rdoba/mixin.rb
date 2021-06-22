@@ -13,8 +13,8 @@ module Rdoba
 
       module CompareString
          def compare_to value, opts = {}
-            if ( opts == :ignore_diacritics ||
-               opts.class == Hash && opts.key?( :ignore_diacritics ) )
+            if  opts == :ignore_diacritics ||
+               opts.class == Hash && opts.key?( :ignore_diacritics ) 
                # TODO verify composite range
                def crop_diacritics(x)
                   (x < 0x300 ||
