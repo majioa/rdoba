@@ -214,9 +214,9 @@ module Rdoba
                         h[ v[ 0 ] ] = [ h[ v[ 0 ] ] ] ; end
 
                      if v.size > 2
-                        h[ v [ 0 ] ].concat v[ 1..-1 ]
+                        h[ v[ 0 ] ].concat v[ 1..-1 ]
                      else
-                        h[ v [ 0 ] ] << v[ 1 ] ; end
+                        h[ v[ 0 ] ] << v[ 1 ] ; end
                   else
                      h[ v[ 0 ] ] = v.size > 2 && v[ 1..-1] || v[ 1 ] ; end
                else
