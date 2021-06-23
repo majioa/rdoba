@@ -120,7 +120,7 @@ Then /see the (variable|string|number|array|'true' value) output(?: with the :(b
           'leave' => '>>>'
         }[notice] || '>'
     symr =
-      sym.to_s.gsub ('*') do |x|
+      sym.to_s.gsub('*') do |x|
         "\\#{x}"
       end
     prefices = match_keywords prefices
