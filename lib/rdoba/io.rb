@@ -149,11 +149,10 @@ class String
       ostr[0...ss.pre_match.size - pos] = ss.pre_match[pos..-1]
       pos = ss.pos
 
-      if ss.post_match[0] == "\n"[0]
-        res = ostr
-        pos += 1
-        ostr = ''
-      end
+      next unless ss.post_match[0] == "\n"[0]
+      res = ostr
+      pos += 1
+      ostr = ''
     end
 
     ostr[0...ss.rest.size] = ss.rest
