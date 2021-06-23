@@ -13,8 +13,8 @@ class Hash
   private
 
   def each_special(spec)
-    (@order | self.keys).each do |key|
-      if self.has_key? key
+    (@order | keys).each do |key|
+      if has_key? key
         case spec
         when Hash::Each::General
           yield key, self[key]

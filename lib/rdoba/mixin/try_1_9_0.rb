@@ -1,7 +1,7 @@
 module Rdoba::Mixin::TryObject
   def try(method, *args)
-    if self.respond_to?(method)
-      self.send(method, *args)
+    if respond_to?(method)
+      send(method, *args)
     end
   end
 end

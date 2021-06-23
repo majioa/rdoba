@@ -41,7 +41,7 @@ class String
   RomanRe = /(#{Numeric::RomanDigits.join('|')})/
 
   def rom
-    numbers = self.upcase.scan(RomanRe).flatten.map { |x| Numeric::RomanToInteger[x] }
+    numbers = upcase.scan(RomanRe).flatten.map { |x| Numeric::RomanToInteger[x] }
     numbers.sort do |x, y|
       if x < y
         raise 'Invalid roman number'

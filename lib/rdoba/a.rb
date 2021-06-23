@@ -5,7 +5,7 @@ require 'rdoba/debug'
 
 class Array
   def geta(index, options = {}) #TODO => [] + class Index
-    dbp11 "[geta] <<< array = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
+    dbp11 "[geta] <<< array = #{inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
     if index.class == Array
@@ -28,7 +28,7 @@ class Hash
         (options[:сокр] && (self[options[:сокр][cid]] || self[options[:сокр].reverse[cid]]))
 
     if not res and options[:try_regexp]
-      self.keys.each do |key|
+      keys.each do |key|
         break res = self[key] if key.rmatch(cid)
         if options[:сокр]
           options[:сокр].each_pair do |val1, val2|
@@ -44,7 +44,7 @@ class Hash
   public
 
   def geta(index, options = {}) #TODO => [] + class Index
-    dbp11 "[geta] <<< hash = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
+    dbp11 "[geta] <<< hash = #{inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
     if index.class == Array
