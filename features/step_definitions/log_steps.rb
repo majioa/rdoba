@@ -185,10 +185,8 @@ Then /see the (standard error|exception) info(.*)/ do |subject, notice|
         raise "Invalid answer: #{@res.inspect}, must be like " + "'StandardError:%> StandardError\n\tstandard error " +
                 "extended info'"
       end
-    else
-      if @res !~ /StandardError:%> StandardError/
-        raise "Invalid answer: #{@res.inspect}, must be like " + "'StandardError:%> StandardError'"
-      end
+    elsif @res !~ /StandardError:%> StandardError/
+      raise "Invalid answer: #{@res.inspect}, must be like " + "'StandardError:%> StandardError'"
     end
   end
 end
