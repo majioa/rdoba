@@ -5,31 +5,31 @@ class Hash
 
   class Each
     General = 0
-    Pair    = 1
-    Key	    = 2
-    Value   = 3
+    Pair = 1
+    Key = 2
+    Value = 3
   end
 
-private
+  private
 
   def each_special(spec)
     (@order | self.keys).each do |key|
       if self.has_key? key
-	case spec
-	when Hash::Each::General
-	  yield key, self[key]
-	when Hash::Each::Pair
-	  yield key, self[key]
-	when Hash::Each::Key
-	  yield key
-	when Hash::Each::Value
-	  yield self[key]
-	end
+        case spec
+        when Hash::Each::General
+          yield key, self[key]
+        when Hash::Each::Pair
+          yield key, self[key]
+        when Hash::Each::Key
+          yield key
+        when Hash::Each::Value
+          yield self[key]
+        end
       end
     end
   end
 
-public
+  public
 
   def order=(order)
     return nil if order.class != Array
@@ -38,13 +38,14 @@ public
   end
 
   def disorder
-    @order = nil; self
+    @order = nil
+    self
   end
 
-  alias :__each__ :each
-  alias :__each_pair__ :each_pair
-  alias :__each_key__ :each_key
-  alias :__each_value__ :each_value
+  alias __each__ each
+  alias __each_pair__ each_pair
+  alias __each_key__ each_key
+  alias __each_value__ each_value
 
   def each(&block)
     @order ? each_special(Hash::Each::General, &block) : __each__(&block)
@@ -61,6 +62,4 @@ public
   def each_value(&block)
     @order ? each_special(Hash::Each::Value, &block) : __each_value__(&block)
   end
-
 end
-

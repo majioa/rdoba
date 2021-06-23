@@ -2,11 +2,10 @@
 #coding:utf-8
 
 STDERR.puts "Warning: the module 'string' has kept only for backward " \
-            "compatibility\nPlease use 'rdoba :mixin' form instead"
+              "compatibility\nPlease use 'rdoba :mixin' form instead"
 
 class String
-  alias :to_p :to_s
+  alias to_p to_s
 end
 
-rdoba :mixin => [ :case, :reverse, :compare ]
-
+rdoba mixin: [:case, :reverse, :compare]
