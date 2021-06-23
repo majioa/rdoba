@@ -32,7 +32,7 @@ module Kernel
       $:.each do |dir|
         begin
           Dir.foreach(dir) do |file|
-            next unless file =~ /^#{name}\.(rb|so)$/
+            next unless /^#{name}\.(rb|so)$/.match?(file)
             dbp14 "[sub_require]> Require Dir #{dir}/#{name} for #{file}"
             r1 = require_dir(dir, name + '.modules')
             r2 = require_dir(dir, name)
