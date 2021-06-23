@@ -164,7 +164,7 @@ module Rdoba
     funcname = (options[:as] ||= :log).to_s.to_sym
     target = options[:in] || options[:self]
 
-    if target.class == Object
+    if target.instance_of?(Object)
       Rdoba::Log.log_instance_setup(TOPLEVEL_BINDING.eval 'self')
     else
       Rdoba::Log.log_class_setup target
@@ -176,7 +176,7 @@ module Rdoba
       Rdoba::Log.try_define_compat(functions, target)
       target.__rdoba_log__
     else
-      if target.class == Object
+      if target.instance_of?(Object)
         Rdoba::Log.log_link_for :instance, target, funcname
       else
         Rdoba::Log.log_link_for :class, target, funcname
