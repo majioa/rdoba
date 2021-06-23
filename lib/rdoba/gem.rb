@@ -5,7 +5,7 @@ require 'rbconfig'
 
 module Rdoba
   def self.gemroot(gemname = nil, path = '')
-    if !gem
+    unless gem
       raise 'Undefined gem name'
     end
     g = Gem::Specification.find_by_name(gemname)
