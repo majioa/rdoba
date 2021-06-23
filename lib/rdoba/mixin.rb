@@ -58,7 +58,7 @@ module Rdoba
     end
 
     module CaseString
-      Fixups = [:upcase, :downcase]
+      Fixups = %i[upcase downcase]
 
       Aliases = { __rdoba_mixin_upcase_orig__: :upcase, __rdoba_mixin_downcase_orig__: :downcase }
 
@@ -217,7 +217,7 @@ module Rdoba
       end
 
       def __rdoba_mixin_changecase__(reg, options = {})
-        if ![:up, :down].include? reg
+        if !%i[up down].include? reg
           return self
         end
 
@@ -356,7 +356,7 @@ module Rdoba
       when :time
         require_relative 'mixin/time'
         if File.respond_to?(:mtime)
-          [:mtime, :atime, :ctime].each do |name|
+          %i[mtime atime ctime].each do |name|
             m = Mixin::Time.instance_method(name)
             ::File.send(:define_singleton_method, name, m)
           end
