@@ -41,7 +41,7 @@ end
 
 class NilClass
   def =~(value)
-    value == nil
+    value.nil?
   end
 
   def +(value)
