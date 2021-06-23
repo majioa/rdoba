@@ -1,4 +1,4 @@
-When /appl(y|ied) Rdoba (Log|Debug) module(?: with set([\w\s,:]+ keywords?| a file name) for :(io|as|in|functions|prefix) options?| with an (invalid) :io option value)?(?: inside a (class))?(?:, and :as option pointing to (self|log))?/ do |var, kind, subs, opt, invalid, cls, as|
+When /appl(y|ied) Rdoba (Log|Debug) module(?: with set([\w\s,:]+ keywords?| a file name) for :(io|as|in|functions|prefix) options?| with an (invalid) :io option value)?(?: inside a (class))?(?:, and :as option pointing to (self|log))?/ do |var, kind, subs, opt, _invalid, cls, as|
   if var == 'ied'
     rdoba_sim kind.downcase.to_sym, :init, subs, cls
   end
@@ -94,7 +94,7 @@ When /look into(?: the)? (stdout|stderr|file|IO)/ do |ioname|
     end
 end
 
-When /(remove|add) :(basic|extended|info|warn|enter|leave|compat) keyword.* :(functions) option(?: to the (self) object)?/ do |act, key, opt, obj|
+When /(remove|add) :(basic|extended|info|warn|enter|leave|compat) keyword.* :(functions) option(?: to the (self) object)?/ do |act, key, _opt, obj|
   if act == 'remove'
     rdoba_sim :log, :func, obj, :>=, [key.to_sym]
   else
@@ -102,7 +102,7 @@ When /(remove|add) :(basic|extended|info|warn|enter|leave|compat) keyword.* :(fu
   end
 end
 
-When /clear the :(functions) option/ do |opt|
+When /clear the :(functions) option/ do |_opt|
   rdoba_sim :log, :func, :log, :>=, [:*]
 end
 
@@ -230,7 +230,7 @@ Given(/^selected full Rdoba Log test plan( with self keyword)?$/) do |slf|
 end
 
 When(/^we run the test plan$/) do
-  Open3.popen3(@testplan) do |stdin, stdout, stderr, wait_thr|
+  Open3.popen3(@testplan) do |_stdin, stdout, stderr, _wait_thr|
     @out = stdout.read
     @err = stderr.read
   end

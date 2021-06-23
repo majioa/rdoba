@@ -298,7 +298,7 @@ module Rdoba
         self <= Rdoba::Log.class_variable_get(:@@options)[:functions]
       end
 
-    def self.log_init_prefix(obj, is_self = false)
+    def self.log_init_prefix(_obj, _is_self = false)
       options = Rdoba::Log.class_variable_get :@@options
       pfx = ';if Rdoba::Log.enabled?;(Rdoba::Log::log @@rdoba_log_io_method,"'
       if prefix = (options[:prefix].is_a?(Array) && options[:prefix] || [options[:prefix]])
