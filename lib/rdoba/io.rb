@@ -125,7 +125,7 @@ class String
           end
       end
 
-      if block_given?
+      if block
         pass = []
         (1..block.arity).each do |i|
           pass << "rline[#{i}]"
