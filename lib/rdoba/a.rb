@@ -91,7 +91,7 @@ class Hash
         obj[par_idx] = o
       end
       obj = o
-      o = (obj.class == Hash) ? obj.geta_value(idx, options) : obj[idx]
+      o = obj.class == Hash ? obj.geta_value(idx, options) : obj[idx]
       dbp14 "[seta]>> cur idx: #{idx.inspect}, parent obj: #{obj.inspect}, obj: #{o.inspect}"
       unless o
         if idx == index.last
