@@ -4,7 +4,7 @@ class Array
   private
 
   def __comby(i, size)
-    s = "0#{sprintf('%.*b', size, i)}0"
+    s = "0#{format('%.*b', size, i)}0"
     v = { res: [], c0: 0, c1: 0, j: 0 }
 
     def up1(v)
