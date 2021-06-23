@@ -94,7 +94,7 @@ end
 
 class String
   def -(str)
-    #TODO make smart search for match in the 'str', when only last subpart matched to 'self'
+    #TODO: make smart search for match in the 'str', when only last subpart matched to 'self'
     len = self.size
     bc = ec = nil
     (0...len).each do |idx|
