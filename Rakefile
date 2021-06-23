@@ -4,36 +4,36 @@ require 'rdoc/task'
 
 Cucumber::Rake::Task.new
 
-#RDoc::Task.new do |rdoc|
+# RDoc::Task.new do |rdoc|
 #   rdoc.main = "README.md"
 #   rdoc.rdoc_files.include( "README.md", "lib/**/*.rb" ) ; end
 #
-#desc "Prepare bundler"
-#task :bundleup do
+# desc "Prepare bundler"
+# task :bundleup do
 #  sh 'gem install bundler --version "~> 1.5" --no-ri --no-rdoc'
-#end
+# end
 #
-#desc "Requires"
-#task :req do
+# desc "Requires"
+# task :req do
 #   $: << File.expand_path( '../lib', __FILE__ )
 #   require 'bundler/gem_helper'
 #
 #   Bundler::GemHelper.install_tasks
-#end
+# end
 #
-#desc "Prepare bundle environment"
-#task :up do
+# desc "Prepare bundle environment"
+# task :up do
 #  sh 'bundle install'
-#end
+# end
 #
-#desc "Distilled clean"
-#task :distclean do
+# desc "Distilled clean"
+# task :distclean do
 #   sh 'git clean -fd'
 #   # sh 'cat .gitignore | while read mask; do rm -rf $(find -iname "$mask"); done'
-#end
+# end
 #
-#desc "Generate gem"
-#namespace :gem do
+# desc "Generate gem"
+# namespace :gem do
 #  task :build => [ :req ] do
 #    sh 'gem build rdoba.gemspec'
 #  end
@@ -53,12 +53,12 @@ Cucumber::Rake::Task.new
 #
 #  task :make => [ :build, :install, :publish ]
 #  task :default => :make
-#end
+# end
 #
 task(:default).clear
 task :default => :cucumber
-#task :codeclimate => :cucumber
-#task :all => [ :bundleup, :up, :cucumber, :'gem:make', :distclean ]
-#task :build => [ :bundleup, :up, :cucumber, :rdoc,
+# task :codeclimate => :cucumber
+# task :all => [ :bundleup, :up, :cucumber, :'gem:make', :distclean ]
+# task :build => [ :bundleup, :up, :cucumber, :rdoc,
 #   :'gem:build', :'gem:install', :distclean ]
 
