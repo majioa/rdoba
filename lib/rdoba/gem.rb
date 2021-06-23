@@ -1,6 +1,4 @@
 #!/usr/bin/ruby -KU
-#encoding:utf-8
-
 require 'rbconfig'
 
 module Rdoba

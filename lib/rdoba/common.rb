@@ -1,6 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
-
 class Object
   def xor(val1)
     val0 = (not not self)

@@ -1,6 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
-
 require 'rdoba/common'
 require 'rdoba/debug'
 

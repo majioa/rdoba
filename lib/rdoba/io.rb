@@ -1,6 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
-
 require 'strscan'
 require 'rdoba/re'
 require 'rdoba/roman'
