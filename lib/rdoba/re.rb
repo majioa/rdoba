@@ -6,7 +6,7 @@ class String
     ostr = self.dup
     res = ''
     while true
-      m = ostr.match(/(?:([+\[\]\\().*?{}^$\/|])|«([^«]*)»)/u)
+      m = ostr.match(%r{(?:([+\[\]\\().*?{}^$/|])|«([^«]*)»)}u)
       break unless m
       res += m.pre_match + (m[2] || m[1] && ('\\' + m[1]))
       ostr = m.post_match
