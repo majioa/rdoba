@@ -39,7 +39,7 @@ class Array
   public
 
   def each_comby(*args)
-    return self if self.empty? or not block_given?
+    return self if self.empty? or !block_given?
     if args.include?(:backward)
       yield [self.dup]
       ((1 << (self.size - 1)) - 2).downto(0) do |i|

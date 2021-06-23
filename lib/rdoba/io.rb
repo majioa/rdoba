@@ -15,7 +15,7 @@ module Kernel
     fmt = format.split('%')
     nformat = fmt.shift
 
-    while (not fmt.empty?)
+    while (!fmt.empty?)
       part = fmt.shift
       part = '%' + fmt.shift unless part
       if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and $2 == 'P'
