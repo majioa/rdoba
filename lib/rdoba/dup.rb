@@ -9,7 +9,7 @@ class Array
       res = []
 
       def sub_dup(value)
-        if value.class.to_s =~ /(Hash|Array)/
+        if /(Hash|Array)/.match?(value.class.to_s)
           value.dup(:recursive)
         else
           begin
@@ -40,7 +40,7 @@ class Hash
       res = {}
 
       def sub_dup(value)
-        if value.class.to_s =~ /(Hash|Array)/
+        if /(Hash|Array)/.match?(value.class.to_s)
           value.dup(:recursive)
         else
           begin
