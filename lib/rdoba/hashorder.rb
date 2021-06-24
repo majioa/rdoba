@@ -16,6 +16,7 @@ class Hash
   def each_special(spec)
     (@order | self.keys).each do |key|
       next unless self.has_key? key
+
       case spec
       when Hash::Each::General
         yield key, self[key]
