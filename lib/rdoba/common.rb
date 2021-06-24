@@ -82,14 +82,14 @@ class Array
 
   alias __get__ []
   def [](index, *args)
-    return __get__(index.to_i, *args) if index.class == String and index =~ /^\d+$/
+    return __get__(index.to_i, *args) if index.instance_of?(String) and index =~ /^\d+$/
 
     __get__(index, *args)
   end
 
   alias __set__ []=
   def []=(index, value, *args)
-    return __set__(index.to_i, value, *args) if index.class == String and index =~ /^\d+$/
+    return __set__(index.to_i, value, *args) if index.instance_of?(String) and index =~ /^\d+$/
 
     __set__(index, value, *args)
   end
@@ -109,9 +109,9 @@ class String
 
   alias __match__ =~
   def =~(value)
-    if value.class == String
+    if value.instance_of?(String)
       self == value
-    elsif value.class == Regexp
+    elsif value.instance_of?(Regexp)
       value =~ self
     else
       __match__(value)
@@ -138,10 +138,10 @@ class Hash
   def |(inval)
     res = self.dup
     inval.each_pair do |key, val|
-      if val.class == res[key].class
-        if val.class == Hash
+      if val.instance_of?(res[key].class)
+        if val.instance_of?(Hash)
           res[key] |= inval[key]
-        elsif val.class == Array
+        elsif val.instance_of?(Array)
           res[key].concat val
         else
           res[key] = val
@@ -161,7 +161,7 @@ class Hash
     h = {}
     self.each_pair do |key, value|
       if h.key? value
-        if h[value].class == Array
+        if h[value].instance_of?(Array)
           h[value] << key
         else
           h[value] = [h[value], key]
