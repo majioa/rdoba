@@ -177,8 +177,8 @@ module Rdoba
       target.__rdoba_log__
     elsif target.class == Object
       Rdoba::Log.log_link_for :instance, target, funcname
-      else
-        Rdoba::Log.log_link_for :class, target, funcname
+    else
+      Rdoba::Log.log_link_for :class, target, funcname
     end
   end
 
@@ -331,9 +331,13 @@ module Rdoba
       obj.class_eval 'class RdobaLog;end', __FILE__, __LINE__
       obj.class_eval 'def __rdoba_log__;@__rdoba_log__||=RdobaLog.new;end', __FILE__, __LINE__
       obj.class_eval 'class << self; def self.__rdoba_log__;
-                         @__rdoba_log__||=RdobaLog.new;end;end', __FILE__, __LINE__ - 1
+                         @__rdoba_log__||=RdobaLog.new;end;end',
+                     __FILE__,
+                     __LINE__ - 1
       obj.class_eval "def self.__rdoba_log__;
-                         @__rdoba_log__||=#{obj}::RdobaLog.new;end", __FILE__, __LINE__ - 1
+                         @__rdoba_log__||=#{obj}::RdobaLog.new;end",
+                     __FILE__,
+                     __LINE__ - 1
       obj::RdobaLog.class_eval(&Initfunc)
     end
 
@@ -341,9 +345,13 @@ module Rdoba
       obj.instance_eval 'class ::RdobaLog;end', __FILE__, __LINE__
       obj.instance_eval 'def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end', __FILE__, __LINE__
       obj.instance_eval 'class << self; def self.__rdoba_log__;
-                            $__rdoba_log__||=::RdobaLog.new;end;end', __FILE__, __LINE__ - 1
+                            $__rdoba_log__||=::RdobaLog.new;end;end',
+                        __FILE__,
+                        __LINE__ - 1
       obj.instance_eval 'def self.__rdoba_log__;
-                            $__rdoba_log__||=::RdobaLog.new;end', __FILE__, __LINE__ - 1
+                            $__rdoba_log__||=::RdobaLog.new;end',
+                        __FILE__,
+                        __LINE__ - 1
       ::RdobaLog.class_eval(&Initfunc)
     end
 
