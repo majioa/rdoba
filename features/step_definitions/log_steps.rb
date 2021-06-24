@@ -205,6 +205,7 @@ Then /see(?: a| the)? (nothing|warning|.* error exception)/ do |subject|
     if @res !~ /Warning:/
       raise "Invalid answer: #{@res.inspect}, must be a warning " + 'with the description'
     end
+
     'log\': main is not a class/module (TypeError)'
   when /no method error/
     if @res !~ /undefined method .* \(NoMethodError\)/

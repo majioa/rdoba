@@ -32,6 +32,7 @@ class Fixnum
 
     raise "Base of number can't be equal or less then zero" if base <= 0
     raise "Padding count numberr can't be equal or less then zero" if v[:padding] <= 0
+
     value = self
     minus =
       if value < 0

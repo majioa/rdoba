@@ -30,6 +30,7 @@ class Hash
         next
       elsif key =~ /^%([^%].*)/
         next warn 'Warning: undefined variable ' + "#{$1.inspect} found. Ignoring..." unless vars.key?($1)
+
         var = vars[$1].dup
         if var.class == Hash
           res |= var.deploy(vars)

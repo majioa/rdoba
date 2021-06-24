@@ -9,6 +9,7 @@ class String
     while true
       m = ostr.match(/(?:([+\[\]\\().*?{}^$\/|])|«([^«]*)»)/u)
       break unless m
+
       res += m.pre_match + (m[2] || m[1] && ('\\' + m[1]))
       ostr = m.post_match
     end
