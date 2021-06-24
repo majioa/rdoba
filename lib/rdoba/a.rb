@@ -85,7 +85,7 @@ class Hash
     o = self
     dbp14 "[seta]>> self: #{o.inspect}"
     set_idx = index.pop
-    par_class = set_idx =~ /^\d+$/ ? Array : Hash
+    par_class = /^\d+$/.match?(set_idx) ? Array : Hash
     par_idx = nil
     index.each do |idx|
       unless o
