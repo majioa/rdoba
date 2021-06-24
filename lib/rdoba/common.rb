@@ -8,7 +8,7 @@ class Object
     ((val0) and (not val1)) or ((not val0) and (val1))
   end
 
-  def co(method, *args) #calls any method
+  def co(method, *_args) #calls any method
     eval "#{method}(*args)"
   end
 
@@ -66,7 +66,7 @@ class NilClass
     0
   end
 
-  def <=>(value)
+  def <=>(_value)
     -1
   end
 end
