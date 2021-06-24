@@ -272,7 +272,7 @@ module Rdoba
       def get_stack_function_data_at_level(level)
         raise Exception
       rescue Exception
-        #TODO check match a method containing '`'
+        # TODO check match a method containing '`'
         $@[level] =~ /([^\/]+):(\d+):in `(.*?)'$/
         [$1, $3, $2]
       end
