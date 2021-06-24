@@ -16,7 +16,7 @@ module Rdoba
 
   def self.os
     @@os ||=
-      (
+      begin
         host_os = RbConfig::CONFIG['host_os']
         case host_os
         when /(mswin|msys|mingw|cygwin|bccwin|wince|emc)/
@@ -36,6 +36,6 @@ module Rdoba
         else
           raise "unknown os: #{host_os.inspect}"
         end
-      )
+      end
   end
 end
