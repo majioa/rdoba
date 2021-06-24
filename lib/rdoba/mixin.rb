@@ -258,12 +258,12 @@ module Rdoba
             end
           elsif h.key? v
             if !h[v].is_a? Array
-                h[v] = [h[v]]
-              end
+              h[v] = [h[v]]
+            end
 
-              h[v] << v
-            else
-              h[v] = nil
+            h[v] << v
+          else
+            h[v] = nil
           end
         end
 
