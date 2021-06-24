@@ -91,7 +91,7 @@ class Numeric
 
     res += pad_char * (v[:padding].to_i - res.size) if res.size < v[:padding].to_i
 
-    plain = (v[:be] ? res.reverse(String::ByteByByte) : res).to_p
-    plain
+    (v[:be] ? res.reverse(String::ByteByByte) : res).to_p
+    
   end
 end
