@@ -178,8 +178,8 @@ module Rdoba
       target.__rdoba_log__
     elsif target.class == Object
       Rdoba::Log.log_link_for :instance, target, funcname
-      else
-        Rdoba::Log.log_link_for :class, target, funcname
+    else
+      Rdoba::Log.log_link_for :class, target, funcname
     end
   end
 
