@@ -198,7 +198,7 @@ end
 Then /see(?: a| the)? (nothing|warning|.* error exception)/ do |subject|
   case subject
   when 'nothing'
-    if !@res.empty?
+    unless @res.empty?
       raise "Invalid answer: #{@res.inspect}, must be empty"
     end
   when 'warning'
@@ -227,7 +227,7 @@ Given(/^selected full Rdoba Log test plan( with self keyword)?$/) do |slf|
     else
       'fulltest_as_log.rb.in'
     end
-  if !File.exist? @testplan
+  unless File.exist? @testplan
     raise "Invalid file #{@testplan} for the specified full test plan"
   end
 end
@@ -240,7 +240,7 @@ When(/^we run the test plan$/) do
 end
 
 Then(/^we see no error on its output$/) do
-  if !@err.empty?
+  unless @err.empty?
     raise "Error found: #{@err}"
   end
 end
