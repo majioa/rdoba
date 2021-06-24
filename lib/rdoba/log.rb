@@ -204,7 +204,7 @@ module Rdoba
       end
     end
 
-    module DebugCompat # TODO compat
+    module DebugCompat # TODO: compat
       def dbgl
         @dbgl
       end
@@ -274,7 +274,7 @@ module Rdoba
       def get_stack_function_data_at_level(level)
         raise Exception
       rescue Exception
-        #TODO check match a method containing '`'
+        #TODO: check match a method containing '`'
         $@[level] =~ /([^\/]+):(\d+):in `(.*?)'$/
         [$1, $3, $2]
       end
@@ -326,7 +326,7 @@ module Rdoba
       options = Rdoba::Log.class_variable_get :@@options
       io = options[:io] || $stdout
 
-      # TODO puts costomize
+      # TODO: puts costomize
       io_m = io.method :puts
     end
 
@@ -402,7 +402,7 @@ module Rdoba
     def self.update_functions(functions, obj, method)
       if functions.is_a?(Array) && functions.include?(:*)
         functions = %i[basic enter leave warn info extended compat]
-      end # TODO compat
+      end # TODO: compat
       cf = self.log_functions_get obj
       functions =
         cf.send(
