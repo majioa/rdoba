@@ -1,6 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
-
 class String
   def to_res
     ostr = self.dup

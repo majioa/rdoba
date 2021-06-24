@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # Author:: Malo Skrylevo <majioa@yandex.ru>
 # License:: MIT
 #
