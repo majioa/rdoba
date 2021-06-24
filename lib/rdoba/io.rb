@@ -48,7 +48,7 @@ end
 
 class String
   def scanf_re(format)
-    fss = StringScanner.new(format) # TODO remove scanner in favor of match
+    fss = StringScanner.new(format) # TODO: remove scanner in favor of match
     nformat = ''
 
     pos = 0
