@@ -55,7 +55,7 @@ When /issue an? :(extended|info|warn|enter|leave|compat) output of a variable?/ 
   when 'enter'
     rdoba_sim :log, :func, :log, :+, { variable: 'value' }
   when 'leave'
-    rdoba_sim :log, :func, :log, :-, true # TODO check return
+    rdoba_sim :log, :func, :log, :-, true #  TODO check return
   when 'compat'
     rdoba_sim :log, :func, :dbp11, "'variable: \"value\"'"
   end
