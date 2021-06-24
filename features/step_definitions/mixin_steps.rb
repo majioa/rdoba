@@ -298,7 +298,8 @@ end
 # вселeнную</font>
 # STR
 #
-# 
+
+#
 #     str = '/font><font size="4">III</font><i>  </i>греч.<font size="4"><i></i>  </font><font size="4" face="Irmologion Ucs">Мёсzца ѓvгуста въ Gi-й дeнь. Слyжба с™и1телю и3 чудотв0рцу тЂхwну, є3пcкпу вор0нежскому.</font>13 августа, Тихона Воронежского, заголовок службы m_aug\13p.hip'
 #     re = /<font size="4" face="Irmologion Ucs">([ -"'-\?A-BD-HJ-\[\]`-hj-\}¤¦-§©«-®±µ-·»Ё-ЌЎ-яё-ќў-џҐ-ґ–-—‘-‚“-„†-•…‰‹-›€№™∙]+?)<\/font>/
 #
