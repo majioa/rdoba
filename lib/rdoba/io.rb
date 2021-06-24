@@ -22,7 +22,7 @@ module Kernel
       if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and $2 == 'P'
         keys = $1 || ''
         str = $3 || ''
-        if keys =~ /(-)?([0-9*]*)\.?([0-9\*]*)(\+?)/
+        if keys =~ /(-)?([0-9*]*)\.?([0-9*]*)(\+?)/
           value = args.shift
           indent = ' ' * ($2 == '*' ? args.shift : $2).to_i
           plain =
