@@ -334,7 +334,7 @@ module Rdoba
         Mixin::CaseString::Fixups.each do |e|
           ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
         end # trap NameError
-        ::String.send :include, Mixin::CaseString
+        ::String.include Mixin::CaseString
       when :reverse
         Mixin::ReverseString::Aliases.each do |k, v|
           ::String.send :alias_method, k, v
@@ -342,15 +342,15 @@ module Rdoba
         Mixin::ReverseString::Fixups.each do |e|
           ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
         end # trap NameError
-        String.send :include, Mixin::ReverseString
+        String.include Mixin::ReverseString
       when :compare
-        String.send :include, Mixin::CompareString
+        String.include Mixin::CompareString
       when :to_h
         if [].respond_to?(:to_h)
           m = Mixin::To_hArray.instance_method(:to_h)
           Array.send(:define_method, :to_h, m)
         else
-          Array.send(:include, Mixin::To_hArray)
+          Array.include Mixin::To_hArray
         end
       when :time
         require_relative 'mixin/time'
@@ -360,17 +360,17 @@ module Rdoba
             ::File.send(:define_singleton_method, name, m)
           end
         else
-          ::File.send(:extend, Mixin::Time)
+          ::File.extend Mixin::Time
         end
       when :wait_if
-        Object.send :include, Mixin::Wait_ifKernel
+        Object.include Mixin::Wait_ifKernel
       when :split_by
-        Array.send :include, Mixin::Split_byArray
+        Array.include Mixin::Split_byArray
       when :try
-        Object.send :include, Mixin::TryObject
+        Object.include Mixin::TryObject
       when :empty
-        Object.send :include, Mixin::EmptyObject
-        NilClass.send :include, Mixin::EmptyNilClass
+        Object.include Mixin::EmptyObject
+        NilClass.include Mixin::EmptyNilClass
       else
         raise(Mixin::InvalidOption, 'Invalid rdoba-mixin options key: ' + "#{value.to_s}")
       end
