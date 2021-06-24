@@ -57,7 +57,7 @@ module Kernel
     dbp11 "[require] <<< name = #{name}"
     begin
       res = __require__ name
-    rescue => bang
+    rescue StandardError => bang
       puts "Lib internal error: #{$!.class} -> #{$!}\n\t#{$@.join("\n\t")}"
       exit
     end
