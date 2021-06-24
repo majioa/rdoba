@@ -151,6 +151,7 @@ class String
       pos = ss.pos
 
       next unless ss.post_match[0] == "\n"[0]
+
       res = ostr
       pos += 1
       ostr = ''

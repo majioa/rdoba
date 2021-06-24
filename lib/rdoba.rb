@@ -8,8 +8,10 @@ module Kernel
     options.each do |option|
       (option.is_a?(Hash) && option || { option.to_s.to_sym => {} }).each_pair do |key, value|
         next unless Modules.include? key
+
         require "rdoba/#{key}"
         next unless Rdoba.methods.include? key
+
         if !value.is_a? Hash
           value = { value: value }
         end

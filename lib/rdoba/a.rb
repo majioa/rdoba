@@ -34,6 +34,7 @@ class Hash
         break res = self[key] if key.rmatch(cid)
 
         next unless options[:сокр]
+
         options[:сокр].each_pair do |val1, val2|
           break res = self[key] if key.rmatch(cid.gsub(/#{val1}/, val2)) or key.rmatch(cid.gsub(/#{val2}/, val1))
         end
