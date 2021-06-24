@@ -9,7 +9,7 @@ class String
   def to_i(base = 10, *opts)
     v = parse_opts(opts)
     if v[:be]
-      str, sign, num = (self.match /\s*(-?)([0-9a-fx]+)/u).to_a
+      str, sign, num = (match /\s*(-?)([0-9a-fx]+)/u).to_a
       if str
         n = num.reverse._rdoba_to_i(base)
         sign.empty? && n || -n
