@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Rdoba::Mixin::TryObject
   def try(method, *args)
     if self.respond_to?(method)

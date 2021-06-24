@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rdoba'
 require 'tmpdir'
 require 'open3'

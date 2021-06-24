@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 # Author:: Malo Skrylevo <majioa@yandex.ru>
 # License:: MIT
