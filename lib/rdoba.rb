@@ -42,7 +42,7 @@ module Rdoba
         when /(mswin|msys|mingw|cygwin|bccwin|wince|emc)/
           plat = $1 == 'mswin' && 'native' || $1
           out = `ver`.encode('US-ASCII', invalid: :replace, undef: :replace)
-          if out =~ /\[.* (\d+)\.([\d\.]+)\]/
+          if out =~ /\[.* (\d+)\.([\d.]+)\]/
             "windows-#{plat}-#{$1 == '5' && 'xp' || 'vista'}-#{$1}.#{$2}"
           else
             "windows-#{plat}"
