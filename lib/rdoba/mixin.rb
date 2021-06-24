@@ -21,7 +21,7 @@ module Rdoba
             (x < 0x300 || x > 0x36f && x < 0x483 || x > 0x487 && x < 0xa67c || x > 0xa67d) && x || nil
           end
 
-          (self.unpack('U*').map do |x| crop_diacritics(x)end.compact) <=>
+          (unpack('U*').map do |x| crop_diacritics(x)end.compact) <=>
             (value.unpack('U*').map do |x| crop_diacritics(x)end.compact)
         else
           self <=> value
@@ -41,15 +41,15 @@ module Rdoba
 
         if [:byte_by_byte, String::ByteByByte].include?(step)
           arr = []
-          self.each_byte do |byte|
+          each_byte do |byte|
             arr << byte.chr
           end
-          arr.reverse.join.force_encoding(self.encoding)
+          arr.reverse.join.force_encoding(encoding)
         elsif step == 1
           __rdoba_mixin_reverse_orig__
         elsif step > 1
           res = ''
-          offset = (self.size + 1) / step * step - step
+          offset = (size + 1) / step * step - step
           (0..offset).step(step) do |shift|
             res += self[offset - shift..offset - shift + 1]
           end
@@ -196,7 +196,7 @@ module Rdoba
 
         def ord
           a = nil
-          self.each_byte do |b|
+          each_byte do |b|
             case (b & 0xC0)
             when 0xc0
               a = (b & 0x3F)
@@ -210,11 +210,11 @@ module Rdoba
       end
 
       def __rdoba_mixin_downcase__(options = {})
-        self.__rdoba_mixin_changecase__ :down, options
+        __rdoba_mixin_changecase__ :down, options
       end
 
       def __rdoba_mixin_upcase__(options = {})
-        self.__rdoba_mixin_changecase__ :up, options
+        __rdoba_mixin_changecase__ :up, options
       end
 
       def __rdoba_mixin_changecase__(reg, options = {})
@@ -224,17 +224,17 @@ module Rdoba
 
         re = Regexp.new '[\x80-\xFF]', nil, 'n'
         if options == String::FirstChar || options.include?(:first_char)
-          r = self.dup
-          r[0] = CaseString.change_case_char reg, self.ord
+          r = dup
+          r[0] = CaseString.change_case_char reg, ord
           r
-        elsif self.dup.force_encoding('ASCII-8BIT').match re
-          self.unpack('U*').map do |chr|
+        elsif dup.force_encoding('ASCII-8BIT').match re
+          unpack('U*').map do |chr|
             CaseString.change_case_char reg, chr
           end.join
         elsif reg == :up
-          self.__rdoba_mixin_upcase_orig__
+          __rdoba_mixin_upcase_orig__
         else
-          self.__rdoba_mixin_downcase_orig__
+          __rdoba_mixin_downcase_orig__
         end
       end
     end
@@ -242,7 +242,7 @@ module Rdoba
     module To_hArray
       def to_h(options = {})
         h = {}
-        self.each do |v|
+        each do |v|
           if v.is_a? Array
             if h.key? v[0]
               if !h[v[0]].is_a? Array
@@ -296,8 +296,8 @@ module Rdoba
       #
       def split_by()
         idxs = []
-        rejected = self.reject.with_index do |v, i| yield(v) && (idxs << i)end
-        [self.values_at(*idxs), rejected]
+        rejected = reject.with_index do |v, i| yield(v) && (idxs << i)end
+        [values_at(*idxs), rejected]
       end
     end
 
@@ -372,7 +372,7 @@ module Rdoba
         Object.send :include, Mixin::EmptyObject
         NilClass.send :include, Mixin::EmptyNilClass
       else
-        raise(Mixin::InvalidOption, 'Invalid rdoba-mixin options key: ' + "#{value.to_s}")
+        raise(Mixin::InvalidOption, 'Invalid rdoba-mixin options key: ' + value.to_s)
       end
     end
   end
