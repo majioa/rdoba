@@ -329,22 +329,22 @@ module Rdoba
     end
 
     def self.log_class_setup(obj)
-      obj.class_eval 'class RdobaLog;end'
-      obj.class_eval 'def __rdoba_log__;@__rdoba_log__||=RdobaLog.new;end'
+      obj.class_eval 'class RdobaLog;end', __FILE__, __LINE__
+      obj.class_eval 'def __rdoba_log__;@__rdoba_log__||=RdobaLog.new;end', __FILE__, __LINE__
       obj.class_eval 'class << self; def self.__rdoba_log__;
-                         @__rdoba_log__||=RdobaLog.new;end;end'
+                         @__rdoba_log__||=RdobaLog.new;end;end', __FILE__, __LINE__ - 1
       obj.class_eval "def self.__rdoba_log__;
-                         @__rdoba_log__||=#{obj}::RdobaLog.new;end"
+                         @__rdoba_log__||=#{obj}::RdobaLog.new;end", __FILE__, __LINE__ - 1
       obj::RdobaLog.class_eval(&Initfunc)
     end
 
     def self.log_instance_setup(obj)
-      obj.instance_eval 'class ::RdobaLog;end'
-      obj.instance_eval 'def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end'
+      obj.instance_eval 'class ::RdobaLog;end', __FILE__, __LINE__
+      obj.instance_eval 'def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end', __FILE__, __LINE__
       obj.instance_eval 'class << self; def self.__rdoba_log__;
-                            $__rdoba_log__||=::RdobaLog.new;end;end'
+                            $__rdoba_log__||=::RdobaLog.new;end;end', __FILE__, __LINE__ - 1
       obj.instance_eval 'def self.__rdoba_log__;
-                            $__rdoba_log__||=::RdobaLog.new;end'
+                            $__rdoba_log__||=::RdobaLog.new;end', __FILE__, __LINE__ - 1
       ::RdobaLog.class_eval(&Initfunc)
     end
 
