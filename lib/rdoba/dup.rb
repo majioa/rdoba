@@ -5,7 +5,7 @@
 class Array
   alias __dup__ dup
   def dup(opts = {})
-    if (opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
+    if (opts.instance_of?(Hash) ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
       res = []
 
       def sub_dup(value)
@@ -28,7 +28,7 @@ class Array
     elsif opts.empty?
       __dup__
     else
-      raise "Unsupported option(s): #{opts.class == Hash ? opts.keys.join(', ') : opts}"
+      raise "Unsupported option(s): #{opts.instance_of?(Hash) ? opts.keys.join(', ') : opts}"
     end
   end
 end
@@ -36,7 +36,7 @@ end
 class Hash
   alias __dup__ dup
   def dup(opts = {})
-    if (opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
+    if (opts.instance_of?(Hash) ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
       res = {}
 
       def sub_dup(value)
@@ -59,7 +59,7 @@ class Hash
     elsif opts.empty?
       __dup__
     else
-      raise "Unsupported option(s): #{opts.class == Hash ? opts.keys.join(', ') : opts}"
+      raise "Unsupported option(s): #{opts.instance_of?(Hash) ? opts.keys.join(', ') : opts}"
     end
   end
 end
