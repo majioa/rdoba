@@ -4,7 +4,7 @@
 require 'rdoba/debug'
 
 class Array
-  def geta(index, options = {}) #TODO => [] + class Index
+  def geta(index, options = {}) #TODO: => [] + class Index
     dbp11 "[geta] <<< array = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
@@ -45,7 +45,7 @@ class Hash
 
   public
 
-  def geta(index, options = {}) #TODO => [] + class Index
+  def geta(index, options = {}) #TODO: => [] + class Index
     dbp11 "[geta] <<< hash = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
@@ -60,11 +60,11 @@ class Hash
     end
   end
 
-  def seta(index, value, options = {}) #TODO => [] + class Index
+  def seta(index, value, options = {}) #TODO: => [] + class Index
     dbp11 "[seta] <<< index: #{index.inspect}, value: #{value.inspect}, options: #{options.inspect}"
     options[:сокр] ||= @сокр
 
-    return self[index] = value if index.class != Array # TODO spec index
+    return self[index] = value if index.class != Array # TODO: spec index
 
     back = 0
     index =
@@ -106,7 +106,7 @@ class Hash
       end
     end
 
-    raise 'Invalid path' unless o # TODO special exception
+    raise 'Invalid path' unless o # TODO: special exception
 
     o[set_idx] = value
   end
