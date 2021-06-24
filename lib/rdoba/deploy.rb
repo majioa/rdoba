@@ -20,27 +20,27 @@ class Hash
       end
     end.each do |key|
       if key =~ /(.*)=$/
-        vars[$1] = self[key]
+        vars[Regexp.last_match(1)] = self[key]
         next
       elsif key =~ /(.*)@$/
-        sym = $1
+        sym = Regexp.last_match(1)
         eval "res.class.co( :attr_accessor, :#{sym})"
         eval "res.#{sym} = self[key]"
         next
       elsif key =~ /^%([^%].*)/
-        next warn 'Warning: undefined variable ' + "#{$1.inspect} found. Ignoring..." unless vars.key?($1)
+        next warn 'Warning: undefined variable ' + "#{Regexp.last_match(1).inspect} found. Ignoring..." unless vars.key?(Regexp.last_match(1))
 
-        var = vars[$1].dup
+        var = vars[Regexp.last_match(1)].dup
         if var.class == Hash
           res |= var.deploy(vars)
         elsif var.class == String
           res[var] = nil
         else
-          raise "Undeployable hash #{$1} value class #{var.class}"
+          raise "Undeployable hash #{Regexp.last_match(1)} value class #{var.class}"
         end
         next
       elsif key =~ /^%%(.*)/
-        key.replace $1.to_s
+        key.replace Regexp.last_match(1).to_s
       end
 
       def deploy_value(value, vars)
@@ -48,12 +48,12 @@ class Hash
         when :String
           if value =~ /^%([^%].*)/
             begin
-              vars[$1].deploy(vars)
+              vars[Regexp.last_match(1)].deploy(vars)
             rescue StandardError
               nil
             end
           elsif value =~ /(.*)%([A-Za-z0-9_А-я]+)(.*)/
-            a = [$1.to_s, $2.to_s, $3.to_s]
+            a = [Regexp.last_match(1).to_s, Regexp.last_match(2).to_s, Regexp.last_match(3).to_s]
             a[1] =
               begin
                 vars[a[1]].deploy(vars).to_s
