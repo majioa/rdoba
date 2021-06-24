@@ -118,7 +118,7 @@ class String
   end
 
   def rmatch(value)
-    self == value || self =~ %r{^/([^/]+)} && value =~ /#{$1}/
+    self == value || self =~ %r{^/([^/]+)} && value =~ /#{Regexp.last_match(1)}/
   end
 
   def hexdump
