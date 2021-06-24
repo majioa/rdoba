@@ -26,10 +26,10 @@ class Hash
 
   def geta_value(cid, options = {})
     res =
-      ((not cid) || cid.empty?) && self || self[cid] ||
+      ((!cid) || cid.empty?) && self || self[cid] ||
         (options[:сокр] && (self[options[:сокр][cid]] || self[options[:сокр].reverse[cid]]))
 
-    if not res and options[:try_regexp]
+    if !res and options[:try_regexp]
       self.keys.each do |key|
         break res = self[key] if key.rmatch(cid)
 
