@@ -39,7 +39,7 @@ module Rdoba
           raise "Invalid step value #{step.inspect}"
         end
 
-        if step == :byte_by_byte || step == String::ByteByByte
+        if [:byte_by_byte, String::ByteByByte].include?(step)
           arr = []
           self.each_byte do |byte|
             arr << byte.chr

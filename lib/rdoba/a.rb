@@ -10,7 +10,7 @@ class Array
     options[:сокр] ||= @сокр
 
     if index.class == Array
-      return self if index == [] or index == ['']
+      return self if [[], ['']].include?(index)
 
       index = index.clone
       value = self[index.shift]
@@ -51,7 +51,7 @@ class Hash
     options[:сокр] ||= @сокр
 
     if index.class == Array
-      return self if index == [] or index == ['']
+      return self if [[], ['']].include?(index)
 
       index = index.clone
       value = geta_value(index.shift, options)
