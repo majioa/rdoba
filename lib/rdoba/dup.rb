@@ -5,7 +5,7 @@
 class Array
   alias __dup__ dup
   def dup(opts = {})
-    if (opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
+    if opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive
       res = []
 
       def sub_dup(value)
@@ -36,7 +36,7 @@ end
 class Hash
   alias __dup__ dup
   def dup(opts = {})
-    if (opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive)
+    if opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive
       res = {}
 
       def sub_dup(value)

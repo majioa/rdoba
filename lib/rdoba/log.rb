@@ -166,7 +166,7 @@ module Rdoba
     target = options[:in] || options[:self]
 
     if target.class == Object
-      Rdoba::Log.log_instance_setup(TOPLEVEL_BINDING.eval 'self')
+      Rdoba::Log.log_instance_setup(TOPLEVEL_BINDING.eval('self'))
     else
       Rdoba::Log.log_class_setup target
     end
