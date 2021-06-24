@@ -1,5 +1,6 @@
 #!/usr/bin/ruby -KU
 #coding:utf-8
+# frozen_string_literal: true
 
 class Object
   def xor(val1)
