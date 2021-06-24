@@ -46,6 +46,7 @@ class String
       if x < y
         raise 'Invalid roman number'
       end
+
       0
     end
     numbers.sum

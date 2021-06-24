@@ -8,6 +8,7 @@ module Rdoba
     if !gem
       raise 'Undefined gem name'
     end
+
     g = Gem::Specification.find_by_name(gemname)
     File.join g.full_gem_path, 'share', 'settings.yaml'
   end

@@ -10,6 +10,7 @@ class Array
 
     if index.class == Array
       return self if index == [] or index == ['']
+
       index = index.clone
       value = self[index.shift]
       (value.class == Hash or value.class == Array) ? value.geta(index, options) : value
@@ -30,6 +31,7 @@ class Hash
     if not res and options[:try_regexp]
       self.keys.each do |key|
         break res = self[key] if key.rmatch(cid)
+
         if options[:сокр]
           options[:сокр].each_pair do |val1, val2|
             break res = self[key] if key.rmatch(cid.gsub(/#{val1}/, val2)) or key.rmatch(cid.gsub(/#{val2}/, val1))
@@ -49,6 +51,7 @@ class Hash
 
     if index.class == Array
       return self if index == [] or index == ['']
+
       index = index.clone
       value = geta_value(index.shift, options)
       (value.class == Hash or value.class == Array) ? value.geta(index, options) : value
