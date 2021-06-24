@@ -1,5 +1,5 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
+# coding:utf-8
 # frozen_string_literal: true
 
 class Object
@@ -8,7 +8,7 @@ class Object
     ((val0) and (not val1)) or ((not val0) and (val1))
   end
 
-  def co(method, *args) #calls any method
+  def co(method, *args) # calls any method
     eval "#{method}(*args)"
   end
 
@@ -97,7 +97,7 @@ end
 
 class String
   def -(str)
-    #TODO make smart search for match in the 'str', when only last subpart matched to 'self'
+    # TODO make smart search for match in the 'str', when only last subpart matched to 'self'
     len = self.size
     bc = ec = nil
     (0...len).each do |idx|
