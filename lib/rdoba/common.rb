@@ -44,8 +44,8 @@ class NilClass
     value.nil?
   end
 
-  def +(value)
-    value
+  def +(other)
+    other
   end
 
   def <<(value)
@@ -65,7 +65,7 @@ class NilClass
     0
   end
 
-  def <=>(_value)
+  def <=>(other)
     -1
   end
 end
@@ -95,14 +95,14 @@ class Array
 end
 
 class String
-  def -(str)
+  def -(other)
     #TODO make smart search for match in the 'str', when only last subpart matched to 'self'
     len = self.size
     bc = ec = nil
     (0...len).each do |idx|
-      break bc = idx if self[idx] == str[0]
+      break bc = idx if self[idx] == other[0]
     end
-    ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != str[idx - bc]end if bc
+    ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != other[idx - bc]end if bc
     (not bc) ? self.clone : (not ec) ? self[0, bc] : self[0, bc] + self[ec, len - ec]
   end
 
@@ -134,12 +134,12 @@ class String
 end
 
 class Hash
-  def |(inval)
+  def |(other)
     res = self.dup
-    inval.each_pair do |key, val|
+    other.each_pair do |key, val|
       if val.instance_of?(res[key].class)
         if val.instance_of?(Hash)
-          res[key] |= inval[key]
+          res[key] |= other[key]
         elsif val.instance_of?(Array)
           res[key].concat val
         else
