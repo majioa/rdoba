@@ -20,7 +20,7 @@ class Array
         end
       end
 
-      self.each do |value|
+      each do |value|
         res << sub_dup(value)
       end
 
@@ -51,7 +51,7 @@ class Hash
         end
       end
 
-      self.each do |key, value|
+      each do |key, value|
         res[sub_dup(key)] = sub_dup(value)
       end
 

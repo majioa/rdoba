@@ -15,7 +15,7 @@ module BCD
   def to_i
     res = 0
     mul = 1
-    self.each_byte do |c|
+    each_byte do |c|
       def pow(value, mul)
         if value >= 10
           raise ConvertError
@@ -66,7 +66,7 @@ class BCDString < String
 
   def initialize(value = nil)
     if value.is_a? Numeric
-      self.replace BCD.parse(value)
+      replace BCD.parse(value)
     else
       super value.to_s
     end
