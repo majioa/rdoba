@@ -17,7 +17,7 @@ class Hash
       if x =~ /=$/
         y =~ /=$/ ? x <=> y : -1
       else
-        y !~ /=$/ ? x <=> y : 1
+        y =~ /=$/ ? 1 : x <=> y
       end
     end.each do |key|
       if key =~ /(.*)=$/
