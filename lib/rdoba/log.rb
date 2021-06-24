@@ -333,11 +333,11 @@ module Rdoba
       obj.class_eval 'class << self; def self.__rdoba_log__;
                          @__rdoba_log__||=RdobaLog.new;end;end',
                      __FILE__,
-                     __LINE__ - 1
+                     __LINE__ - 3
       obj.class_eval "def self.__rdoba_log__;
                          @__rdoba_log__||=#{obj}::RdobaLog.new;end",
                      __FILE__,
-                     __LINE__ - 1
+                     __LINE__ - 3
       obj::RdobaLog.class_eval(&Initfunc)
     end
 
@@ -347,11 +347,11 @@ module Rdoba
       obj.instance_eval 'class << self; def self.__rdoba_log__;
                             $__rdoba_log__||=::RdobaLog.new;end;end',
                         __FILE__,
-                        __LINE__ - 1
+                        __LINE__ - 3
       obj.instance_eval 'def self.__rdoba_log__;
                             $__rdoba_log__||=::RdobaLog.new;end',
                         __FILE__,
-                        __LINE__ - 1
+                        __LINE__ - 3
       ::RdobaLog.class_eval(&Initfunc)
     end
 
