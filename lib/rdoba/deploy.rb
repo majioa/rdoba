@@ -7,7 +7,7 @@ require 'rdoba/common'
 class Hash
   def deploy!(vars = {})
     self.replace deploy(vars)
-    # TODO add variable copy
+    # TODO: add variable copy
   end
 
   def deploy(vars = {})
