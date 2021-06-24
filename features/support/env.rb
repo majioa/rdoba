@@ -181,7 +181,7 @@ def rdoba_sim(sub, cmd, *args)
         store
         puts '-' * 15
 
-        File.chmod 0755, @tmpfile
+        File.chmod 0o755, @tmpfile
         Open3.popen3(@tmpfile) do |_stdin, stdout, stderr, _wait_thr|
           @out = stdout.read
           @err = stderr.read
