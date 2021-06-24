@@ -167,7 +167,7 @@ def rdoba_sim(sub, cmd, *args)
         end
       @echo << echo
     when :exec
-      if !@echo.empty?
+      unless @echo.empty?
         store
         puts '-' * 15
 
