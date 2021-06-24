@@ -334,7 +334,7 @@ module Rdoba
           ::String.send :alias_method, k, v
         end
         Mixin::CaseString::Fixups.each do |e|
-          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
+          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end", __FILE__, __LINE__
         end # trap NameError
         ::String.send :include, Mixin::CaseString
       when :reverse
@@ -342,7 +342,7 @@ module Rdoba
           ::String.send :alias_method, k, v
         end
         Mixin::ReverseString::Fixups.each do |e|
-          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
+          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end", __FILE__, __LINE__
         end # trap NameError
         String.send :include, Mixin::ReverseString
       when :compare
