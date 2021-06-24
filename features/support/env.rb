@@ -89,6 +89,7 @@ def rdoba_sim(sub, cmd, *args)
       puts @inithead
     when :apply
       opts = match_keywords args[1]
+
       #      opts = opts.size > 2 && opts || opts.size > 0 && opts[ 1 ] || nil
       param =
         case args[0]
