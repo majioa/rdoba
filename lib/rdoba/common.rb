@@ -126,7 +126,7 @@ class String
     res = ''
     i = 0
     self.each_byte do |byte|
-      res << sprintf('%.2X ', byte)
+      res << format('%.2X ', byte)
       i += 1
       res << "\n" if i % 16 == 0
     end
