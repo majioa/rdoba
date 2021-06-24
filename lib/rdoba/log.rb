@@ -278,12 +278,12 @@ module Rdoba
     end
 
     module ClassFunctions
-      def <=(functions)
-        Rdoba::Log.update_functions functions, self, :+
+      def <=(other)
+        Rdoba::Log.update_functions other, self, :+
       end
 
-      def >=(functions)
-        Rdoba::Log.update_functions functions, self, :-
+      def >=(other)
+        Rdoba::Log.update_functions other, self, :-
       end
     end
 
