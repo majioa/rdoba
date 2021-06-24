@@ -15,7 +15,7 @@ module Rdoba
 
     module CompareString
       def compare_to(value, opts = {})
-        if opts == :ignore_diacritics || opts.class == Hash && opts.key?(:ignore_diacritics)
+        if opts == :ignore_diacritics || opts.instance_of?(Hash) && opts.key?(:ignore_diacritics)
           # TODO verify composite range
           def crop_diacritics(x)
             (x < 0x300 || x > 0x36f && x < 0x483 || x > 0x487 && x < 0xa67c || x > 0xa67d) && x || nil
