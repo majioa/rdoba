@@ -4,8 +4,8 @@
 
 class Object
   def xor(val1)
-    val0 = (not not self)
-    ((val0) and (not val1)) or ((not val0) and (val1))
+    val0 = (!!self)
+    ((val0) and (!val1)) or ((!val0) and (val1))
   end
 
   def co(method, *_args) #calls any method
@@ -104,7 +104,7 @@ class String
       break bc = idx if self[idx] == str[0]
     end
     ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != str[idx - bc]end if bc
-    (not bc) ? self.clone : (not ec) ? self[0, bc] : self[0, bc] + self[ec, len - ec]
+    (!bc) ? self.clone : (!ec) ? self[0, bc] : self[0, bc] + self[ec, len - ec]
   end
 
   alias __match__ =~
