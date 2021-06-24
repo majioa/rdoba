@@ -28,7 +28,7 @@ class Hash
         eval "res.#{sym} = self[key]"
         next
       elsif key =~ /^%([^%].*)/
-        next $stderr.puts 'Warning: undefined variable ' + "#{$1.inspect} found. Ignoring..." unless vars.key?($1)
+        next warn 'Warning: undefined variable ' + "#{$1.inspect} found. Ignoring..." unless vars.key?($1)
         var = vars[$1].dup
         if var.class == Hash
           res |= var.deploy(vars)

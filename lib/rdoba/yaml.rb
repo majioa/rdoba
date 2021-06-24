@@ -41,7 +41,7 @@ class Object
       when :NilClass
         ''
       else
-        $stderr.puts "Unsupported class #{self.class} to export to yml"
+        warn "Unsupported class #{self.class} to export to yml"
         ''
       end
     res
