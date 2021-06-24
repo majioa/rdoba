@@ -10,7 +10,7 @@ module Kernel
         if Modules.include? key
           require "rdoba/#{key}"
           if Rdoba.methods.include? key
-            if !value.is_a? Hash
+            unless value.is_a? Hash
               value = { value: value }
             end
             value.replace({ self: self }.merge value)
@@ -26,7 +26,7 @@ require 'rbconfig'
 
 module Rdoba
   def self.gemroot(name = nil, path = '')
-    if !gem(name)
+    unless gem(name)
       raise "Invalid gem named as #{name.inspect}"
     end
 
