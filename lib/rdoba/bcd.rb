@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module BCD
   class ParseError < RuntimeError
     def initialize(msg = 'Invalid positive integer value'); end
