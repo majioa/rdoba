@@ -263,47 +263,45 @@ end
   expect { @проц.call }.to raise_error(Rdoba::Mixin::InvalidOption)
 end
 
-=begin
-#!/usr/bin/ruby -KU
-
-if $0 == __FILE__
-    p s.to_res
-    [1,2,3,4,5].each_comby do |c|
-	p c
-    end
-
-    len = 4
-    value = 100
-    p sprintf("%.*X", len, value )
-
-    s = ' 1221 eeee 4564 wwww ' + 258.to_p
-    ppp = s.scanf(' %d %s %d %s %.2+c')
-    p ppp
-    p 258.to_p.to_i(String::BE)
-
-    null = nil
-    p null.class, null
-    null <<= 'qweqweqweqwe'
-    p null.class, null
-    null << 'qweqweqweqwe'
-    p null.class, null
-    i = 12
-    p sprintf("0x%X", i)
-    p sprintf("%.3X", i)
-
-    p '----------'
-
-    str = <<STR
-<font size="4" face="Irmologion Ucs">и3зhде
-повелёніе t кeсарz ѓvгуста, написaти всю2
-вселeнную</font>
-STR
-
-
-    str = '/font><font size="4">III</font><i>  </i>греч.<font size="4"><i></i>  </font><font size="4" face="Irmologion Ucs">Мёсzца ѓvгуста въ Gi-й дeнь. Слyжба с™и1телю и3 чудотв0рцу тЂхwну, є3пcкпу вор0нежскому.</font>13 августа, Тихона Воронежского, заголовок службы m_aug\13p.hip'
-    re = /<font size="4" face="Irmologion Ucs">([ -"'-\?A-BD-HJ-\[\]`-hj-\}¤¦-§©«-®±µ-·»Ё-ЌЎ-яё-ќў-џҐ-ґ–-—‘-‚“-„†-•…‰‹-›€№™∙]+?)<\/font>/
-
-    p(str.match re)
-end
-
-=end
+# #!/usr/bin/ruby -KU
+#
+# if $0 == __FILE__
+#     p s.to_res
+#     [1,2,3,4,5].each_comby do |c|
+# 	p c
+#     end
+#
+#     len = 4
+#     value = 100
+#     p sprintf("%.*X", len, value )
+#
+#     s = ' 1221 eeee 4564 wwww ' + 258.to_p
+#     ppp = s.scanf(' %d %s %d %s %.2+c')
+#     p ppp
+#     p 258.to_p.to_i(String::BE)
+#
+#     null = nil
+#     p null.class, null
+#     null <<= 'qweqweqweqwe'
+#     p null.class, null
+#     null << 'qweqweqweqwe'
+#     p null.class, null
+#     i = 12
+#     p sprintf("0x%X", i)
+#     p sprintf("%.3X", i)
+#
+#     p '----------'
+#
+#     str = <<STR
+# <font size="4" face="Irmologion Ucs">и3зhде
+# повелёніе t кeсарz ѓvгуста, написaти всю2
+# вселeнную</font>
+# STR
+#
+# 
+#     str = '/font><font size="4">III</font><i>  </i>греч.<font size="4"><i></i>  </font><font size="4" face="Irmologion Ucs">Мёсzца ѓvгуста въ Gi-й дeнь. Слyжба с™и1телю и3 чудотв0рцу тЂхwну, є3пcкпу вор0нежскому.</font>13 августа, Тихона Воронежского, заголовок службы m_aug\13p.hip'
+#     re = /<font size="4" face="Irmologion Ucs">([ -"'-\?A-BD-HJ-\[\]`-hj-\}¤¦-§©«-®±µ-·»Ё-ЌЎ-яё-ќў-џҐ-ґ–-—‘-‚“-„†-•…‰‹-›€№™∙]+?)<\/font>/
+#
+#     p(str.match re)
+# end
+#
