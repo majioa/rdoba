@@ -1,5 +1,5 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
+# coding:utf-8
 # frozen_string_literal: true
 
 require 'rdoba/common'
