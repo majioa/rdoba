@@ -296,7 +296,7 @@ module Rdoba
       # first # => [0,2]
       # second # => [1,3]
       #
-      def split_by()
+      def split_by
         idxs = []
         rejected = self.reject.with_index do |v, i| yield(v) && (idxs << i)end
         [self.values_at(*idxs), rejected]
