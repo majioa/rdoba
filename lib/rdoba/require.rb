@@ -17,8 +17,8 @@ module Kernel
       dbp14 "[require_dir]> Found dir #{rdir}"
       Dir.foreach(rdir) do |file|
         next unless file =~ /(.*)\.(rb|so)$/
-        dbp14 "[require_dir]> Loading ... #{$1}"
-        require $1
+        dbp14 "[require_dir]> Loading ... #{Regexp.last_match(1)}"
+        require Regexp.last_match(1)
       end
       true
     rescue StandardError
