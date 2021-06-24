@@ -105,7 +105,7 @@ def rdoba_sim(sub, cmd, *args)
       end
 
       param =
-        '{' + (param).to_a.map do |v| "#{v[0].inspect} => #{v[1].is_a?(String) && v[1] || v[1].inspect}"end.join(',') +
+        '{' + param.to_a.map do |v| "#{v[0].inspect} => #{v[1].is_a?(String) && v[1] || v[1].inspect}"end.join(',') +
           '}'
 
       @echo << '   ' * @deep + "rdoba :#{sub} => #{param}\n"
