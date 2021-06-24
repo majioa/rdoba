@@ -204,7 +204,8 @@ module Rdoba
       end
     end
 
-    module DebugCompat # TODO compat
+# TODO compat
+    module DebugCompat
       def dbgl
         @dbgl
       end
@@ -402,7 +403,7 @@ module Rdoba
     def self.update_functions(functions, obj, method)
       if functions.is_a?(Array) && functions.include?(:*)
         functions = [:basic, :enter, :leave, :warn, :info, :extended, :compat]
-      end # TODO compat
+      end
       cf = self.log_functions_get obj
       functions =
         cf.send(
