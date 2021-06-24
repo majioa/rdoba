@@ -6,7 +6,7 @@ require 'rbconfig'
 
 module Rdoba
   def self.gemroot(gemname = nil, _path = '')
-    if !gem
+    unless gem
       raise 'Undefined gem name'
     end
 
