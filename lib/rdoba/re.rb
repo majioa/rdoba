@@ -4,7 +4,7 @@
 
 class String
   def to_res
-    ostr = self.dup
+    ostr = dup
     res = ''
     while true
       m = ostr.match(/(?:([+\[\]\\().*?{}^$\/|])|«([^«]*)»)/u)
