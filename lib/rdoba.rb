@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 module Kernel
-  Modules = [:bcd, :mixin, :log, :debug]
+  Modules = %i[bcd mixin log debug]
 
   def rdoba(*options)
     options.each do |option|

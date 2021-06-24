@@ -172,7 +172,7 @@ module Rdoba
     end
 
     if funcname == :self
-      Rdoba::Log.define_methods(target, [:+, :-, :>, :>>, :*, :%, :>=, :<=])
+      Rdoba::Log.define_methods(target, %i[+ - > >> * % >= <=])
 
       Rdoba::Log.try_define_compat(functions, target)
       target.__rdoba_log__
@@ -401,7 +401,7 @@ module Rdoba
 
     def self.update_functions(functions, obj, method)
       if functions.is_a?(Array) && functions.include?(:*)
-        functions = [:basic, :enter, :leave, :warn, :info, :extended, :compat]
+        functions = %i[basic enter leave warn info extended compat]
       end # TODO compat
       cf = self.log_functions_get obj
       functions =
