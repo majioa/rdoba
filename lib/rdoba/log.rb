@@ -176,12 +176,10 @@ module Rdoba
 
       Rdoba::Log.try_define_compat(functions, target)
       target.__rdoba_log__
-    else
-      if target.class == Object
-        Rdoba::Log.log_link_for :instance, target, funcname
+    elsif target.class == Object
+      Rdoba::Log.log_link_for :instance, target, funcname
       else
         Rdoba::Log.log_link_for :class, target, funcname
-      end
     end
   end
 
