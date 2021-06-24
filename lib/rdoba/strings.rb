@@ -8,4 +8,4 @@ class String
   alias to_p to_s
 end
 
-rdoba mixin: [:case, :reverse, :compare]
+rdoba mixin: %i[case reverse compare]

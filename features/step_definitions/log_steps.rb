@@ -134,21 +134,21 @@ Then /see the (variable|string|number|array|'true' value) output(?: with the :(b
         if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]#{symr} variable: "value"/
           raise "Invalid answer: #{@res.chomp}, must be like " + "[00:00:00.000000000]#{sym} variable: \"value\""
         end
-      when [:timestamp, :pid]
+      when %i[timestamp pid]
         if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}#{symr} variable: "value"/
           raise "Invalid answer: #{@res.chomp}, must be like " + "[00:00:00.000000000]{0000}#{sym} variable: \"value\""
         end
-      when [:timestamp, :pid, :function_name]
+      when %i[timestamp pid function_name]
         if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\(.+\)#{symr} variable: "value"/
           raise "Invalid answer: #{@res.chomp}, must be like " +
                   "[00:00:00.000000000]{0000}(name)#{sym} variable: \"value\""
         end
-      when [:timestamp, :pid, :function_name, :function_line]
+      when %i[timestamp pid function_name function_line]
         if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\([^\.]+\.\d+\)#{symr} variable: "value"/
           raise "Invalid answer: #{@res.chomp}, must be like " +
                   "[00:00:00.000000000]{0000}(name.0)#{sym} variable: \"value\""
         end
-      when [:timestamp, :pid, :function]
+      when %i[timestamp pid function]
         expect(@res).to match(/\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\([^:]+:[^\.]+\.\d+\)#{symr} variable: "value"/)
       else
         raise "Invalid answer: #{@res}"
