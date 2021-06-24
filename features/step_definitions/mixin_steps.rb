@@ -43,14 +43,12 @@ end
       else
         'КиРиЛиЧеСкЫ бУкЫ зРиЙ сІи: Ѡ и Ꙍ'
       end
-    else
-      if пуздро =~ /верхнемъ/
-        'LATIN LETTERS SEE THE FOLLOWING: ÆǞ'
+    elsif пуздро =~ /верхнемъ/
+      'LATIN LETTERS SEE THE FOLLOWING: ÆǞ'
       elsif пуздро =~ /нижнемъ/
         'latin letters see the following: æǟ'
       else
         'LaTiN lEtTeRs SeE tHe FoLlOwInG: æǞ'
-      end
     end
 
   @плодъ = (приꙇомъ =~ /ниспуздри/) && стр.downcase || стр.upcase
