@@ -18,7 +18,7 @@ module Kernel
 
     while (not fmt.empty?)
       part = fmt.shift
-      part = '%' + fmt.shift unless part
+      part ||= '%' + fmt.shift
       if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and $2 == 'P'
         keys = $1 || ''
         str = $3 || ''
