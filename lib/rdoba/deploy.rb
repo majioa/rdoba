@@ -28,7 +28,9 @@ class Hash
         eval "res.#{sym} = self[key]"
         next
       elsif key =~ /^%([^%].*)/
-        next warn 'Warning: undefined variable ' + "#{Regexp.last_match(1).inspect} found. Ignoring..." unless vars.key?(Regexp.last_match(1))
+        unless vars.key?(Regexp.last_match(1))
+          next warn 'Warning: undefined variable ' + "#{Regexp.last_match(1).inspect} found. Ignoring..."
+        end
 
         var = vars[Regexp.last_match(1)].dup
         if var.instance_of?(Hash)
