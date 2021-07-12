@@ -127,26 +127,26 @@ Then /see the (variable|string|number|array|'true' value) output(?: with the :(b
       end
     prefices = match_keywords prefices
     if prefices.empty?
-      if !/variable: "value"/.match?(@res)
+      unless /variable: "value"/.match?(@res)
         raise "Invalid answer: #{@res}, must be \"variable: \"value\""
       end
     else
       case prefices
       when [:timestamp]
-        if !/\[\d\d:\d\d:\d\d\.\d{9}\]#{symr} variable: "value"/.match?(@res)
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " + "[00:00:00.000000000]#{sym} variable: \"value\""
         end
       when %i[timestamp pid]
-        if !/\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}#{symr} variable: "value"/.match?(@res)
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " + "[00:00:00.000000000]{0000}#{sym} variable: \"value\""
         end
       when %i[timestamp pid function_name]
-        if !/\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\(.+\)#{symr} variable: "value"/.match?(@res)
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\(.+\)#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " +
                   "[00:00:00.000000000]{0000}(name)#{sym} variable: \"value\""
         end
       when %i[timestamp pid function_name function_line]
-        if !/\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\([^.]+\.\d+\)#{symr} variable: "value"/.match?(@res)
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\([^.]+\.\d+\)#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " +
                   "[00:00:00.000000000]{0000}(name.0)#{sym} variable: \"value\""
         end
@@ -157,19 +157,19 @@ Then /see the (variable|string|number|array|'true' value) output(?: with the :(b
       end
     end
   when 'string'
-    if !/string/.match?(@res)
+    unless /string/.match?(@res)
       raise "Invalid answer: #{@res}, must be \"string\""
     end
   when 'number'
-    if !/1/.match?(@res)
+    unless /1/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be \"1\""
     end
   when "'true' value"
-    if !/true/.match?(@res)
+    unless /true/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be \"true\""
     end
   when 'array'
-    if !/array value1, array value2/.match?(@res)
+    unless /array value1, array value2/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be an enum: \"array value1, array value2\""
     end
   end
@@ -178,12 +178,12 @@ end
 Then /see the (standard error|exception) info(.*)/ do |subject, notice|
   case subject
   when 'exception'
-    if !/Exception:%> Exception/.match?(@res)
+    unless /Exception:%> Exception/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be like " + "'Exception:%> Exception'"
     end
   when 'standard error'
     if /notification/.match?(notice)
-      if !/StandardError:%> StandardError\n\tstandard error extended info/.match?(@res)
+      unless /StandardError:%> StandardError\n\tstandard error extended info/.match?(@res)
         raise "Invalid answer: #{@res.inspect}, must be like " + "'StandardError:%> StandardError\n\tstandard error " +
                 "extended info'"
       end
@@ -200,17 +200,17 @@ Then /see(?: a| the)? (nothing|warning|.* error exception)/ do |subject|
       raise "Invalid answer: #{@res.inspect}, must be empty"
     end
   when 'warning'
-    if !/Warning:/.match?(@res)
+    unless /Warning:/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be a warning " + 'with the description'
     end
 
     'log\': main is not a class/module (TypeError)'
   when /no method error/
-    if !/undefined method .* \(NoMethodError\)/.match?(@res)
+    unless /undefined method .* \(NoMethodError\)/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must notify" + ' that the interpreter has not found the specified method'
     end
   when /name error/
-    if !/.* \(NameError\)/.match?(@res)
+    unless /.* \(NameError\)/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must notify" + " that the the specified name isn't declared"
     end
   else
