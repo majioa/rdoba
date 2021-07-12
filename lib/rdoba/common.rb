@@ -7,7 +7,7 @@ class Object
     ((val0) and (!val1)) or ((!val0) and (val1))
   end
 
-#calls any method
+  #calls any method
   def co(method, *_args)
     eval "#{method}(*args)"
   end
