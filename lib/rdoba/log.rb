@@ -201,7 +201,7 @@ module Rdoba
       end
     end
 
-# TODO compat
+    # TODO compat
     module DebugCompat
       def dbgl
         @dbgl
