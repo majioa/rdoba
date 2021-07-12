@@ -98,7 +98,7 @@ class String
     [/#{nformat}/, argfs]
   end
 
-  (alias __scanf__ scanf) if self.instance_methods(false).include?(:scanf)
+  (alias __scanf__ scanf) if instance_methods(false).include?(:scanf)
   def scanf(format, &block)
     re, argfs = scanf_re(format)
 
