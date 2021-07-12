@@ -162,12 +162,12 @@ module Rdoba
                   break false
                 end
               end
-            if !c
+            unless c
               break range[:change].call ord
             end
           end
 
-        if !nord.is_a? Numeric
+        unless nord.is_a? Numeric
           return table[:default].call ord
         end
 
@@ -217,7 +217,7 @@ module Rdoba
       end
 
       def __rdoba_mixin_changecase__(reg, options = {})
-        if !%i[up down].include? reg
+        unless %i[up down].include? reg
           return self
         end
 
@@ -244,7 +244,7 @@ module Rdoba
         self.each do |v|
           if v.is_a? Array
             if h.key? v[0]
-              if !h[v[0]].is_a? Array
+              unless h[v[0]].is_a? Array
                 h[v[0]] = [h[v[0]]]
               end
 
@@ -257,7 +257,7 @@ module Rdoba
               h[v[0]] = v.size > 2 && v[1..-1] || v[1]
             end
           elsif h.key? v
-            if !h[v].is_a? Array
+            unless h[v].is_a? Array
               h[v] = [h[v]]
             end
 
