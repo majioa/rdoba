@@ -104,7 +104,7 @@ class String
       break bc = idx if self[idx] == str[0]
     end
     ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != str[idx - bc]end if bc
-    !bc ? self.clone : !ec ? self[0, bc] : self[0, bc] + self[ec, len - ec]
+    bc ? ec ? self[0, bc] + self[ec, len - ec] : self[0, bc] : self.clone
   end
 
   alias __match__ =~
