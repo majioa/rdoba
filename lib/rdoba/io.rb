@@ -60,7 +60,7 @@ class String
     while fss.scan_until(/%([0-9 #+\-*]*)(?:\.([0-9]+)(\+)?)?([bcdefgiosuxr])/)
       argfs << [fss[1], fss[2], fss[3], fss[4]]
 
-      # TODO add performing the special case in fss[1]
+      #  TODO add performing the special case in fss[1]
       nformat +=
         fss.pre_match[pos..-1].to_res +
           case fss[4]
