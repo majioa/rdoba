@@ -1,4 +1,3 @@
-# encoding: utf-8
 # frozen_string_literal: true
 
 # Author:: Malo Skrylevo <majioa@yandex.ru>
@@ -165,7 +164,7 @@ module Rdoba
     funcname = (options[:as] ||= :log).to_s.to_sym
     target = options[:in] || options[:self]
 
-    if target.class == Object
+    if target.instance_of?(Object)
       Rdoba::Log.log_instance_setup(TOPLEVEL_BINDING.eval('self'))
     else
       Rdoba::Log.log_class_setup target
@@ -176,12 +175,10 @@ module Rdoba
 
       Rdoba::Log.try_define_compat(functions, target)
       target.__rdoba_log__
+    elsif target.instance_of?(Object)
+      Rdoba::Log.log_link_for :instance, target, funcname
     else
-      if target.class == Object
-        Rdoba::Log.log_link_for :instance, target, funcname
-      else
-        Rdoba::Log.log_link_for :class, target, funcname
-      end
+      Rdoba::Log.log_link_for :class, target, funcname
     end
   end
 
@@ -204,7 +201,8 @@ module Rdoba
       end
     end
 
-    module DebugCompat # TODO compat
+    # TODO: compat
+    module DebugCompat
       def dbgl
         @dbgl
       end
@@ -274,26 +272,26 @@ module Rdoba
       def get_stack_function_data_at_level(level)
         raise Exception
       rescue Exception
-        #TODO check match a method containing '`'
-        $@[level] =~ /([^\/]+):(\d+):in `(.*?)'$/
-        [$1, $3, $2]
+        # TODO: check match a method containing '`'
+        $@[level] =~ %r{([^/]+):(\d+):in `(.*?)'$}
+        [Regexp.last_match(1), Regexp.last_match(3), Regexp.last_match(2)]
       end
     end
 
     module ClassFunctions
-      def <=(functions)
-        Rdoba::Log.update_functions functions, self, :+
+      def <=(other)
+        Rdoba::Log.update_functions other, self, :+
       end
 
-      def >=(functions)
-        Rdoba::Log.update_functions functions, self, :-
+      def >=(other)
+        Rdoba::Log.update_functions other, self, :-
       end
     end
 
     Initfunc =
       proc do
-        self.class_variable_set :@@rdoba_log_prefix, Rdoba::Log.log_init_prefix(self)
-        self.class_variable_set :@@rdoba_log_io_method, Rdoba::Log.log_init_io_m
+        class_variable_set :@@rdoba_log_prefix, Rdoba::Log.log_init_prefix(self)
+        class_variable_set :@@rdoba_log_io_method, Rdoba::Log.log_init_io_m
         extend Rdoba::Log::ClassFunctions
         include Rdoba::Log::Functions
         self <= Rdoba::Log.class_variable_get(:@@options)[:functions]
@@ -326,27 +324,35 @@ module Rdoba
       options = Rdoba::Log.class_variable_get :@@options
       io = options[:io] || $stdout
 
-      # TODO puts costomize
+      # TODO: puts costomize
       io_m = io.method :puts
     end
 
     def self.log_class_setup(obj)
-      obj.class_eval 'class RdobaLog;end'
-      obj.class_eval 'def __rdoba_log__;@__rdoba_log__||=RdobaLog.new;end'
+      obj.class_eval 'class RdobaLog;end', __FILE__, __LINE__
+      obj.class_eval 'def __rdoba_log__;@__rdoba_log__||=RdobaLog.new;end', __FILE__, __LINE__
       obj.class_eval 'class << self; def self.__rdoba_log__;
-                         @__rdoba_log__||=RdobaLog.new;end;end'
+                         @__rdoba_log__||=RdobaLog.new;end;end',
+                     __FILE__,
+                     __LINE__ - 1
       obj.class_eval "def self.__rdoba_log__;
-                         @__rdoba_log__||=#{obj}::RdobaLog.new;end"
+                         @__rdoba_log__||=#{obj}::RdobaLog.new;end",
+                     __FILE__,
+                     __LINE__ - 1
       obj::RdobaLog.class_eval(&Initfunc)
     end
 
     def self.log_instance_setup(obj)
-      obj.instance_eval 'class ::RdobaLog;end'
-      obj.instance_eval 'def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end'
+      obj.instance_eval 'class ::RdobaLog;end', __FILE__, __LINE__
+      obj.instance_eval 'def __rdoba_log__;$__rdoba_log__||=::RdobaLog.new;end', __FILE__, __LINE__
       obj.instance_eval 'class << self; def self.__rdoba_log__;
-                            $__rdoba_log__||=::RdobaLog.new;end;end'
+                            $__rdoba_log__||=::RdobaLog.new;end;end',
+                        __FILE__,
+                        __LINE__ - 1
       obj.instance_eval 'def self.__rdoba_log__;
-                            $__rdoba_log__||=::RdobaLog.new;end'
+                            $__rdoba_log__||=::RdobaLog.new;end',
+                        __FILE__,
+                        __LINE__ - 1
       ::RdobaLog.class_eval(&Initfunc)
     end
 
@@ -402,16 +408,16 @@ module Rdoba
     def self.update_functions(functions, obj, method)
       if functions.is_a?(Array) && functions.include?(:*)
         functions = %i[basic enter leave warn info extended compat]
-      end # TODO compat
-      cf = self.log_functions_get obj
+      end
+      cf = log_functions_get obj
       functions =
         cf.send(
           method,
           functions.is_a?(Array) && functions || functions.is_a?(NilClass) && [] || [functions.to_s.to_sym]
         )
-      self.log_functions_set obj, functions
+      log_functions_set obj, functions
 
-      pfx = self.log_prefix_get obj
+      pfx = log_prefix_get obj
       code = Rdoba::Log.make_code functions, pfx
       obj.class_eval code
     end

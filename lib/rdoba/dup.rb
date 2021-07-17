@@ -1,15 +1,14 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 class Array
   alias __dup__ dup
   def dup(opts = {})
-    if opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive
+    if opts.instance_of?(Hash) ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive
       res = []
 
       def sub_dup(value)
-        if value.class.to_s =~ /(Hash|Array)/
+        if /(Hash|Array)/.match?(value.class.to_s)
           value.dup(:recursive)
         else
           begin
@@ -20,7 +19,7 @@ class Array
         end
       end
 
-      self.each do |value|
+      each do |value|
         res << sub_dup(value)
       end
 
@@ -28,7 +27,7 @@ class Array
     elsif opts.empty?
       __dup__
     else
-      raise "Unsupported option(s): #{opts.class == Hash ? opts.keys.join(', ') : opts}"
+      raise "Unsupported option(s): #{opts.instance_of?(Hash) ? opts.keys.join(', ') : opts}"
     end
   end
 end
@@ -36,11 +35,11 @@ end
 class Hash
   alias __dup__ dup
   def dup(opts = {})
-    if opts.class == Hash ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive
+    if opts.instance_of?(Hash) ? opts.key?(:recursive) : opts.to_s.to_sym == :recursive
       res = {}
 
       def sub_dup(value)
-        if value.class.to_s =~ /(Hash|Array)/
+        if /(Hash|Array)/.match?(value.class.to_s)
           value.dup(:recursive)
         else
           begin
@@ -51,7 +50,7 @@ class Hash
         end
       end
 
-      self.each do |key, value|
+      each do |key, value|
         res[sub_dup(key)] = sub_dup(value)
       end
 
@@ -59,7 +58,7 @@ class Hash
     elsif opts.empty?
       __dup__
     else
-      raise "Unsupported option(s): #{opts.class == Hash ? opts.keys.join(', ') : opts}"
+      raise "Unsupported option(s): #{opts.instance_of?(Hash) ? opts.keys.join(', ') : opts}"
     end
   end
 end

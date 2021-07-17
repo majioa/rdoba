@@ -1,5 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 require 'strscan'
@@ -16,26 +15,31 @@ module Kernel
     fmt = format.split('%')
     nformat = fmt.shift
 
-    while not fmt.empty?
+    until fmt.empty?
       part = fmt.shift
-      part = '%' + fmt.shift unless part
-      if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and $2 == 'P'
-        keys = $1 || ''
-        str = $3 || ''
-        if keys =~ /(-)?([0-9*]*)\.?([0-9\*]*)(\+?)/
+      part ||= '%' + fmt.shift
+      if part =~ /([0-9 #+\-*.]*)([bcdEefGgiopsuXxP])(.*)/ and Regexp.last_match(2) == 'P'
+        keys = Regexp.last_match(1) || ''
+        str = Regexp.last_match(3) || ''
+        if keys =~ /(-)?([0-9*]*)\.?([0-9*]*)(\+?)/
           value = args.shift
-          indent = ' ' * ($2 == '*' ? args.shift : $2).to_i
+          indent = ' ' * (Regexp.last_match(2) == '*' ? args.shift : Regexp.last_match(2)).to_i
           plain =
             value &&
-              value.to_p(padding: ($3 == '*' ? args.shift : $3.empty? ? 1 : $3).to_i, be: $4.empty? ? nil : true) || ''
-          nformat += ($1 ? plain + indent : indent + plain) + str
+              value.to_p(
+                padding:
+                  (Regexp.last_match(3) == '*' ? args.shift : Regexp.last_match(3).empty? ? 1 : Regexp.last_match(3))
+                    .to_i,
+                be: Regexp.last_match(4).empty? ? nil : true
+              ) || ''
+          nformat += (Regexp.last_match(1) ? plain + indent : indent + plain) + str
         else
           nformat += '%' + keys + 'c' + str
           nargs.push args.shift
         end
       else
         nformat += '%' + part
-        l = $1 =~ /\*/ ? 2 : 1
+        l = Regexp.last_match(1) =~ /\*/ ? 2 : 1
         while l > 0
           nargs.push args.shift
           l -= 1
@@ -48,7 +52,7 @@ end
 
 class String
   def scanf_re(format)
-    fss = StringScanner.new(format) # TODO remove scanner in favor of match
+    fss = StringScanner.new(format) # TODO: remove scanner in favor of match
     nformat = ''
 
     pos = 0
@@ -56,7 +60,7 @@ class String
     while fss.scan_until(/%([0-9 #+\-*]*)(?:\.([0-9]+)(\+)?)?([bcdefgiosuxr])/)
       argfs << [fss[1], fss[2], fss[3], fss[4]]
 
-      # TODO add performing the special case in fss[1]
+      #  TODO add performing the special case in fss[1]
       nformat +=
         fss.pre_match[pos..-1].to_res +
           case fss[4]
@@ -94,7 +98,7 @@ class String
     [/#{nformat}/, argfs]
   end
 
-  (alias __scanf__ scanf) if self.instance_methods(false).include?(:scanf)
+  (alias __scanf__ scanf) if instance_methods(false).include?(:scanf)
   def scanf(format, &block)
     re, argfs = scanf_re(format)
 
@@ -150,11 +154,11 @@ class String
       ostr[0...ss.pre_match.size - pos] = ss.pre_match[pos..-1]
       pos = ss.pos
 
-      if ss.post_match[0] == "\n"[0]
-        res = ostr
-        pos += 1
-        ostr = ''
-      end
+      next unless ss.post_match[0] == "\n"[0]
+
+      res = ostr
+      pos += 1
+      ostr = ''
     end
 
     ostr[0...ss.rest.size] = ss.rest

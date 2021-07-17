@@ -1,13 +1,12 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 class String
   def to_res
-    ostr = self.dup
+    ostr = dup
     res = ''
     while true
-      m = ostr.match(/(?:([+\[\]\\().*?{}^$\/|])|«([^«]*)»)/u)
+      m = ostr.match(%r{(?:([+\[\]\\().*?{}^$/|])|«([^«]*)»)}u)
       break unless m
 
       res += m.pre_match + (m[2] || m[1] && ('\\' + m[1]))
