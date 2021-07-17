@@ -57,7 +57,7 @@ When /issue an? :(extended|info|warn|enter|leave|compat) output of a variable?/ 
   when 'enter'
     rdoba_sim :log, :func, :log, :+, { variable: 'value' }
   when 'leave'
-    rdoba_sim :log, :func, :log, :-, true # TODO check return
+    rdoba_sim :log, :func, :log, :-, true #  TODO check return
   when 'compat'
     rdoba_sim :log, :func, :dbp11, "'variable: \"value\"'"
   end
@@ -68,13 +68,13 @@ end
 When /issue an output of the thrown (exception|standard error)(.*)/ do |type, note|
   case type
   when 'exception'
-    if note =~ /out/
+    if /out/.match?(note)
       rdoba_sim :log, :func, :log, :e, :'Exception.new', :$stdout
     else
       rdoba_sim :log, :func, :log, :e, :'Exception.new'
     end
   when 'standard error'
-    if note =~ /notification/
+    if /notification/.match?(note)
       rdoba_sim :log, :func, :log, :e, :'StandardError.new', ['standard error extended info']
     else
       rdoba_sim :log, :func, :log, :e, :'StandardError.new'
@@ -127,26 +127,26 @@ Then /see the (variable|string|number|array|'true' value) output(?: with the :(b
       end
     prefices = match_keywords prefices
     if prefices.empty?
-      if @res !~ /variable: "value"/
+      unless /variable: "value"/.match?(@res)
         raise "Invalid answer: #{@res}, must be \"variable: \"value\""
       end
     else
       case prefices
       when [:timestamp]
-        if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]#{symr} variable: "value"/
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " + "[00:00:00.000000000]#{sym} variable: \"value\""
         end
       when %i[timestamp pid]
-        if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}#{symr} variable: "value"/
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " + "[00:00:00.000000000]{0000}#{sym} variable: \"value\""
         end
       when %i[timestamp pid function_name]
-        if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\(.+\)#{symr} variable: "value"/
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\(.+\)#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " +
                   "[00:00:00.000000000]{0000}(name)#{sym} variable: \"value\""
         end
       when %i[timestamp pid function_name function_line]
-        if @res !~ /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\([^.]+\.\d+\)#{symr} variable: "value"/
+        unless /\[\d\d:\d\d:\d\d\.\d{9}\]\{\d+\}\([^.]+\.\d+\)#{symr} variable: "value"/.match?(@res)
           raise "Invalid answer: #{@res.chomp}, must be like " +
                   "[00:00:00.000000000]{0000}(name.0)#{sym} variable: \"value\""
         end
@@ -157,19 +157,19 @@ Then /see the (variable|string|number|array|'true' value) output(?: with the :(b
       end
     end
   when 'string'
-    if @res !~ /string/
+    unless /string/.match?(@res)
       raise "Invalid answer: #{@res}, must be \"string\""
     end
   when 'number'
-    if @res !~ /1/
+    unless /1/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be \"1\""
     end
   when "'true' value"
-    if @res !~ /true/
+    unless /true/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be \"true\""
     end
   when 'array'
-    if @res !~ /array value1, array value2/
+    unless /array value1, array value2/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be an enum: \"array value1, array value2\""
     end
   end
@@ -178,16 +178,16 @@ end
 Then /see the (standard error|exception) info(.*)/ do |subject, notice|
   case subject
   when 'exception'
-    if @res !~ /Exception:%> Exception/
+    unless /Exception:%> Exception/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be like " + "'Exception:%> Exception'"
     end
   when 'standard error'
-    if notice =~ /notification/
-      if @res !~ /StandardError:%> StandardError\n\tstandard error extended info/
+    if /notification/.match?(notice)
+      unless /StandardError:%> StandardError\n\tstandard error extended info/.match?(@res)
         raise "Invalid answer: #{@res.inspect}, must be like " + "'StandardError:%> StandardError\n\tstandard error " +
                 "extended info'"
       end
-    elsif @res !~ /StandardError:%> StandardError/
+    elsif !/StandardError:%> StandardError/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be like " + "'StandardError:%> StandardError'"
     end
   end
@@ -196,21 +196,21 @@ end
 Then /see(?: a| the)? (nothing|warning|.* error exception)/ do |subject|
   case subject
   when 'nothing'
-    if !@res.empty?
+    unless @res.empty?
       raise "Invalid answer: #{@res.inspect}, must be empty"
     end
   when 'warning'
-    if @res !~ /Warning:/
+    unless /Warning:/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must be a warning " + 'with the description'
     end
 
     'log\': main is not a class/module (TypeError)'
   when /no method error/
-    if @res !~ /undefined method .* \(NoMethodError\)/
+    unless /undefined method .* \(NoMethodError\)/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must notify" + ' that the interpreter has not found the specified method'
     end
   when /name error/
-    if @res !~ /.* \(NameError\)/
+    unless /.* \(NameError\)/.match?(@res)
       raise "Invalid answer: #{@res.inspect}, must notify" + " that the the specified name isn't declared"
     end
   else
@@ -225,7 +225,7 @@ Given(/^selected full Rdoba Log test plan( with self keyword)?$/) do |slf|
     else
       'fulltest_as_log.rb.in'
     end
-  if !File.exist? @testplan
+  unless File.exist? @testplan
     raise "Invalid file #{@testplan} for the specified full test plan"
   end
 end
@@ -238,7 +238,7 @@ When(/^we run the test plan$/) do
 end
 
 Then(/^we see no error on its output$/) do
-  if !@err.empty?
+  unless @err.empty?
     raise "Error found: #{@err}"
   end
 end
