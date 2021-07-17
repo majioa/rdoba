@@ -1,5 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 require 'rdoba/common'
@@ -10,7 +9,7 @@ class String
   def to_i(base = 10, *opts)
     v = parse_opts(opts)
     if v[:be]
-      str, sign, num = (self.match /\s*(-?)([0-9a-fx]+)/u).to_a
+      str, sign, num = (match /\s*(-?)([0-9a-fx]+)/u).to_a
       if str
         n = num.reverse._rdoba_to_i(base)
         sign.empty? && n || -n
@@ -91,7 +90,6 @@ class Numeric
 
     res += pad_char * (v[:padding].to_i - res.size) if res.size < v[:padding].to_i
 
-    plain = (v[:be] ? res.reverse(String::ByteByByte) : res).to_p
-    plain
+    (v[:be] ? res.reverse(String::ByteByByte) : res).to_p
   end
 end

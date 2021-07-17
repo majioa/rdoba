@@ -1,9 +1,8 @@
 #!/usr/bin/ruby -KU
-#encoding:utf-8
 # frozen_string_literal: true
 
 class String
-  # TODO obsolete
+  # TODO: obsolete
   ByteByByte = 0
   FirstChar = 1
 end
@@ -15,13 +14,13 @@ module Rdoba
 
     module CompareString
       def compare_to(value, opts = {})
-        if opts == :ignore_diacritics || opts.class == Hash && opts.key?(:ignore_diacritics)
-          # TODO verify composite range
+        if opts == :ignore_diacritics || opts.instance_of?(Hash) && opts.key?(:ignore_diacritics)
+          # TODO: verify composite range
           def crop_diacritics(x)
             (x < 0x300 || x > 0x36f && x < 0x483 || x > 0x487 && x < 0xa67c || x > 0xa67d) && x || nil
           end
 
-          (self.unpack('U*').map do |x| crop_diacritics(x)end.compact) <=>
+          (unpack('U*').map do |x| crop_diacritics(x)end.compact) <=>
             (value.unpack('U*').map do |x| crop_diacritics(x)end.compact)
         else
           self <=> value
@@ -39,17 +38,17 @@ module Rdoba
           raise "Invalid step value #{step.inspect}"
         end
 
-        if step == :byte_by_byte || step == String::ByteByByte
+        if [:byte_by_byte, String::ByteByByte].include?(step)
           arr = []
-          self.each_byte do |byte|
+          each_byte do |byte|
             arr << byte.chr
           end
-          arr.reverse.join.force_encoding(self.encoding)
+          arr.reverse.join.force_encoding(encoding)
         elsif step == 1
           __rdoba_mixin_reverse_orig__
         elsif step > 1
           res = ''
-          offset = (self.size + 1) / step * step - step
+          offset = (size + 1) / step * step - step
           (0..offset).step(step) do |shift|
             res += self[offset - shift..offset - shift + 1]
           end
@@ -163,12 +162,12 @@ module Rdoba
                   break false
                 end
               end
-            if !c
+            unless c
               break range[:change].call ord
             end
           end
 
-        if !nord.is_a? Numeric
+        unless nord.is_a? Numeric
           return table[:default].call ord
         end
 
@@ -196,7 +195,7 @@ module Rdoba
 
         def ord
           a = nil
-          self.each_byte do |b|
+          each_byte do |b|
             case (b & 0xC0)
             when 0xc0
               a = (b & 0x3F)
@@ -210,31 +209,31 @@ module Rdoba
       end
 
       def __rdoba_mixin_downcase__(options = {})
-        self.__rdoba_mixin_changecase__ :down, options
+        __rdoba_mixin_changecase__ :down, options
       end
 
       def __rdoba_mixin_upcase__(options = {})
-        self.__rdoba_mixin_changecase__ :up, options
+        __rdoba_mixin_changecase__ :up, options
       end
 
       def __rdoba_mixin_changecase__(reg, options = {})
-        if !%i[up down].include? reg
+        unless %i[up down].include? reg
           return self
         end
 
         re = Regexp.new '[\x80-\xFF]', nil, 'n'
         if options == String::FirstChar || options.include?(:first_char)
-          r = self.dup
-          r[0] = CaseString.change_case_char reg, self.ord
+          r = dup
+          r[0] = CaseString.change_case_char reg, ord
           r
-        elsif self.dup.force_encoding('ASCII-8BIT').match re
-          self.unpack('U*').map do |chr|
+        elsif dup.force_encoding('ASCII-8BIT').match re
+          unpack('U*').map do |chr|
             CaseString.change_case_char reg, chr
           end.join
         elsif reg == :up
-          self.__rdoba_mixin_upcase_orig__
+          __rdoba_mixin_upcase_orig__
         else
-          self.__rdoba_mixin_downcase_orig__
+          __rdoba_mixin_downcase_orig__
         end
       end
     end
@@ -242,10 +241,10 @@ module Rdoba
     module To_hArray
       def to_h(options = {})
         h = {}
-        self.each do |v|
+        each do |v|
           if v.is_a? Array
             if h.key? v[0]
-              if !h[v[0]].is_a? Array
+              unless h[v[0]].is_a? Array
                 h[v[0]] = [h[v[0]]]
               end
 
@@ -257,16 +256,14 @@ module Rdoba
             else
               h[v[0]] = v.size > 2 && v[1..-1] || v[1]
             end
-          else
-            if h.key? v
-              if !h[v].is_a? Array
-                h[v] = [h[v]]
-              end
-
-              h[v] << v
-            else
-              h[v] = nil
+          elsif h.key? v
+            unless h[v].is_a? Array
+              h[v] = [h[v]]
             end
+
+            h[v] << v
+          else
+            h[v] = nil
           end
         end
 
@@ -296,10 +293,10 @@ module Rdoba
       # first # => [0,2]
       # second # => [1,3]
       #
-      def split_by()
+      def split_by
         idxs = []
-        rejected = self.reject.with_index do |v, i| yield(v) && (idxs << i)end
-        [self.values_at(*idxs), rejected]
+        rejected = reject.with_index do |v, i| yield(v) && (idxs << i)end
+        [values_at(*idxs), rejected]
       end
     end
 
@@ -334,25 +331,25 @@ module Rdoba
           ::String.send :alias_method, k, v
         end
         Mixin::CaseString::Fixups.each do |e|
-          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
-        end # trap NameError
-        ::String.send :include, Mixin::CaseString
+          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end", __FILE__, __LINE__
+        end
+        ::String.include Mixin::CaseString
       when :reverse
         Mixin::ReverseString::Aliases.each do |k, v|
           ::String.send :alias_method, k, v
         end
         Mixin::ReverseString::Fixups.each do |e|
-          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end"
-        end # trap NameError
-        String.send :include, Mixin::ReverseString
+          ::String.class_eval "def #{e}(*args);self.__rdoba_mixin_#{e}__(*args);end", __FILE__, __LINE__
+        end
+        String.include Mixin::ReverseString
       when :compare
-        String.send :include, Mixin::CompareString
+        String.include Mixin::CompareString
       when :to_h
         if [].respond_to?(:to_h)
           m = Mixin::To_hArray.instance_method(:to_h)
           Array.send(:define_method, :to_h, m)
         else
-          Array.send(:include, Mixin::To_hArray)
+          Array.include Mixin::To_hArray
         end
       when :time
         require_relative 'mixin/time'
@@ -362,19 +359,19 @@ module Rdoba
             ::File.send(:define_singleton_method, name, m)
           end
         else
-          ::File.send(:extend, Mixin::Time)
+          ::File.extend Mixin::Time
         end
       when :wait_if
-        Object.send :include, Mixin::Wait_ifKernel
+        Object.include Mixin::Wait_ifKernel
       when :split_by
-        Array.send :include, Mixin::Split_byArray
+        Array.include Mixin::Split_byArray
       when :try
-        Object.send :include, Mixin::TryObject
+        Object.include Mixin::TryObject
       when :empty
-        Object.send :include, Mixin::EmptyObject
-        NilClass.send :include, Mixin::EmptyNilClass
+        Object.include Mixin::EmptyObject
+        NilClass.include Mixin::EmptyNilClass
       else
-        raise(Mixin::InvalidOption, 'Invalid rdoba-mixin options key: ' + "#{value.to_s}")
+        raise(Mixin::InvalidOption, 'Invalid rdoba-mixin options key: ' + value.to_s)
       end
     end
   end
