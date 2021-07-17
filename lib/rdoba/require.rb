@@ -1,5 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 require 'rdoba/common'
@@ -20,8 +19,8 @@ module Kernel
       Dir.foreach(rdir) do |file|
         next unless file =~ /(.*)\.(rb|so)$/
 
-        dbp14 "[require_dir]> Loading ... #{$1}"
-        require $1
+        dbp14 "[require_dir]> Loading ... #{Regexp.last_match(1)}"
+        require Regexp.last_match(1)
       end
       true
     rescue StandardError
@@ -35,7 +34,7 @@ module Kernel
       $:.each do |dir|
         begin
           Dir.foreach(dir) do |file|
-            next unless file =~ /^#{name}\.(rb|so)$/
+            next unless /^#{name}\.(rb|so)$/.match?(file)
 
             dbp14 "[sub_require]> Require Dir #{dir}/#{name} for #{file}"
             r1 = require_dir(dir, name + '.modules')

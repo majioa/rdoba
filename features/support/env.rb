@@ -53,18 +53,8 @@ end
 def match_keywords(keystr)
   keys =
     (keystr || '').split(/[,:\s]/).map do |k|
-      %i[
-        basic
-        extended
-        enter
-        leave
-        compat
-        timestamp
-        pid
-        function_name
-        function_line
-        function
-      ].include?(k.to_sym) && k.to_sym || nil
+      %i[basic extended enter leave compat timestamp pid function_name function_line function].include?(k.to_sym) &&
+        k.to_sym || nil
     end.compact
 end
 
@@ -115,7 +105,7 @@ def rdoba_sim(sub, cmd, *args)
       end
 
       param =
-        '{' + (param).to_a.map do |v| "#{v[0].inspect} => #{v[1].is_a?(String) && v[1] || v[1].inspect}"end.join(',') +
+        '{' + param.to_a.map do |v| "#{v[0].inspect} => #{v[1].is_a?(String) && v[1] || v[1].inspect}"end.join(',') +
           '}'
 
       @echo << '   ' * @deep + "rdoba :#{sub} => #{param}\n"
@@ -177,7 +167,7 @@ def rdoba_sim(sub, cmd, *args)
         end
       @echo << echo
     when :exec
-      if !@echo.empty?
+      unless @echo.empty?
         store
         puts '-' * 15
 

@@ -1,14 +1,14 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 class Object
   def xor(val1)
-    val0 = (not not self)
-    ((val0) and (not val1)) or ((not val0) and (val1))
+    val0 = !!self
+    (val0 and !val1) or (!val0 and val1)
   end
 
-  def co(method, *_args) #calls any method
+  # calls any method
+  def co(method, *_args)
     eval "#{method}(*args)"
   end
 
@@ -36,7 +36,7 @@ class Object
   end
 
   def apply_opts(opts)
-    parse_opts(opts).each do |x, y| self.instance_variable_set("@#{x}".to_sym, y)end
+    parse_opts(opts).each do |x, y| instance_variable_set("@#{x}".to_sym, y)end
   end
 end
 
@@ -45,8 +45,8 @@ class NilClass
     value.nil?
   end
 
-  def +(value)
-    value
+  def +(other)
+    other
   end
 
   def <<(value)
@@ -66,14 +66,14 @@ class NilClass
     0
   end
 
-  def <=>(_value)
+  def <=>(_other)
     -1
   end
 end
 
 class Array
   def purge
-    self.compact.delete_if { |x| x.empty? }
+    compact.delete_if { |x| x.empty? }
   end
 
   def >>(value = nil)
@@ -82,36 +82,36 @@ class Array
 
   alias __get__ []
   def [](index, *args)
-    return __get__(index.to_i, *args) if index.class == String and index =~ /^\d+$/
+    return __get__(index.to_i, *args) if index.instance_of?(String) and index =~ /^\d+$/
 
     __get__(index, *args)
   end
 
   alias __set__ []=
   def []=(index, value, *args)
-    return __set__(index.to_i, value, *args) if index.class == String and index =~ /^\d+$/
+    return __set__(index.to_i, value, *args) if index.instance_of?(String) and index =~ /^\d+$/
 
     __set__(index, value, *args)
   end
 end
 
 class String
-  def -(str)
-    #TODO make smart search for match in the 'str', when only last subpart matched to 'self'
-    len = self.size
+  def -(other)
+    # TODO: make smart search for match in the 'str', when only last subpart matched to 'self'
+    len = size
     bc = ec = nil
     (0...len).each do |idx|
-      break bc = idx if self[idx] == str[0]
+      break bc = idx if self[idx] == other[0]
     end
-    ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != str[idx - bc]end if bc
-    (not bc) ? self.clone : (not ec) ? self[0, bc] : self[0, bc] + self[ec, len - ec]
+    ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != other[idx - bc]end if bc
+    bc ? ec ? self[0, bc] + self[ec, len - ec] : self[0, bc] : clone
   end
 
   alias __match__ =~
   def =~(value)
-    if value.class == String
+    if value.instance_of?(String)
       self == value
-    elsif value.class == Regexp
+    elsif value.instance_of?(Regexp)
       value =~ self
     else
       __match__(value)
@@ -119,13 +119,13 @@ class String
   end
 
   def rmatch(value)
-    self == value || self =~ %r{^/([^/]+)} && value =~ /#{$1}/
+    self == value || self =~ %r{^/([^/]+)} && value =~ /#{Regexp.last_match(1)}/
   end
 
   def hexdump
     res = ''
     i = 0
-    self.each_byte do |byte|
+    each_byte do |byte|
       res << format('%.2X ', byte)
       i += 1
       res << "\n" if i % 16 == 0
@@ -135,13 +135,13 @@ class String
 end
 
 class Hash
-  def |(inval)
-    res = self.dup
-    inval.each_pair do |key, val|
-      if val.class == res[key].class
-        if val.class == Hash
-          res[key] |= inval[key]
-        elsif val.class == Array
+  def |(other)
+    res = dup
+    other.each_pair do |key, val|
+      if val.instance_of?(res[key].class)
+        if val.instance_of?(Hash)
+          res[key] |= other[key]
+        elsif val.instance_of?(Array)
           res[key].concat val
         else
           res[key] = val
@@ -159,9 +159,9 @@ class Hash
 
   def reverse
     h = {}
-    self.each_pair do |key, value|
+    each_pair do |key, value|
       if h.key? value
-        if h[value].class == Array
+        if h[value].instance_of?(Array)
           h[value] << key
         else
           h[value] = [h[value], key]
