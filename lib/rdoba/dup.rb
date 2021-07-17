@@ -1,5 +1,4 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 class Array
@@ -9,7 +8,7 @@ class Array
       res = []
 
       def sub_dup(value)
-        if value.class.to_s =~ /(Hash|Array)/
+        if /(Hash|Array)/.match?(value.class.to_s)
           value.dup(:recursive)
         else
           begin
@@ -20,7 +19,7 @@ class Array
         end
       end
 
-      self.each do |value|
+      each do |value|
         res << sub_dup(value)
       end
 
@@ -40,7 +39,7 @@ class Hash
       res = {}
 
       def sub_dup(value)
-        if value.class.to_s =~ /(Hash|Array)/
+        if /(Hash|Array)/.match?(value.class.to_s)
           value.dup(:recursive)
         else
           begin
@@ -51,7 +50,7 @@ class Hash
         end
       end
 
-      self.each do |key, value|
+      each do |key, value|
         res[sub_dup(key)] = sub_dup(value)
       end
 

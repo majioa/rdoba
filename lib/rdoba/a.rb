@@ -1,12 +1,12 @@
 #!/usr/bin/ruby -KU
-#coding:utf-8
 # frozen_string_literal: true
 
 require 'rdoba/debug'
 
 class Array
-  def geta(index, options = {}) #TODO => [] + class Index
-    dbp11 "[geta] <<< array = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
+  # TODO: => [] + class Index
+  def geta(index, options = {})
+    dbp11 "[geta] <<< array = #{inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
     if index.instance_of?(Array)
@@ -26,14 +26,15 @@ class Hash
 
   def geta_value(cid, options = {})
     res =
-      ((not cid) || cid.empty?) && self || self[cid] ||
+      (!cid || cid.empty?) && self || self[cid] ||
         (options[:сокр] && (self[options[:сокр][cid]] || self[options[:сокр].reverse[cid]]))
 
-    if not res and options[:try_regexp]
-      self.keys.each do |key|
+    if !res and options[:try_regexp]
+      keys.each do |key|
         break res = self[key] if key.rmatch(cid)
 
         next unless options[:сокр]
+
         options[:сокр].each_pair do |val1, val2|
           break res = self[key] if key.rmatch(cid.gsub(/#{val1}/, val2)) or key.rmatch(cid.gsub(/#{val2}/, val1))
         end
@@ -45,8 +46,9 @@ class Hash
 
   public
 
-  def geta(index, options = {}) #TODO => [] + class Index
-    dbp11 "[geta] <<< hash = #{self.inspect}, index = #{index.inspect}, options = #{options.inspect}"
+  # TODO: => [] + class Index
+  def geta(index, options = {})
+    dbp11 "[geta] <<< hash = #{inspect}, index = #{index.inspect}, options = #{options.inspect}"
     options[:сокр] ||= @сокр
 
     if index.instance_of?(Array)
@@ -60,11 +62,12 @@ class Hash
     end
   end
 
-  def seta(index, value, options = {}) #TODO => [] + class Index
+  # TODO: => [] + class Index
+  def seta(index, value, options = {})
     dbp11 "[seta] <<< index: #{index.inspect}, value: #{value.inspect}, options: #{options.inspect}"
     options[:сокр] ||= @сокр
 
-    return self[index] = value if index.class != Array # TODO spec index
+    return self[index] = value if index.class != Array # TODO: spec index
 
     back = 0
     index =
@@ -85,7 +88,7 @@ class Hash
     o = self
     dbp14 "[seta]>> self: #{o.inspect}"
     set_idx = index.pop
-    par_class = set_idx =~ /^\d+$/ ? Array : Hash
+    par_class = /^\d+$/.match?(set_idx) ? Array : Hash
     par_idx = nil
     index.each do |idx|
       unless o
@@ -106,7 +109,7 @@ class Hash
       end
     end
 
-    raise 'Invalid path' unless o # TODO special exception
+    raise 'Invalid path' unless o # TODO: special exception
 
     o[set_idx] = value
   end

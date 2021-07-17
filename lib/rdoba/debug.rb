@@ -1,8 +1,7 @@
-# encoding: utf-8
 # frozen_string_literal: true
 
 warn "Warning: the module has kept only for backward compatibility\n" \
-       "Please use 'rdoba :log' form instead"
+     "Please use 'rdoba :log' form instead"
 
 require 'rdoba/log'
 
