@@ -36,7 +36,7 @@ class Object
   end
 
   def apply_opts(opts)
-    parse_opts(opts).each do |x, y| instance_variable_set("@#{x}".to_sym, y)end
+    parse_opts(opts).each do |x, y| instance_variable_set("@#{x}".to_sym, y) end
   end
 end
 
@@ -103,7 +103,7 @@ class String
     (0...len).each do |idx|
       break bc = idx if self[idx] == other[0]
     end
-    ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != other[idx - bc]end if bc
+    ((bc + 1)...len).each do |idx| break ec = idx if self[idx] != other[idx - bc] end if bc
     bc ? ec ? self[0, bc] + self[ec, len - ec] : self[0, bc] : clone
   end
 
