@@ -14,10 +14,10 @@ module Rdoba
 
     module CompareString
       def compare_to(value, opts = {})
-        if opts == :ignore_diacritics || opts.instance_of?(Hash) && opts.key?(:ignore_diacritics)
+        if opts == :ignore_diacritics || (opts.instance_of?(Hash) && opts.key?(:ignore_diacritics))
           # TODO: verify composite range
           def crop_diacritics(x)
-            (x < 0x300 || x > 0x36f && x < 0x483 || x > 0x487 && x < 0xa67c || x > 0xa67d) && x || nil
+            ((x < 0x300 || (x > 0x36f && x < 0x483) || (x > 0x487 && x < 0xa67c) || x > 0xa67d) && x) || nil
           end
 
           (unpack('U*').map do |x| crop_diacritics(x)end.compact) <=>
@@ -48,7 +48,7 @@ module Rdoba
           __rdoba_mixin_reverse_orig__
         elsif step > 1
           res = ''
-          offset = (size + 1) / step * step - step
+          offset = ((size + 1) / step * step) - step
           (0..offset).step(step) do |shift|
             res += self[offset - shift..offset - shift + 1]
           end
@@ -98,7 +98,7 @@ module Rdoba
                 (0x0A680..0x0A697),
                 (0xA722..0xA7A9)
               ],
-              change: proc { |ord| ord.odd? && (ord - 1) || ord }
+              change: proc { |ord| (ord.odd? && (ord - 1)) || ord }
             }
           ],
           default:
@@ -141,7 +141,7 @@ module Rdoba
                 (0x0A680..0x0A697),
                 (0xA722..0xA7A9)
               ],
-              change: proc { |ord| ord.even? && (ord + 1) || ord }
+              change: proc { |ord| (ord.even? && (ord + 1)) || ord }
             }
           ],
           default:
@@ -254,7 +254,7 @@ module Rdoba
                 h[v[0]] << v[1]
               end
             else
-              h[v[0]] = v.size > 2 && v[1..-1] || v[1]
+              h[v[0]] = (v.size > 2 && v[1..-1]) || v[1]
             end
           elsif h.key? v
             unless h[v].is_a? Array

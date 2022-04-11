@@ -12,7 +12,7 @@ class String
       str, sign, num = (match /\s*(-?)([0-9a-fx]+)/u).to_a
       if str
         n = num.reverse._rdoba_to_i(base)
-        sign.empty? && n || -n
+        (sign.empty? && n) || -n
       else
         0
       end

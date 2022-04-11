@@ -39,7 +39,7 @@ module Kernel
             dbp14 "[sub_require]> Require Dir #{dir}/#{name} for #{file}"
             r1 = require_dir(dir, name + '.modules')
             r2 = require_dir(dir, name)
-            dbp14 "[sub_require]> Require Dir #{(r1 || r2) && 'passed' || 'failed'} ... #{name}"
+            dbp14 "[sub_require]> Require Dir #{((r1 || r2) && 'passed') || 'failed'} ... #{name}"
           end
         rescue StandardError
         end
