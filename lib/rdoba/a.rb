@@ -26,7 +26,7 @@ class Hash
 
   def geta_value(cid, options = {})
     res =
-      (!cid || cid.empty?) && self || self[cid] ||
+      ((!cid || cid.empty?) && self) || self[cid] ||
         (options[:сокр] && (self[options[:сокр][cid]] || self[options[:сокр].reverse[cid]]))
 
     if !res and options[:try_regexp]
@@ -93,7 +93,7 @@ class Hash
     index.each do |idx|
       unless o
         dbp14 "[seta]>> parent idx: #{par_idx.inspect}, idx: #{idx.inspect}, parent obj: #{o.inspect}"
-        o = idx =~ /^\d+$/ && [] || {}
+        o = (idx =~ /^\d+$/ && []) || {}
         obj[par_idx] = o
       end
       obj = o
@@ -104,7 +104,7 @@ class Hash
           o = par_class.new
           obj[idx] = o
         else
-          par_idx = idx =~ /^\d+$/ && idx.to_i || idx
+          par_idx = (idx =~ /^\d+$/ && idx.to_i) || idx
         end
       end
     end

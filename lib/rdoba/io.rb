@@ -25,13 +25,13 @@ module Kernel
           value = args.shift
           indent = ' ' * (Regexp.last_match(2) == '*' ? args.shift : Regexp.last_match(2)).to_i
           plain =
-            value &&
+            (value &&
               value.to_p(
                 padding:
                   (Regexp.last_match(3) == '*' ? args.shift : Regexp.last_match(3).empty? ? 1 : Regexp.last_match(3))
                     .to_i,
                 be: Regexp.last_match(4).empty? ? nil : true
-              ) || ''
+              )) || ''
           nformat += (Regexp.last_match(1) ? plain + indent : indent + plain) + str
         else
           nformat += '%' + keys + 'c' + str

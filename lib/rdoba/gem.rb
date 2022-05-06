@@ -19,10 +19,10 @@ module Rdoba
         host_os = RbConfig::CONFIG['host_os']
         case host_os
         when /(mswin|msys|mingw|cygwin|bccwin|wince|emc)/
-          plat = Regexp.last_match(1) == 'mswin' && 'native' || Regexp.last_match(1)
+          plat = (Regexp.last_match(1) == 'mswin' && 'native') || Regexp.last_match(1)
           out = `ver`.encode('US-ASCII', invalid: :replace, undef: :replace)
           if out =~ /\[.* (\d+)\.([\d.]+)\]/
-            "windows-#{plat}-#{Regexp.last_match(1) == '5' && 'xp' || 'vista'}-#{Regexp.last_match(1)}.#{Regexp.last_match(2)}"
+            "windows-#{plat}-#{(Regexp.last_match(1) == '5' && 'xp') || 'vista'}-#{Regexp.last_match(1)}.#{Regexp.last_match(2)}"
           else
             "windows-#{plat}"
           end

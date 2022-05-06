@@ -4,13 +4,13 @@ require 'rdoba/blank'
 
 class Object
    def to_os
-      OpenStruct.new(self.to_h.map {|(x, y)| [x.to_s, [Hash, Array].include?(y.class) && y.to_os || y] }.to_h)
+      OpenStruct.new(self.to_h.map {|(x, y)| [x.to_s, ([Hash, Array].include?(y.class) && y.to_os) || y] }.to_h)
    end
 end
 
 class Array
    def to_os
-      OpenStruct.new(self.map.with_index {|y, x| [x.to_s, [Hash, Array].include?(y.class) && y.to_os || y] }.to_h)
+      OpenStruct.new(self.map.with_index {|y, x| [x.to_s, ([Hash, Array].include?(y.class) && y.to_os) || y] }.to_h)
    end
 end
 
