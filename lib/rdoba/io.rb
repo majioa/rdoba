@@ -26,12 +26,12 @@ module Kernel
           indent = ' ' * (Regexp.last_match(2) == '*' ? args.shift : Regexp.last_match(2)).to_i
           plain =
             value &&
-              value.to_p(
-                padding:
-                  (Regexp.last_match(3) == '*' ? args.shift : Regexp.last_match(3).empty? ? 1 : Regexp.last_match(3))
-                    .to_i,
-                be: Regexp.last_match(4).empty? ? nil : true
-              ) || ''
+            value.to_p(
+              padding:
+                (Regexp.last_match(3) == '*' ? args.shift : Regexp.last_match(3).empty? ? 1 : Regexp.last_match(3))
+                  .to_i,
+              be: Regexp.last_match(4).empty? ? nil : true
+            ) || ''
           nformat += (Regexp.last_match(1) ? plain + indent : indent + plain) + str
         else
           nformat += '%' + keys + 'c' + str
@@ -63,32 +63,32 @@ class String
       #  TODO add performing the special case in fss[1]
       nformat +=
         fss.pre_match[pos..-1].to_res +
-          case fss[4]
-          when 'x'
-            '(?:0[xX])?([a-fA-F0-9]+)'
-          when 'i'
-            '([+\-]?[0-9]+)'
-          when 'u'
-            '([0-9]+)'
-          when 'e'
-            '([+\-]?[0-9]+[eE][+\-]?[0-9]+)'
-          when 'f'
-            '([+\-]?[0-9]+\.[0-9]*)'
-          when 'g'
-            '([+\-]?[0-9]+(?:[eE][+\-]?[0-9]+|\.[0-9]*))'
-          when 'c'
-            fss[2] ? "(.{1,#{fss[2]}})" : '(.)'
-          when 'b'
-            '([01]+)b?'
-          when 'o'
-            '0([0-9]+)'
-          when 'd'
-            '([+\-]?(?:0X)?[A-F0-9.+]+)'
-          when 's'
-            '(.+)'
-          when 'r'
-            '([IVXLCDMivxlcdm]+)'
-          end
+        case fss[4]
+        when 'x'
+          '(?:0[xX])?([a-fA-F0-9]+)'
+        when 'i'
+          '([+\-]?[0-9]+)'
+        when 'u'
+          '([0-9]+)'
+        when 'e'
+          '([+\-]?[0-9]+[eE][+\-]?[0-9]+)'
+        when 'f'
+          '([+\-]?[0-9]+\.[0-9]*)'
+        when 'g'
+          '([+\-]?[0-9]+(?:[eE][+\-]?[0-9]+|\.[0-9]*))'
+        when 'c'
+          fss[2] ? "(.{1,#{fss[2]}})" : '(.)'
+        when 'b'
+          '([01]+)b?'
+        when 'o'
+          '0([0-9]+)'
+        when 'd'
+          '([+\-]?(?:0X)?[A-F0-9.+]+)'
+        when 's'
+          '(.+)'
+        when 'r'
+          '([IVXLCDMivxlcdm]+)'
+        end
 
       pos = fss.pos
     end

@@ -16,13 +16,13 @@ SimpleCov.start
 
 RdobaSimSimpleHead = <<~HEAD
   #!/usr/bin/env ruby
-  
+
   require 'rdoba'
 HEAD
 
 RdobaSimClsHead = <<~HEAD
   #!/usr/bin/env ruby
-  
+
   require 'rdoba'
   class Cls
 HEAD

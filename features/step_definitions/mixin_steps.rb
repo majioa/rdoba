@@ -70,8 +70,7 @@ end
     end
 
   if @плодъ != плодъ
-    raise "Плодна Страза со значенꙇемъ '#{@плодъ}' должна имѣти значенꙇе " \
-            "'#{плодъ}'"
+    raise "Плодна Страза со значенꙇемъ '#{@плодъ}' должна имѣти значенꙇе '#{плодъ}'"
   end
 end
 
@@ -257,7 +256,8 @@ end
 end
 
 То(/^исключение невѣрнѣ опции вызвано будетъ$/) do
-  expect { @проц.call }.to raise_error(Rdoba::Mixin::InvalidOption)
+  expect { @проц.call }
+    .to raise_error(Rdoba::Mixin::InvalidOption)
 end
 
 # #!/usr/bin/ruby -KU
