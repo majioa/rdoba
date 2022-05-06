@@ -29,7 +29,7 @@ class OpenStruct
       OpenStruct.new(self.to_h.merge(other.to_h))
    end
 
-   def map *args, &block
+   def map *_args, &block
       res = self.class.new
 
       self.each_pair do |key, value|
