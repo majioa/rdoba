@@ -20,8 +20,10 @@ module Rdoba
             (x < 0x300 || x > 0x36f && x < 0x483 || x > 0x487 && x < 0xa67c || x > 0xa67d) && x || nil
           end
 
-          (unpack('U*').map do |x| crop_diacritics(x)end.compact) <=>
-            (value.unpack('U*').map do |x| crop_diacritics(x)end.compact)
+          (unpack('U*').map do |x| crop_diacritics(x) end
+.compact) <=>
+            (value.unpack('U*').map do |x| crop_diacritics(x) end
+.compact)
         else
           self <=> value
         end
@@ -295,7 +297,7 @@ module Rdoba
       #
       def split_by
         idxs = []
-        rejected = reject.with_index do |v, i| yield(v) && (idxs << i)end
+        rejected = reject.with_index do |v, i| yield(v) && (idxs << i) end
         [values_at(*idxs), rejected]
       end
     end

@@ -27,7 +27,7 @@ class Hash
   def geta_value(cid, options = {})
     res =
       (!cid || cid.empty?) && self || self[cid] ||
-        (options[:сокр] && (self[options[:сокр][cid]] || self[options[:сокр].reverse[cid]]))
+      (options[:сокр] && (self[options[:сокр][cid]] || self[options[:сокр].reverse[cid]]))
 
     if !res and options[:try_regexp]
       keys.each do |key|

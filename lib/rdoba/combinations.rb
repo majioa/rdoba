@@ -2,6 +2,28 @@
 # frozen_string_literal: true
 
 class Array
+  public
+
+  def each_comby(*args)
+    return self if empty? or !block_given?
+
+    if args.include?(:backward)
+      yield [dup]
+      ((1 << (size - 1)) - 2).downto(0) do |i|
+        c = __comby(i, size - 1)
+        yield c
+      end
+    else
+      0.upto((1 << (size - 1)) - 2) do |i|
+        c = __comby(i, size - 1)
+        yield c
+      end
+      yield [dup]
+    end
+
+    self
+  end
+
   private
 
   def __comby(i, size)
@@ -35,27 +57,5 @@ class Array
     end
     up0(v) if v[:c0] > 1
     v[:res]
-  end
-
-  public
-
-  def each_comby(*args)
-    return self if empty? or !block_given?
-
-    if args.include?(:backward)
-      yield [dup]
-      ((1 << (size - 1)) - 2).downto(0) do |i|
-        c = __comby(i, size - 1)
-        yield c
-      end
-    else
-      0.upto((1 << (size - 1)) - 2) do |i|
-        c = __comby(i, size - 1)
-        yield c
-      end
-      yield [dup]
-    end
-
-    self
   end
 end
