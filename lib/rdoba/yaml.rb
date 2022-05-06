@@ -17,16 +17,16 @@ class Object
           (ix and iy) ? ix <=> iy : (ix ? -1 : (iy ? 1 : x <=> y))
         end.each do |key|
           value = self[key]
-          rs += "\n" + ' ' * level * 2 + key.to_yml({ level: level + 1, order: o[:order] })
+          rs += "\n" + (' ' * level * 2) + key.to_yml({ level: level + 1, order: o[:order] })
           rs += ': ' + value.to_yml({ level: level + 1, order: o[:order] })
         end
-        rs.empty? and '{}' or rs
+        (rs.empty? and '{}') or rs
       when :Array
         rs = ''
         each do |value|
-          rs += "\n" + ' ' * level * 2 + '- ' + value.to_yml({ level: level + 1, order: o[:order] })
+          rs += "\n" + (' ' * level * 2) + '- ' + value.to_yml({ level: level + 1, order: o[:order] })
         end
-        rs.empty? and '[]' or rs
+        (rs.empty? and '[]') or rs
       when :Fixnum
         to_s
       when :String
